@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: payment</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos">
+<header class="bar">
+<a class="btn back" href="NewSale.dc.html" onClick="{{ backToSale }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Back to sale</a>
+<div class="bar-id"><h1 class="bar-title">Take payment</h1><span class="bar-sub">Receipt no. {{ refText }} · Amaka O.</span></div>
+<span class="status">Online · payments can be confirmed</span>
+</header>
+
+<main class="page">
+<div class="col-a">
+<section class="card" aria-label="Amount due">
+<span class="eyebrow">Amount due</span>
+<span class="due">{{ dueText }}</span>
+<span class="note">{{ dueLine }}</span>
+<sc-if value="{{ hasDisc }}" hint-placeholder-val="{{ false }}"><span class="strong" style="color:#14513A">{{ discLine }}</span></sc-if>
+<div class="fgrid" style="margin-top:4px">
+<div class="mini ok"><span>Paid so far</span><b>{{ paidText }}</b></div>
+<div class="mini"><span>Still to pay</span><b>{{ remainingText }}</b></div>
+</div>
+</section>
+
+<section class="card flush" aria-label="Payments on this sale">
+<h2 class="card-h" style="padding:16px 24px 12px">Payments on this sale</h2>
+<sc-if value="{{ noPays }}" hint-placeholder-val="{{ false }}"><p class="muted" style="padding:0 24px 20px">No payments added yet. Choose a method on the right.</p></sc-if>
+<sc-for list="{{ payments }}" as="p" hint-placeholder-count="2">
+<div class="pay">
+<div class="pay-n"><b>{{ p.method }}</b><span>{{ p.detail }}</span></div>
+<sc-if value="{{ p.confirmed }}" hint-placeholder-val="{{ false }}"><span class="pill">Confirmed</span></sc-if>
+<sc-if value="{{ p.byHand }}" hint-placeholder-val="{{ false }}"><span class="pill warn">Confirmed by hand</span></sc-if>
+<sc-if value="{{ p.pending }}" hint-placeholder-val="{{ false }}">
+<span class="pill warn">Waiting for confirmation</span>
+<button class="btn" onClick="{{ p.check }}" aria-label="Check {{p.method}} payment again">Check again</button>
+<button class="btn quiet" onClick="{{ p.askHand }}" aria-label="Confirm {{p.method}} payment by hand">Confirm by hand</button>
+</sc-if>
+<sc-if value="{{ p.removable }}" hint-placeholder-val="{{ false }}">
+<button class="btn quiet danger" onClick="{{ p.remove }}" aria-label="Remove {{p.method}} payment">Remove</button>
+</sc-if>
+<span class="pay-a">{{ p.amountText }}</span>
+<sc-if value="{{ p.handing }}" hint-placeholder-val="{{ false }}">
+<div class="pay-x" role="group" aria-label="Confirm by hand">
+<p class="strong" style="color:#6B4A00">A supervisor must confirm this. Use it only when you have seen the money in the bank app, or the customer has shown the bank alert.</p>
+<div class="fgrid">
+<label class="lbl" style="flex:2 1 240px">Reason<input class="field" type="text" value="{{ handReason }}" onInput="{{ onHandReason }}" placeholder="For example: customer showed the bank alert" aria-invalid="{{ handReasonBad }}"></label>
+<label class="lbl" style="flex:1 1 140px">Supervisor PIN<input class="field" type="password" inputmode="numeric" maxlength="4" value="{{ handPin }}" onInput="{{ onHandPin }}" placeholder="4 digits" aria-invalid="{{ handPinBad }}"></label>
+</div>
+<sc-if value="{{ hasHandMsg }}" hint-placeholder-val="{{ false }}"><p role="alert" class="fe">{{ handMsg }}</p></sc-if>
+<div class="actions"><button class="btn primary" onClick="{{ p.confirmHand }}">Confirm payment</button><button class="btn" onClick="{{ p.cancelHand }}">Cancel</button></div>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</section>
+</div>
+
+<div class="col-a">
+<section class="card" aria-label="Add a payment">
+<h2 class="card-h">Add a payment</h2>
+<sc-if value="{{ hasNote }}" hint-placeholder-val="{{ false }}"><p role="status" class="alert">{{ note }}</p></sc-if>
+<div class="methods" role="group" aria-label="Payment method">
+<sc-for list="{{ methods }}" as="m" hint-placeholder-count="3">
+<button class="method" onClick="{{ m.pick }}" aria-pressed="{{ m.pressed }}">{{ m.label }}</button>
+</sc-for>
+</div>
+<sc-if value="{{ paidInFull }}" hint-placeholder-val="{{ false }}"><p role="status" class="alert ok">The sale is fully paid. Complete the sale to print the receipt.</p></sc-if>
+<sc-if value="{{ notPaid }}" hint-placeholder-val="{{ true }}">
+<div class="wrap">
+<label class="lbl">Amount to take (₦)<input class="field big" type="text" inputmode="numeric" value="{{ amountValue }}" onInput="{{ onAmount }}" aria-invalid="{{ amountBad }}"></label>
+<sc-if value="{{ isCash }}" hint-placeholder-val="{{ true }}">
+<div class="wrap">
+<label class="lbl">Cash received (₦)<input class="field big" type="text" inputmode="numeric" value="{{ recvValue }}" onInput="{{ onRecv }}" aria-invalid="{{ recvBad }}"></label>
+<div class="change"><span>Change to give</span><b>{{ changeText }}</b></div>
+</div>
+</sc-if>
+<sc-if value="{{ isTransfer }}" hint-placeholder-val="{{ false }}">
+<div class="transfer">
+<div class="qr" role="img" aria-label="Sample QR code"><i style="top:0;left:0"></i><i style="top:0;right:0"></i><i style="bottom:0;left:0"></i></div>
+<div style="flex:1 1 200px;display:flex;flex-direction:column;gap:4px">
+<span class="eyebrow" style="color:#14513A">Customer pays into</span>
+<span class="acct">9801234501</span>
+<span class="strong">Things Remembered / MM2 Cash Point 1</span>
+<span class="note">Ask for exactly {{ amountText }}. They can scan the decal or type the number.</span>
+</div>
+</div>
+</sc-if>
+<p class="note">{{ helpText }}</p>
+<sc-if value="{{ hasMsg }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert err">{{ msg }}</p></sc-if>
+<button class="btn primary lg block" onClick="{{ addNow }}">{{ addLabel }}</button>
+</div>
+</sc-if>
+</section>
+
+<div class="finish">
+<sc-if value="{{ paidInFull }}" hint-placeholder-val="{{ false }}"><a class="btn primary lg block" href="Receipt.dc.html" onClick="{{ finish }}">Complete sale and print receipt</a></sc-if>
+<sc-if value="{{ notPaid }}" hint-placeholder-val="{{ true }}"><button class="btn lg block" aria-disabled="true">Complete sale: {{ remainingText }} still to pay</button></sc-if>
+</div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const fmt = (n) => '₦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const num = (s) => parseInt(String(s).replace(/\D/g, ''), 10) || 0;
+const offline = false;
+const ld = (k, d) => { try { return window.trLoad ? window.trLoad(k, d) : d; } catch (e) { return d; } };
+const sv = (k, v) => { try { if (window.trSave) { window.trSave(k, v); } } catch (e) {} };
+const logEv = (ev) => { const cur = ld('ctrNew', []); sv('ctrNew', [Object.assign({ id: 'n' + Date.now() + Math.floor(Math.random() * 1000), outlet: 'MM2 outlet', who: 'Amaka O.', status: 'To review', when: 'Today ' + new Date().toTimeString().slice(0, 5) }, ev)].concat(cur)); };
+const sale = ld('sale', null);
+const due = sale ? sale.total : 11000;
+const payments = st.payments || (sale ? [] : [{ method: 'Transfer', detail: 'Confirmed by Moniepoint · ref MNP-20841', amount: 6000, status: 'ok', removable: false }]);
+const method = st.method || 'Cash';
+const paid = payments.reduce((a, p) => a + ((p.status === 'ok' || (offline && p.status === 'pending')) ? p.amount : 0), 0);
+const anyPending = payments.some((p) => p.status === 'pending');
+const remaining = Math.max(0, due - paid);
+
+const amountValue = st.amountRaw !== undefined ? st.amountRaw : String(remaining);
+const amount = Math.min(num(amountValue), remaining);
+const recvValue = st.recvRaw !== undefined ? st.recvRaw : String(amount);
+const received = num(recvValue);
+const change = Math.max(0, received - amount);
+
+const reset = { amountRaw: undefined, recvRaw: undefined, msg: '', msgF: '' };
+const addNow = () => {
+if (amount <= 0) { this.setState({ msg: 'Amount to take: enter an amount.', msgF: 'amount' }); return; }
+let p;
+if (method === 'Cash') {
+if (received < amount) { this.setState({ msg: 'Cash received: it is less than the amount to take.', msgF: 'recv' }); return; }
+p = { method: 'Cash', detail: 'Received ' + fmt(received) + ' · change ' + fmt(change), amount, status: 'ok', removable: true };
+} else if (method === 'POS card') {
+p = { method: 'POS card', detail: 'Card approved · ref POS-0412', amount, status: 'ok', removable: false };
+} else {
+p = { method: 'Transfer', detail: offline ? 'Saved on this device. Confirmed when back online' : 'Waiting for ' + fmt(amount) + ' into 9801234501', amount, status: 'pending', removable: true };
+}
+this.setState(Object.assign({ payments: payments.concat([p]) }, reset));
+};
+
+const checks = st.checks || {};
+const handFor = st.handFor === undefined ? -1 : st.handFor;
+const list = payments.map((p, idx) => ({
+method: p.method,
+detail: p.detail,
+amountText: fmt(p.amount),
+confirmed: p.status === 'ok' && p.method !== 'Cash' && !p.manual,
+byHand: p.status === 'ok' && !!p.manual,
+pending: p.status === 'pending',
+removable: p.removable,
+handing: handFor === idx && p.status === 'pending',
+check: () => {
+if (offline) { this.setState({ pendMsg: 'Still offline. This transfer will be confirmed when the connection returns.' }); return; }
+const c = (checks[idx] || 0) + 1;
+if (c < 2) { this.setState({ checks: Object.assign({}, checks, { [idx]: c }), pendMsg: 'Nothing has arrived yet. Ask the customer to check the account number and the amount, then check again.' }); return; }
+this.setState({ pendMsg: '', payments: payments.map((x, j) => j === idx ? Object.assign({}, x, { status: 'ok', detail: 'Paid by Chidi Okafor · ref MNP-20842. Check the name with the customer.', removable: false }) : x) });
+},
+askHand: () => this.setState({ handFor: idx, handReason: '', handPin: '', handMsg: '' }),
+cancelHand: () => this.setState({ handFor: -1, handMsg: '' }),
+confirmHand: () => {
+const why = String(st.handReason || '').trim();
+if (!why) { this.setState({ handMsg: 'Reason: give a reason. It is saved with the sale.' }); return; }
+if (!/^\d{4}$/.test(String(st.handPin || ''))) { this.setState({ handMsg: 'Supervisor PIN: enter the 4 digits.' }); return; }
+this.setState({ handFor: -1, handMsg: '', pendMsg: '', payments: payments.map((x, j) => j === idx ? Object.assign({}, x, { status: 'ok', manual: true, detail: 'Confirmed by hand by Ngozi A. Reason: ' + why, removable: false }) : x) });
+},
+remove: () => this.setState(Object.assign({ payments: payments.filter((x, j) => j !== idx), handFor: -1 }, reset))
+}));
+
+const methods = ['POS card', 'Transfer', 'Cash'].map((m) => ({
+label: m,
+pressed: m === method,
+pick: () => this.setState(Object.assign({ method: m }, reset)),
+}));
+
+const help = {
+'Cash': 'The cash drawer opens when you add the cash payment.',
+'POS card': 'Take the card on the POS terminal, then add the payment once it is approved.',
+'Transfer': 'Show the customer the account above. The payment is completed when Moniepoint confirms a transfer of this amount to this cash point, and the payer\u2019s name appears here.'
+};
+const addLabel = { 'Cash': 'Add cash payment', 'POS card': 'Add POS payment', 'Transfer': 'Add transfer payment' };
+
+const nItems = sale ? sale.lines.reduce((a, l) => a + l.qty, 0) : 4;
+return {
+refText: sale ? sale.ref : 'MM2-0412',
+dueText: fmt(due),
+dueLine: nItems + (nItems === 1 ? ' item' : ' items') + ' \u00b7 VAT not applied' + (sale && sale.discAmt ? ' \u00b7 was ' + fmt(sale.sub) : ''),
+hasDisc: !!(sale && sale.discAmt > 0),
+discLine: sale && sale.discAmt ? 'Discount ' + sale.pct + '% (' + sale.reason + '): \u2212' + fmt(sale.discAmt) : '',
+finish: () => { sv('salePay', payments.map((p) => ({ method: p.method, amount: p.amount, status: p.status }))); if (sale && sale.discAmt > 0) { logEv({ type: 'Discount', what: sale.pct + '% \u00b7 ' + sale.reason + '|Sale ' + sale.ref, amount: fmt(sale.discAmt), amt: sale.discAmt, how: sale.sup ? 'Supervisor PIN: Bola K.' : 'Within the ' + sale.limit + '% limit', pin: sale.sup ? 'Yes' : 'No' }); } },
+backToSale: () => { if (sale) { sv('recall', { customer: sale.cust, lines: sale.lines.map((l) => ({ name: l.name, qty: l.qty })) }); } },
+payments: list,
+methods,
+paidText: fmt(paid),
+remainingText: fmt(remaining),
+paidInFull: remaining === 0,
+notPaid: remaining > 0,
+isCash: method === 'Cash',
+amountValue,
+recvValue,
+changeText: fmt(change),
+onAmount: (e) => this.setState({ amountRaw: e.target.value, msg: '', msgF: '' }),
+amountBad: st.msgF === 'amount',
+recvBad: st.msgF === 'recv',
+noPays: payments.length === 0,
+onRecv: (e) => this.setState({ recvRaw: e.target.value, msg: '', msgF: '' }),
+helpText: help[method],
+isTransfer: method === 'Transfer',
+amountText: fmt(amount),
+handReason: st.handReason || '', handPin: st.handPin || '',
+onHandReason: (e) => this.setState({ handReason: e.target.value, handMsg: '' }),
+onHandPin: (e) => this.setState({ handPin: e.target.value, handMsg: '' }),
+handReasonBad: /^Reason/.test(st.handMsg || ''), handPinBad: /^Supervisor PIN/.test(st.handMsg || ''),
+hasHandMsg: !!st.handMsg, handMsg: st.handMsg || '',
+addLabel: addLabel[method],
+addNow,
+hasNote: anyPending || !!st.pendMsg,
+note: st.pendMsg || (offline ? 'You are offline. Transfers are saved and confirmed when the connection returns, and the sale can still be completed.' : 'A transfer is waiting for Moniepoint. It completes by itself when the money arrives. You can also check again.'),
+hasMsg: !!st.msg,
+msg: st.msg || ''
+};
+}
+}
+</script>
+</body>
+</html>

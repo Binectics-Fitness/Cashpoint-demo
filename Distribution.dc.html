@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Back office: distribution</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./app.css">
+<style>
+textarea.field:focus-visible,.lbl[tabindex="-1"]:focus-visible,.sh[tabindex="-1"]:focus-visible{outline:var(--ring);outline-offset:2px}
+.fcard{max-width:920px;box-sizing:border-box;display:flex;flex-direction:column;gap:24px;padding:24px}
+.fsec{display:flex;flex-direction:column;gap:12px}
+.fsec+.fsec{padding-top:24px;border-top:1px solid var(--border)}
+.ln{display:grid;grid-template-columns:minmax(0,2.4fr) minmax(0,1fr) 112px 88px;gap:4px 12px;align-items:start}
+.ln.lnh{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em}
+.ln .u{padding-top:12px;font-size:13px;color:var(--text-muted)}
+.ln .rm{justify-self:end}
+.mlab{display:none}
+.lnone{margin:0;padding:14px 16px;border:1px dashed var(--border-strong);border-radius:12px;font-size:14px;color:var(--text-muted)}
+.foot{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding-top:20px;border-top:1px solid var(--border)}
+.foot .note{flex:1 1 280px;margin-left:8px}
+.acts2{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.hold{font-size:13px;line-height:1.4;color:var(--warning-fg)}
+.stl2{display:block;margin-top:2px;font-size:12px;line-height:1.4;color:var(--text-muted)}
+.stl2.bad{color:var(--danger-fg)}
+.nw{white-space:nowrap}
+@media (max-width:640px){
+.fcard{padding:16px}
+.ln.lnh{display:none}
+.ln{grid-template-columns:minmax(0,1fr) auto auto;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.ln>.cm{grid-column:1/-1}
+.ln>.cq{grid-column:1}
+.ln .u,.ln .rm{align-self:end;padding-top:0;margin-bottom:12px}
+.mlab{display:block;margin-bottom:6px;font-size:13px;font-weight:600;color:var(--text-label)}
+.stk>div{min-width:0 !important}
+.stk .th{display:none}
+.stk .tr{display:flex !important;flex-wrap:wrap;align-items:flex-start;gap:4px 14px;padding-top:12px;padding-bottom:12px}
+.stk .tr>*{min-width:0}
+.stk .tr>.c1{flex:1 0 100%}
+.stk .tr>.ca{flex:1 0 100%;justify-content:flex-start}
+.stk .tr>[data-l]:before{content:attr(data-l) ": ";font-size:12px;font-weight:600;color:var(--text-muted)}
+.foot .note{margin-left:0}
+}
+</style>
+</helmet>
+<div class="shell">
+<aside class="side" aria-label="Main">
+<input type="checkbox" class="sbt" id="sbt" aria-label="Collapse or expand the menu">
+<div class="sbtop"><div class="brand"><span class="logo" aria-hidden="true">TR</span><span class="bt"><b>Things Remembered</b><small>Back office</small></span></div><a class="sbbell" href="Notifications.dc.html" title="Notifications" aria-label="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a><label for="sbt" class="sbtl" title="Collapse or expand the menu"><span class="chev" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E&quot;)"></span></label></div>
+<nav class="navs" aria-label="Sections">
+<div class="grp">Your work</div>
+<a class="nav" href="Notifications.dc.html" title="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Notifications</span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a>
+<a class="nav" href="Approvals.dc.html" title="Approvals"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Approvals</span><span class="bdg" data-badge="appr" data-word="waiting for you" aria-label="4 waiting for you">4</span></a>
+<div class="grp">Operations</div>
+<a class="nav" href="Production.dc.html" title="Production"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Production</span></a>
+<a class="nav on" href="Distribution.dc.html" title="Distribution" aria-current="page"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 7h13v9H1zM14 10h4l3 3v3h-7zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Distribution</span></a>
+<a class="nav" href="Inflight.dc.html" title="In-flight catering"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2 3.5 7.5l6.3 3.2-3.5 3.5-3-.5L2 15l4 2 2 4 1.3-1.3-.5-3 3.5-3.5 3.2 6.3z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">In-flight catering</span></a>
+<a class="nav" href="Inventory.dc.html" title="Inventory"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8l-9-5-9 5v8l9 5 9-5zM3.3 7.5L12 12l8.7-4.5M12 22V12'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Inventory</span></a>
+<a class="nav" href="Purchasing.dc.html" title="Purchasing"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100-2 1 1 0 000 2zM18 20a1 1 0 100-2 1 1 0 000 2z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Purchasing</span></a>
+<div class="grp">Finance</div>
+<a class="nav" href="AccountsHome.dc.html" title="Accounts"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16v16H4zM4 9h16M9 9v11'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Accounts</span></a>
+<a class="nav" href="Reports.dc.html" title="Reports"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20V10M10 20V4M16 20v-8M22 20H2'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Reports</span></a>
+<div class="grp">Admin</div>
+<a class="nav" href="ItemsPrices.dc.html" title="Settings"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3h0a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5h0a1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8v0a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Settings</span></a>
+</nav><div class="bot">
+<div class="who"><span class="av">BK</span><span class="wt"><b>Bola K.</b><small>Operations manager · All states</small></span></div>
+<a class="nav ghost" href="Main.dc.html" title="Open Cash Point"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5h18v10H3zM8 21h8M12 15v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Open Cash Point</span></a>
+<a class="nav" href="BackOfficeSignIn.dc.html" title="Sign out"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Sign out</span></a>
+</div></aside>
+<main class="pg" id="main">
+
+<sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+<div class="hd">
+<div class="hdt"><h1>Distribution</h1><span class="sub">Send what production made to the outlets. Each outlet counts it on arrival.</span></div>
+<div class="hda"><button class="btnp" onClick="{{ openNew }}">New dispatch</button></div>
+</div>
+<nav class="tabs" aria-label="Distribution sections"><a class="tab on" href="Distribution.dc.html" aria-current="page">Dispatches</a><a class="tab" href="SupplyByDay.dc.html">Sent by day</a></nav>
+</sc-if>
+<sc-if value="{{ isNew }}" hint-placeholder-val="{{ false }}">
+<div class="hd">
+<div class="hdt"><button class="crumb" onClick="{{ back }}">‹ Back to distribution</button><h1>New dispatch</h1><span class="sub">Choose the outlet, then add what you are sending.</span></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ hasBanner }}" hint-placeholder-val="{{ false }}">
+<div role="status" class="ok toast"><span><strong>{{ bannerHead }}</strong> {{ bannerText }}</span><span class="acts2"><a class="lnkb" href="{{ bannerHref }}">{{ bannerLink }} ›</a><button type="button" class="lnkb" onClick="{{ dismiss }}">Dismiss</button></span></div>
+</sc-if>
+
+<sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+<div class="band" role="group" aria-label="Filter dispatches">
+<sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+<button class="fc" onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" style="border-color: {{f.border}}; background: {{f.bg}}; color: {{f.color}}">{{ f.label }}</button>
+</sc-for>
+</div>
+<div class="card tbl stk">
+<div style="min-width: 800px; display: flex; flex-direction: column">
+<div class="th" style="grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr) minmax(0, 2.2fr) minmax(0, 1.5fr) minmax(0, 1.8fr)"><span>Dispatch</span><span>Outlet</span><span>Items</span><span>Status</span><span>Next step</span></div>
+<sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}"><div class="empty" role="status"><strong>No dispatches match this filter</strong><span>Try another filter, or show every dispatch.</span><button class="btn sm" onClick="{{ showAll }}">Show all dispatches</button></div></sc-if>
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="4">
+<div class="tr" style="grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr) minmax(0, 2.2fr) minmax(0, 1.5fr) minmax(0, 1.8fr)">
+<span class="c1"><strong>{{ r.no }}</strong><span class="sub2">{{ r.time }}</span></span>
+<span data-l="Outlet">{{ r.outlet }}</span>
+<span data-l="Items">{{ r.items }}</span>
+<span data-l="Status"><sc-if value="{{ r.hasPill }}" hint-placeholder-val="{{ true }}"><span class="pill" style="background: {{r.chipBg}}; color: {{r.chipColor}}">{{ r.status }}</span></sc-if><sc-if value="{{ r.plain }}" hint-placeholder-val="{{ false }}"><span style="color: var(--text-muted)">{{ r.status }}</span></sc-if><sc-if value="{{ r.hasNote }}" hint-placeholder-val="{{ false }}"><span class="stl2 bad">{{ r.note }}</span></sc-if></span>
+<span class="ca acts">
+<sc-if value="{{ r.onTheWay }}" hint-placeholder-val="{{ true }}"><a class="lnkb" href="OutletReceive.dc.html" aria-label="Open outlet view for {{ r.no }}">Open outlet view ›</a></sc-if>
+<sc-if value="{{ r.canApprove }}" hint-placeholder-val="{{ false }}"><button class="btn sm" onClick="{{ r.approve }}" aria-label="Approve and send {{ r.no }}">Approve and send</button></sc-if>
+<sc-if value="{{ r.isOwnWait }}" hint-placeholder-val="{{ false }}"><span class="hold">You prepared this. Another approver must approve it.</span></sc-if>
+</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isNew }}" hint-placeholder-val="{{ false }}">
+<form class="card fcard" novalidate onSubmit="{{ onSubmit }}" aria-label="New dispatch">
+<datalist id="ready-items"><sc-for list="{{ itemList }}" as="i" hint-placeholder-count="7"><option value="{{ i.v }}"></option></sc-for></datalist>
+<div class="fsec">
+<div class="fld">
+<div class="lbl" role="group" aria-label="Send to" id="f-outlet" tabindex="-1" aria-invalid="{{ outletInvalid }}" aria-describedby="e-outlet">Send to
+<div class="seg"><sc-for list="{{ outlets }}" as="o" hint-placeholder-count="6"><button type="button" class="{{ o.cls }}" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}">{{ o.label }}</button></sc-for></div>
+</div>
+<sc-if value="{{ errOutlet }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-outlet">{{ errOutletText }}</p></sc-if>
+</div>
+</div>
+<div class="fsec">
+<div class="sh" id="f-lines" tabindex="-1" aria-invalid="{{ linesInvalid }}" aria-describedby="e-lines"><h2>Items</h2><span>Only what is ready to send can be added.</span></div>
+<sc-if value="{{ noLines }}" hint-placeholder-val="{{ false }}"><p class="lnone">Nothing added yet. Add the items to send.</p></sc-if>
+<sc-if value="{{ errLines }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-lines">{{ errLinesText }}</p></sc-if>
+<sc-if value="{{ hasLines }}" hint-placeholder-val="{{ true }}"><div class="ln lnh" aria-hidden="true"><span>Item</span><span>Quantity</span><span>Ready</span><span></span></div></sc-if>
+<sc-for list="{{ lines }}" as="l" hint-placeholder-count="2">
+<div class="ln" role="group" aria-label="Item {{ l.n }}">
+<div class="cm fld"><label><span class="mlab">Item</span><input class="field" id="{{ l.itemId }}" type="text" list="ready-items" autocomplete="off" value="{{ l.item }}" onInput="{{ l.onItem }}" placeholder="Start typing a name" aria-label="Item, line {{ l.n }}" aria-invalid="{{ l.itemInvalid }}" aria-describedby="{{ l.itemErrId }}"></label><sc-if value="{{ l.errItem }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="{{ l.itemErrId }}">{{ l.errItemText }}</p></sc-if></div>
+<div class="cq fld"><label><span class="mlab">Quantity</span><input class="field" id="{{ l.qtyId }}" type="text" inputmode="numeric" autocomplete="off" value="{{ l.qty }}" onInput="{{ l.onQty }}" aria-label="Quantity, line {{ l.n }}" aria-invalid="{{ l.qtyInvalid }}" aria-describedby="{{ l.qtyErrId }}"></label><sc-if value="{{ l.errQty }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="{{ l.qtyErrId }}">{{ l.errQtyText }}</p></sc-if></div>
+<span class="u">{{ l.ready }}</span>
+<button type="button" class="lnkb rm" onClick="{{ l.remove }}" aria-label="Remove item line {{ l.n }}">Remove</button>
+</div>
+</sc-for>
+<div><button type="button" class="btn" onClick="{{ addLine }}">Add item</button></div>
+</div>
+<sc-if value="{{ hasErrs }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert">{{ errSummary }}</p></sc-if>
+<div class="foot">
+<button type="submit" class="btnp">Send for approval</button>
+<button type="button" class="btn" onClick="{{ back }}">Cancel</button>
+<span class="note">{{ summary }}. Another approver must approve it before the stock leaves. You cannot approve your own dispatch.</span>
+</div>
+</form>
+</sc-if>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const W = (typeof window !== 'undefined') ? window : {};
+const ld = (k, d) => (W.trLoad ? W.trLoad(k, d) : d);
+const sv = (k, v) => { if (W.trSave) W.trSave(k, v); };
+const view = st.view || 'list';
+const filter = st.filter || 'All';
+const ready = { 'Meat pie': 240, 'Sausage roll': 180, 'Chicken pie': 60, 'Doughnut': 150, 'Jollof rice (portions)': 90, 'Pepper soup (portions)': 40, 'Moi moi': 70 };
+const outletNames = ['MM2 outlet', 'Ikeja outlet', 'Lekki outlet', 'Yaba outlet', 'Surulere outlet', 'Ajah outlet'];
+const outlet = st.outlet || '';
+const lines = st.lines || [{ item: 'Meat pie', qty: '60' }];
+const added = st.added || ld('dispAdded', []);
+const errs = st.errs || {};
+const base = [
+{ no: 'D-0092', outlet: 'Ikeja outlet', time: '13:20', items: 'Meat pie 80, Doughnut 60', status: 'Awaiting approval', by: 'Kelechi M.' },
+{ no: 'D-0091', outlet: 'MM2 outlet', time: '12:10', items: 'Meat pie 120, Sausage roll 80', status: 'On the way' },
+{ no: 'D-0090', outlet: 'Lekki outlet', time: '10:40', items: 'Meat pie 60, Jollof rice 30', status: 'Received' },
+{ no: 'D-0089', outlet: 'Yaba outlet', time: '09:55', items: 'Meat pie 50, Doughnut 40', status: 'Received, difference', note: 'Counted 4 fewer Meat pie than sent.' }
+];
+const look = { 'On the way': ['var(--border)', 'var(--neutral-fg)'], 'Received, difference': ['var(--danger-bg)', 'var(--danger-fg)'], 'Awaiting approval': ['var(--warning-bg)', 'var(--warning-fg)'], 'Withdrawn': ['var(--border)', 'var(--neutral-fg)'] };
+// a dispatch approved here (or in Approvals) is remembered under the same key Approvals uses
+const decided = ld('appr', {});
+const acts = ld('apprActs', {});
+const all = added.concat(base).map((r) => (r.status === 'Awaiting approval' && decided[r.no] && decided[r.no].kind === 'approved') ? Object.assign({}, r, { status: 'On the way' }) : (r.status === 'Awaiting approval' && acts[r.no] && acts[r.no].withdrawn) ? Object.assign({}, r, { status: 'Withdrawn' }) : r);
+const keep = (r) => filter === 'All' || filter === r.status || (filter === 'With difference' && r.status === 'Received, difference');
+const count = (f) => all.filter((r) => f === 'All' || f === r.status || (f === 'With difference' && r.status === 'Received, difference')).length;
+const approveRow = (no) => {
+const nd = Object.assign({}, ld('appr', {}), { [no]: { kind: 'approved' } }); sv('appr', nd);
+const b = ld('badges', {}); if (W.trBadge) W.trBadge('appr', Math.max(0, (b.appr === undefined ? 4 : b.appr) - 1));
+const n = ld('read', null) || { n5: true, n7: true }; const nx = Object.assign({}, n, { n2: true }); sv('read', nx); if (W.trBadge) W.trBadge('notif', 7 - Object.keys(nx).filter((x) => nx[x]).length);
+this.setState({ banner: { head: 'Dispatch ' + no + ' approved and sent.', text: 'It is now on the way. The outlet counts what arrives and confirms it.', href: 'OutletReceive.dc.html', link: 'Open outlet view' } });
+};
+const rows = all.filter(keep).map((r) => ({
+no: r.no, outlet: r.outlet, time: r.time, items: r.items, status: r.status, note: r.note || '',
+chipBg: (look[r.status] || [])[0], chipColor: (look[r.status] || [])[1], hasPill: !!look[r.status], plain: !look[r.status], onTheWay: r.status === 'On the way', hasNote: !!r.note,
+canApprove: r.status === 'Awaiting approval' && r.by !== 'Bola K.', isOwnWait: r.status === 'Awaiting approval' && r.by === 'Bola K.',
+approve: () => approveRow(r.no)
+}));
+const left = (name) => { let n = ready[name] || 0; added.forEach((d) => { (d.parts || []).forEach((p) => { if (p.item === name) n -= p.qty; }); }); return n; };
+const setLines = (next) => this.setState({ lines: next, banner: null });
+const lineRows = lines.map((l, i) => ({
+n: i + 1, item: l.item, qty: l.qty, itemId: 'dl-item-' + i, qtyId: 'dl-qty-' + i, itemErrId: 'dl-item-e-' + i, qtyErrId: 'dl-qty-e-' + i,
+ready: ready[l.item] !== undefined ? left(l.item) + ' ready' : '',
+errItem: !!l.eItem, errItemText: l.eItem || '', itemInvalid: l.eItem ? 'true' : 'false',
+errQty: !!l.eQty, errQtyText: l.eQty || '', qtyInvalid: l.eQty ? 'true' : 'false',
+onItem: (e) => setLines(lines.map((x, j) => j === i ? { item: e.target.value, qty: x.qty, eQty: x.eQty } : x)),
+onQty: (e) => setLines(lines.map((x, j) => j === i ? { item: x.item, qty: e.target.value, eItem: x.eItem } : x)),
+remove: () => setLines(lines.filter((x, j) => j !== i))
+}));
+const focusFirst = () => setTimeout(() => { const el = document.querySelector('main [aria-invalid="true"]'); if (el && el.focus) { el.focus(); if (el.scrollIntoView) el.scrollIntoView({ block: 'center' }); } }, 0);
+const send = () => {
+const e = {}; let nErr = 0;
+if (!outlet) { e.outlet = 'Choose the outlet to send to.'; nErr++; }
+if (!lines.length) { e.lines = 'Add at least one item to send.'; nErr++; }
+const used = {};
+const checked = lines.map((l) => {
+const o = { item: l.item, qty: l.qty }; const q = parseInt(l.qty, 10); const known = ready[l.item] !== undefined;
+if (!String(l.item).trim()) { o.eItem = 'Choose an item.'; nErr++; } else if (!known) { o.eItem = 'Pick an item from the list.'; nErr++; }
+if (!String(l.qty).trim()) { o.eQty = known ? 'Enter how many ' + l.item + ' to send.' : 'Enter how many to send.'; nErr++; }
+else if (!/^\d+$/.test(String(l.qty).trim()) || !(q > 0)) { o.eQty = 'Quantity must be a whole number above 0.'; nErr++; }
+else if (known) { used[l.item] = (used[l.item] || 0) + q; if (used[l.item] > left(l.item)) { o.eQty = 'Only ' + left(l.item) + ' ' + l.item + ' are ready to send.'; nErr++; } }
+return o;
+});
+if (nErr) { this.setState({ errs: e, lines: checked, banner: null }); focusFirst(); return; }
+const no = 'D-' + String(93 + added.length).padStart(4, '0');
+const parts = lines.map((l) => ({ item: l.item, qty: parseInt(l.qty, 10) }));
+const rec = { no, outlet, time: '13:05', items: parts.map((p) => p.item + ' ' + p.qty).join(', '), status: 'Awaiting approval', by: 'Bola K.', parts };
+const next = [rec].concat(added); sv('dispAdded', next);
+this.setState({ added: next, view: 'list', filter: 'All', lines: [{ item: 'Meat pie', qty: '60' }], outlet: '', errs: {}, banner: { head: 'Dispatch ' + no + ' for ' + outlet + ' is waiting for approval.', text: 'The Management role has been told in the app. The stock leaves once another approver signs off. You cannot approve your own dispatch.', href: 'Approvals.dc.html', link: 'Follow it in Approvals' } });
+};
+const total = lines.reduce((s, l) => s + (parseInt(l.qty, 10) || 0), 0);
+const nErrAll = Object.keys(errs).filter((k) => errs[k]).length + lines.reduce((s, l) => s + (l.eItem ? 1 : 0) + (l.eQty ? 1 : 0), 0);
+const bn = st.banner || null;
+return {
+isList: view === 'list', isNew: view === 'new',
+openNew: () => this.setState({ view: 'new', banner: null, errs: {} }),
+back: () => this.setState({ view: 'list', errs: {} }),
+filters: ['All', 'Awaiting approval', 'On the way', 'Received', 'With difference'].map((f) => ({ label: f + ' ' + count(f), pick: () => this.setState({ filter: f, banner: null }), on: f === filter, bg: f === filter ? 'var(--brand)' : 'var(--bg-surface)', color: f === filter ? 'var(--bg-surface)' : 'var(--text)', border: f === filter ? 'var(--brand)' : 'var(--border-strong)' })),
+showAll: () => this.setState({ filter: 'All' }),
+rows, noRows: rows.length === 0,
+outlets: outletNames.map((o) => ({ label: o, on: o === outlet, cls: o === outlet ? 'chip on' : 'chip', pick: () => this.setState({ outlet: o, errs: Object.assign({}, errs, { outlet: '' }) }) })),
+errOutlet: !!errs.outlet, errOutletText: errs.outlet || '', outletInvalid: errs.outlet ? 'true' : 'false',
+errLines: !!errs.lines, errLinesText: errs.lines || '', linesInvalid: errs.lines ? 'true' : 'false',
+itemList: Object.keys(ready).map((v) => ({ v })),
+lines: lineRows, noLines: lines.length === 0, hasLines: lines.length > 0,
+addLine: () => this.setState({ lines: lines.concat([{ item: '', qty: '' }]), errs: Object.assign({}, errs, { lines: '' }), banner: null }),
+summary: lines.length + (lines.length === 1 ? ' line' : ' lines') + ', ' + total + ' items' + (outlet ? ' to ' + outlet : ''),
+onSubmit: (e) => { if (e && e.preventDefault) e.preventDefault(); send(); },
+hasErrs: nErrAll > 0, errSummary: nErrAll === 1 ? 'One thing needs fixing before this can be sent.' : nErrAll + ' things need fixing before this can be sent.',
+hasBanner: !!bn && view === 'list', bannerHead: bn ? bn.head : '', bannerText: bn ? bn.text : '', bannerHref: bn ? bn.href : '', bannerLink: bn ? bn.link : '',
+dismiss: () => this.setState({ banner: null })
+};
+}
+}
+</script>
+</body>
+</html>

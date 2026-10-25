@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: X-count</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos">
+<header class="bar">
+<a class="btn back" href="NewSale.dc.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Back to sale</a>
+<div class="bar-id"><h1 class="bar-title">X-count · interim till report</h1><span class="bar-sub">MM2 outlet · Amaka O. · Shift started 08:00</span></div>
+
+</header>
+<main class="page">
+<div class="col-a" style="max-width:520px">
+<section class="card" aria-label="Sales so far">
+<h2 class="card-h">Sales so far</h2>
+<div class="kv"><span>24 sales</span><b style="font-size:30px;letter-spacing:-0.02em">₦112,300</b></div>
+<div class="sep-t wrap" style="gap:8px"><div class="kv"><span>POS</span><b>₦61,800</b></div><div class="kv"><span>Transfer</span><b>₦45,000</b></div><div class="kv"><span>Cash</span><b>₦5,500</b></div></div>
+</section>
+<section class="card" aria-label="Cash in the drawer">
+<h2 class="card-h">Cash in the drawer</h2>
+<div class="kv"><span>Cash sales</span><b>₦5,500</b></div>
+<div class="kv"><span>Cash taken out ({{ outCount }})</span><b>{{ outText }}</b></div>
+<div class="kv total"><span>Cash that should be in the drawer</span><b style="font-size:24px">{{ expText }}</b></div>
+</section>
+</div>
+<div class="col-a" style="max-width:520px">
+<section class="card" aria-label="Things to watch">
+<h2 class="card-h">Things to watch</h2>
+<div class="kv"><span>Discounts given ({{ discN }})</span><b>{{ discText }}</b></div>
+<div class="kv"><span>Sales voided (1)</span><b>₦3,000</b></div>
+<div class="kv"><span>Held sales waiting</span><b>{{ heldText }}</b></div>
+<p class="note">An X-count only reads the figures. It does not close the shift, clear anything or change stock.</p>
+</section>
+<sc-if value="{{ printed }}" hint-placeholder-val="{{ false }}"><p role="status" class="alert ok">X-count sent to the receipt printer at {{ at }}.</p></sc-if>
+<div class="actions">
+<button class="btn primary lg" onClick="{{ print }}">Print X-count</button>
+<a class="btn lg" href="CashOut.dc.html">Cash out</a>
+<a class="btn lg" href="CloseShift.dc.html">Close shift (Z-count)</a>
+</div>
+</div>
+</main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const fmt = (n) => '₦' + String(Math.abs(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const ld = (k, d) => { try { return window.trLoad ? window.trLoad(k, d) : d; } catch (e) { return d; } };
+const sv = (k, v) => { try { if (window.trSave) window.trSave(k, v); } catch (e) {} };
+const st = this.state || {};
+const outs = ld('cashouts', []);
+const held = ld('held', [{}, {}]);
+const total = outs.reduce((s, x) => s + x.amount, 0);
+const dEv = ld('ctrNew', []).filter((e) => e.type === 'Discount');
+const dTot = 1800 + dEv.reduce((a, e) => a + (e.amt || 0), 0);
+return {
+discN: 2 + dEv.length, discText: '−' + fmt(dTot),
+outCount: outs.length,
+outText: total ? '−' + fmt(total) : '₦0',
+expText: fmt(5500 - total),
+heldText: String(held.length),
+printed: !!st.at, at: st.at || '',
+print: () => { const d = new Date(); this.setState({ at: String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0') }); }
+};
+}
+}
+</script>
+</body>
+</html>

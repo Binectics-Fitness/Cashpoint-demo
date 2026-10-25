@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: sign in, wrong password</title>
+<script src="./support.js"></script>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos">
+<header class="bar">
+<div class="bar-id"><span class="bar-title">Things Remembered</span><span class="bar-sub">MM2 outlet · Cash Point</span></div>
+<span class="status">Online</span>
+</header>
+<main class="page col" style="justify-content:center">
+<form class="card w-sm wrap" style="padding:32px;gap:22px" onSubmit="{{ submit }}" novalidate>
+<div class="wrap" style="gap:6px"><h1 class="page-h">Sign in</h1><p class="lead" style="font-size:16px">Use your own username and password to start your shift.</p></div>
+
+<label class="lbl">Username<input class="field big" style="font-size:16px" type="text" autocomplete="username" placeholder="Your username" value="tunde.b" aria-describedby="auth-err" aria-invalid="true"></label>
+<label class="lbl">Password<input class="field big" style="font-size:16px" type="password" autocomplete="current-password" placeholder="Your password" aria-describedby="auth-err" aria-invalid="true"></label>
+<p role="alert" id="auth-err" class="alert err">The username or password is not right. Check them and try again, or ask your supervisor to reset your password.</p>
+<button class="btn primary lg block" type="submit">Sign in</button>
+<p class="note sep-t">Do not share your password. Every sale is saved under the name of the person signed in. Forgot your password? Ask your supervisor to reset it.</p>
+</form>
+</main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+return { submit: (e) => { if (e && e.preventDefault) { e.preventDefault(); } window.location.href = 'OpeningStock.dc.html'; } };
+}
+}
+</script>
+</body>
+</html>

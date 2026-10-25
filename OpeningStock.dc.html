@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: opening stock</title>
+<script src="./support.js"></script>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos">
+<header class="bar">
+<div class="bar-id"><span class="bar-title">Things Remembered</span><span class="bar-sub">MM2 outlet · Cash Point</span></div>
+<div class="who"><span class="av" aria-hidden="true">AO</span><div class="who-t" style="align-items:flex-start;text-align:left"><span class="who-n">Amaka O.</span><span class="who-s">Signed in</span></div></div>
+<a class="btn" href="SignIn.dc.html">Sign out</a>
+</header>
+<main class="page col" style="padding-top:32px">
+<div class="wrap w-md" style="gap:6px"><h1 class="page-h">Welcome, Amaka</h1><p class="lead">Check the stock you are taking over before you start selling.</p></div>
+<section class="card flush wrap w-md" style="gap:0" aria-label="Opening stock for this shift">
+<h2 class="card-h" style="padding:20px 24px 12px">Opening stock for this shift</h2>
+<div role="table" class="dt"><div role="rowgroup" class="thead"><div role="row" class="tr"><div role="columnheader" class="th">Item</div><div role="columnheader" class="th num">Opening stock</div></div></div><div role="rowgroup" class="tbody"><div role="row" class="tr"><div role="cell" class="td">Meat pie</div><div role="cell" class="td num b" data-l="Opening stock">24</div></div><div role="row" class="tr"><div role="cell" class="td">Sausage roll</div><div role="cell" class="td num b" data-l="Opening stock">31</div></div><div role="row" class="tr"><div role="cell" class="td">Chicken pie</div><div role="cell" class="td num b" data-l="Opening stock">18</div></div><div role="row" class="tr"><div role="cell" class="td">Jollof rice</div><div role="cell" class="td num b" data-l="Opening stock">15</div></div><div role="row" class="tr"><div role="cell" class="td">Pepper soup</div><div role="cell" class="td num b" data-l="Opening stock">7</div></div><div role="row" class="tr"><div role="cell" class="td">Zobo</div><div role="cell" class="td num b" data-l="Opening stock">40</div></div></div></div>
+<div class="wrap" style="padding:16px 24px 24px;border-top:1px solid var(--line);gap:12px">
+<label class="check"><sc-if value="{{ ticked }}" hint-placeholder-val="{{ false }}"><input type="checkbox" checked onChange="{{ onTick }}"></sc-if><sc-if value="{{ unticked }}" hint-placeholder-val="{{ true }}"><input type="checkbox" onChange="{{ onTick }}"></sc-if>The stock above matches what I found at the start of my shift.</label>
+<sc-if value="{{ hasMsg }}" hint-placeholder-val="{{ false }}"><p role="alert" class="fe">{{ msg }}</p></sc-if>
+<div class="actions">
+<a class="btn lg" href="ReportDifference.dc.html">Report a difference</a>
+<button class="btn primary lg grow" aria-disabled="{{ startOff }}" onClick="{{ start }}">Start shift</button>
+</div>
+</div>
+</section>
+</main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const ok = !!st.ok;
+return {
+ticked: ok, unticked: !ok,
+onTick: (e) => this.setState({ ok: !!e.target.checked, msg: '' }),
+startOff: !ok,
+start: () => { if (!ok) { this.setState({ msg: 'Confirm the stock first: tick the box to say the opening stock matches, or report a difference.' }); return; } window.location.href = 'NewSale.dc.html'; },
+hasMsg: !!st.msg, msg: st.msg || ''
+};
+}
+}
+</script>
+</body>
+</html>

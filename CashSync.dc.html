@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: connection and sync</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos">
+<header class="bar">
+<a class="btn back" href="NewSale.dc.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Back to sale</a>
+<div class="bar-id"><h1 class="bar-title">Connection and sync</h1><span class="bar-sub">MM2 outlet · Cash Point</span></div>
+
+</header>
+<main class="page col">
+<div class="wrap w-md">
+<section class="card" aria-label="Connection status">
+<div class="status {{ pillCls }}" style="min-height:44px;font-size:16px;font-weight:700;border-radius:12px;padding:0 16px">{{ status }}</div>
+<p>{{ detail }}</p>
+<sc-if value="{{ hasQueue }}" hint-placeholder-val="{{ false }}">
+<div class="list">
+<sc-for list="{{ queue }}" as="q" hint-placeholder-count="3"><div class="kv sep-t" style="padding-top:12px;padding-bottom:0"><div style="display:flex;flex-direction:column;gap:2px"><b style="color:var(--text)">{{ q.ref }}</b><span class="small muted">{{ q.meta }}</span></div><b>{{ q.amountText }}</b></div></sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ hasMsg }}" hint-placeholder-val="{{ false }}"><p role="status" class="alert ok">{{ msg }}</p></sc-if>
+<div class="actions">
+<sc-if value="{{ offline }}" hint-placeholder-val="{{ false }}"><button class="btn primary lg" onClick="{{ comeBack }}">Connection is back: send now</button><a class="btn lg" href="OfflineSale.dc.html">Keep selling offline</a></sc-if>
+<sc-if value="{{ online }}" hint-placeholder-val="{{ true }}"><button class="btn" onClick="{{ goOffline }}">Show what an offline outlet looks like</button></sc-if>
+</div>
+</section>
+<details class="more"><summary>What this means</summary><p>Sales are saved on this cash point first and sent to head office as soon as there is a connection. A sale that is sent twice is only recorded once. Head office sees the same count under Settings, Sync status.</p></details>
+</div>
+</main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const fmt = (n) => '₦' + String(Math.abs(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const st = this.state || {};
+const off = !!st.off;
+const queue = [
+{ ref: 'MM2-0414', meta: '14:48 · 3 items · Cash', amountText: '₦4,500' },
+{ ref: 'MM2-0415', meta: '14:55 · 1 item · Transfer, awaiting confirmation', amountText: '₦3,500' },
+{ ref: 'MM2-0416', meta: '15:02 · 5 items · POS', amountText: '₦9,200' }
+];
+return {
+offline: off, online: !off,
+status: off ? 'Offline · 3 sales waiting to send' : 'Online · all sales synced',
+pillCls: off ? 'warn' : '',
+detail: off ? 'Selling still works. Cash and POS sales are saved here. A transfer is held as "awaiting confirmation" until the connection is back.' : 'Last sent 15:09. Nothing is waiting on this cash point.',
+hasQueue: off, queue,
+hasMsg: !!st.msg, msg: st.msg || '',
+goOffline: () => this.setState({ off: true, msg: '' }),
+comeBack: () => this.setState({ off: false, msg: '3 sales were sent to head office. Nothing was lost or saved twice.' })
+};
+}
+}
+</script>
+</body>
+</html>

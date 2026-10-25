@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Back office: approvals</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./app.css">
+<style>
+textarea.field:focus-visible,.lbl[tabindex="-1"]:focus-visible,.sh[tabindex="-1"]:focus-visible{outline:var(--ring);outline-offset:2px}
+.acts2{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.tdot{flex:0 0 8px;width:8px;height:8px;margin-top:7px;border-radius:50%}
+.trail{display:flex;flex-direction:column;gap:8px}
+.trail h3{margin:0;font-size:14px}
+.trail .ti2{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5}
+.sentback{margin:0;padding:12px 14px;border-radius:12px;background:var(--danger-bg);color:var(--danger-fg);font-size:14px;line-height:1.5}
+.dec{display:flex;flex-direction:column;gap:12px;padding-top:16px;border-top:1px solid var(--border)}
+textarea.field{padding:10px 12px;min-height:84px;line-height:1.45;resize:vertical}
+.df a.btnp{text-decoration:none}
+@media (max-width:640px){
+.stk>div{min-width:0 !important}
+.stk .th{display:none}
+.stk .tr{display:flex !important;flex-wrap:wrap;align-items:flex-start;gap:4px 14px;padding-top:12px;padding-bottom:12px}
+.stk .tr>*{min-width:0}
+.stk .tr>.c1{flex:1 0 100%}
+.stk .tr>.c2{flex:1 0 100%}
+.stk .tr>.ca{flex:1 0 100%;justify-content:flex-start}
+.stk .tr>[data-l]:not([data-l=""]):before{content:attr(data-l) ": ";font-size:12px;font-weight:600;color:var(--text-muted)}
+}
+</style>
+</helmet>
+<div class="shell">
+<aside class="side" aria-label="Main">
+<input type="checkbox" class="sbt" id="sbt" aria-label="Collapse or expand the menu">
+<div class="sbtop"><div class="brand"><span class="logo" aria-hidden="true">TR</span><span class="bt"><b>Things Remembered</b><small>Back office</small></span></div><a class="sbbell" href="Notifications.dc.html" title="Notifications" aria-label="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a><label for="sbt" class="sbtl" title="Collapse or expand the menu"><span class="chev" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E&quot;)"></span></label></div>
+<nav class="navs" aria-label="Sections">
+<div class="grp">Your work</div>
+<a class="nav" href="Notifications.dc.html" title="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Notifications</span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a>
+<a class="nav on" href="Approvals.dc.html" title="Approvals" aria-current="page"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Approvals</span><span class="bdg" data-badge="appr" data-word="waiting for you" aria-label="4 waiting for you">4</span></a>
+<div class="grp">Operations</div>
+<a class="nav" href="Production.dc.html" title="Production"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Production</span></a>
+<a class="nav" href="Distribution.dc.html" title="Distribution"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 7h13v9H1zM14 10h4l3 3v3h-7zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Distribution</span></a>
+<a class="nav" href="Inflight.dc.html" title="In-flight catering"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2 3.5 7.5l6.3 3.2-3.5 3.5-3-.5L2 15l4 2 2 4 1.3-1.3-.5-3 3.5-3.5 3.2 6.3z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">In-flight catering</span></a>
+<a class="nav" href="Inventory.dc.html" title="Inventory"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8l-9-5-9 5v8l9 5 9-5zM3.3 7.5L12 12l8.7-4.5M12 22V12'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Inventory</span></a>
+<a class="nav" href="Purchasing.dc.html" title="Purchasing"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100-2 1 1 0 000 2zM18 20a1 1 0 100-2 1 1 0 000 2z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Purchasing</span></a>
+<div class="grp">Finance</div>
+<a class="nav" href="AccountsHome.dc.html" title="Accounts"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16v16H4zM4 9h16M9 9v11'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Accounts</span></a>
+<a class="nav" href="Reports.dc.html" title="Reports"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20V10M10 20V4M16 20v-8M22 20H2'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Reports</span></a>
+<div class="grp">Admin</div>
+<a class="nav" href="ItemsPrices.dc.html" title="Settings"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3h0a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5h0a1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8v0a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Settings</span></a>
+</nav><div class="bot">
+<div class="who"><span class="av">BK</span><span class="wt"><b>Bola K.</b><small>Operations manager · All states</small></span></div>
+<a class="nav ghost" href="Main.dc.html" title="Open Cash Point"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5h18v10H3zM8 21h8M12 15v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Open Cash Point</span></a>
+<a class="nav" href="BackOfficeSignIn.dc.html" title="Sign out"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Sign out</span></a>
+</div></aside>
+<main class="pg" id="main">
+
+<div class="hd">
+<div class="hdt"><h1>Approvals</h1><span class="sub">{{ summary }}</span></div>
+</div>
+
+<sc-if value="{{ hasBanner }}" hint-placeholder-val="{{ false }}"><div role="status" class="ok toast"><span><strong>{{ bannerHead }}</strong> {{ bannerText }}</span><span class="acts2"><sc-if value="{{ hasBannerLink }}" hint-placeholder-val="{{ false }}"><a class="lnkb" href="{{ bannerHref }}">{{ bannerLink }} ›</a></sc-if><button type="button" class="lnkb" onClick="{{ dismiss }}">Dismiss</button></span></div></sc-if>
+
+<div class="band" role="group" aria-label="Show">
+<sc-for list="{{ tabs }}" as="f" hint-placeholder-count="3">
+<button class="fc" onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" style="border-color: {{f.border}}; background: {{f.bg}}; color: {{f.color}}">{{ f.label }}</button>
+</sc-for>
+</div>
+<div class="band" role="group" aria-label="Type"><span class="gl">Type</span>
+<sc-for list="{{ types }}" as="f" hint-placeholder-count="5">
+<button class="fc" onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" style="border-color: {{f.border}}; background: {{f.bg}}; color: {{f.color}}">{{ f.label }}</button>
+</sc-for>
+</div>
+
+<div class="card tbl stk">
+<div style="min-width: {{ minW }}px; display: flex; flex-direction: column">
+<div class="th" style="grid-template-columns: {{ grid }}"><sc-for list="{{ heads }}" as="h" hint-placeholder-count="5"><span>{{ h }}</span></sc-for></div>
+<sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}"><div class="empty" role="status"><strong>{{ emptyTitle }}</strong><span>{{ emptyText }}</span><sc-if value="{{ hasEmptyBtn }}" hint-placeholder-val="{{ false }}"><button class="btn sm" onClick="{{ emptyAct }}">{{ emptyBtn }}</button></sc-if></div></sc-if>
+<sc-for list="{{ rows }}" as="c" hint-placeholder-count="4">
+<div class="tr" style="grid-template-columns: {{ grid }}; padding-top: 12px; padding-bottom: 12px; align-items: start">
+<sc-for list="{{ c.cells }}" as="x" hint-placeholder-count="4"><span class="{{ x.cls }}" data-l="{{ x.lab }}"><sc-if value="{{ x.hasMain }}" hint-placeholder-val="{{ true }}"><span style="font-weight: {{ x.w }}">{{ x.main }}</span></sc-if><sc-if value="{{ x.hasSub }}" hint-placeholder-val="{{ false }}"><span class="sub2">{{ x.sub }}</span></sc-if><sc-if value="{{ x.hasPill }}" hint-placeholder-val="{{ false }}"><span class="pill" style="margin-top: 4px; background: {{ x.pillBg }}; color: {{ x.pillColor }}">{{ x.pill }}</span></sc-if></span></sc-for>
+<span class="ca acts"><button class="{{ c.btnCls }}" onClick="{{ c.open }}" aria-label="{{ c.aria }}">{{ c.btnLabel }}</button></span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<p class="note">The person who raised a request can never approve it, so it shows under Raised by me and goes to someone else. You only see requests for the states and locations you are given. Every decision is recorded with who made it and when. Approval limits by amount are still to be confirmed. How soon reminders go out is set in <a href="NotificationRules.dc.html" style="color: var(--brand-strong); font-weight: 600">Notification rules</a>.</p>
+</main>
+</div>
+<sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+<div class="scrim" onClick="{{ closeDrawer }}"></div>
+<aside class="drawer" role="dialog" aria-label="{{ d.title }}">
+<div class="dh"><h2>{{ d.title }}</h2><button class="btn" onClick="{{ closeDrawer }}">Close</button></div>
+<div class="db">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><span class="pill" style="background: {{d.chipBg}}; color: {{d.chipColor}}">{{ d.status }}</span><span class="note">{{ d.role }}</span></div>
+<div>
+<sc-for list="{{ d.lines }}" as="x" hint-placeholder-count="4"><div class="kv"><span>{{ x.s }}</span><span>{{ x.t }}</span></div></sc-for>
+</div>
+<div class="trail">
+<h3>Where it has been</h3>
+<sc-for list="{{ d.trail }}" as="s" hint-placeholder-count="3"><div class="ti2"><span class="tdot" aria-hidden="true" style="background: {{s.dot}}"></span><span>{{ s.t }}</span></div></sc-for>
+</div>
+
+<sc-if value="{{ d.canDecideHere }}" hint-placeholder-val="{{ false }}">
+<div class="dec fld">
+<label class="lbl">Reason, if you reject it<textarea class="field" id="f-reason" rows="3" value="{{ reasonText }}" onInput="{{ onReason }}" placeholder="For example: ask two other suppliers" aria-invalid="{{ reasonInvalid }}" aria-describedby="e-reason"></textarea></label>
+<sc-if value="{{ hasReasonErr }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-reason" role="alert">{{ reasonErr }}</p></sc-if>
+<p class="note">Approving needs no reason. {{ d.by }} will see the reason if you reject it.</p>
+</div>
+</sc-if>
+<sc-if value="{{ d.decideElsewhere }}" hint-placeholder-val="{{ false }}">
+<div class="dec"><p class="note">You decide this where you can see the full detail. Your decision will tell {{ d.by }}.</p></div>
+</sc-if>
+<sc-if value="{{ d.canChase }}" hint-placeholder-val="{{ false }}">
+<div class="dec">
+<sc-if value="{{ d.reminded }}" hint-placeholder-val="{{ false }}"><p class="note" style="color: var(--brand-strong)"><strong>Reminder sent today.</strong> {{ d.appr }} has been told again. You can send another tomorrow.</p></sc-if>
+<p class="note">You raised this, so someone else decides it. Withdrawing tells {{ d.appr }} it is no longer needed.</p>
+</div>
+</sc-if>
+<sc-if value="{{ d.canResubmit }}" hint-placeholder-val="{{ false }}">
+<div class="dec fld">
+<p class="sentback"><strong>Sent back: </strong>{{ d.why }}</p>
+<label class="lbl">What did you change?<textarea class="field" id="f-reason" rows="3" value="{{ reasonText }}" onInput="{{ onReason }}" placeholder="For example: two quotes attached" aria-invalid="{{ reasonInvalid }}" aria-describedby="e-reason"></textarea></label>
+<sc-if value="{{ hasReasonErr }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-reason" role="alert">{{ reasonErr }}</p></sc-if>
+</div>
+</sc-if>
+</div>
+
+<sc-if value="{{ d.canDecideHere }}" hint-placeholder-val="{{ false }}"><div class="df"><button class="btnp" onClick="{{ approve }}">Approve</button><button class="btn danger" onClick="{{ reject }}">Reject with reason</button></div></sc-if>
+<sc-if value="{{ d.decideElsewhere }}" hint-placeholder-val="{{ false }}"><div class="df"><a class="btnp" href="{{ d.link }}" style="display: inline-flex; align-items: center; justify-content: center">{{ d.linkLabel }}</a></div></sc-if>
+<sc-if value="{{ d.canChase }}" hint-placeholder-val="{{ false }}"><div class="df"><sc-if value="{{ d.canRemind }}" hint-placeholder-val="{{ true }}"><button class="btnp" onClick="{{ remind }}">Send a reminder to {{ d.appr }}</button></sc-if><button class="btn danger" onClick="{{ withdraw }}">Withdraw this request</button></div></sc-if>
+<sc-if value="{{ d.canResubmit }}" hint-placeholder-val="{{ false }}"><div class="df"><button class="btnp" onClick="{{ resubmit }}">Send again for approval</button></div></sc-if>
+</aside>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const W = (typeof window !== 'undefined') ? window : {};
+const ld = (k, d) => (W.trLoad ? W.trLoad(k, d) : d);
+const sv = (k, v) => { if (W.trSave) W.trSave(k, v); };
+const decided = st.decided || ld('appr', {});
+const acts = st.acts || ld('apprActs', {});
+const tab = st.tab || 'wait';
+const typeF = st.typeF || 'All';
+const sel = st.sel || '';
+const reasonText = st.reasonText || '';
+const reasonErr = st.reasonErr || '';
+const ME = 'Bola K.';
+const BASE = [
+{ id: 'R-0216', type: 'Purchase request', what: 'Toiletry kits, 400 units', sub: 'Fresh Farms Co.', by: 'Ibrahim S.', date: '21 Oct', age: 1, appr: 'Supervisor role', st: 'wait', forMe: true, inline: true, lines: [['Item', 'Toiletry kits, 400 units'], ['Supplier', 'Fresh Farms Co.'], ['Why', 'Weekly order for one airline is due on Monday and stock is low.']], trail: ['Raised by Ibrahim S., 21 Oct, 16:40', 'Supervisor role told in the app, 21 Oct, 16:40'] },
+{ id: 'R-0214', type: 'Purchase request', what: 'Flour, 200 kg', sub: 'Agro Mills Ltd', by: 'Kelechi M.', date: '20 Oct', age: 2, appr: 'Supervisor role', st: 'wait', forMe: true, inline: true, lines: [['Item', 'Flour, 200 kg'], ['Supplier', 'Agro Mills Ltd'], ['Why', 'Stock will run out on Friday at the current rate of use.']], trail: ['Raised by Kelechi M., 20 Oct, 09:30', 'Supervisor role told in the app, 20 Oct, 09:30', 'Reminder sent automatically, 21 Oct, 09:30'] },
+{ id: 'D-0092', type: 'Dispatch', what: 'Meat pie 80, Doughnut 60', sub: 'To Ikeja outlet', by: 'Kelechi M.', date: '21 Oct', age: 0, appr: 'Management role', st: 'wait', forMe: true, link: 'Distribution.dc.html', linkLabel: 'Open dispatch D-0092', lines: [['Going to', 'Ikeja outlet'], ['Items', 'Meat pie 80, Doughnut 60'], ['Time', '13:20']], trail: ['Raised by Kelechi M., 21 Oct, 13:20', 'Management role told in the app, 21 Oct, 13:20'] },
+{ id: 'J-0420', type: 'Manual journal', what: 'Prepay November rent, MM2 outlet', sub: '₦400,000', by: 'Ngozi A.', date: '21 Oct', age: 1, appr: 'Accountant role', st: 'wait', forMe: true, link: 'Journals.dc.html', linkLabel: 'Open journal J-0420', lines: [['Narration', 'Prepay November rent, MM2 outlet'], ['Amount', '₦400,000'], ['Posts to', 'Prepayments and bank']], trail: ['Prepared by Ngozi A., 21 Oct, 15:05', 'Accountant role told in the app, 21 Oct, 15:05'] },
+{ id: 'R-0212', type: 'Purchase request', what: 'Packaging boxes, 1,500 units', sub: 'Fresh Farms Co.', by: ME, date: '19 Oct', age: 2, appr: 'Supervisor role', st: 'wait', lines: [['Item', 'Packaging boxes, 1,500 units'], ['Supplier', 'Fresh Farms Co.'], ['Why', 'Boxes for pastry orders are nearly finished.']], trail: ['Raised by you, 19 Oct, 11:10', 'Supervisor role told in the app, 19 Oct, 11:10', 'Reminder sent automatically, 20 Oct, 11:10'] },
+{ id: 'J-0419', type: 'Manual journal', what: 'Accrue October electricity, Lagos production', sub: '₦220,000', by: ME, date: '21 Oct', age: 1, appr: 'Accountant role', st: 'wait', link: 'Journals.dc.html', linkLabel: 'Open journal J-0419', lines: [['Narration', 'Accrue October electricity, Lagos production'], ['Amount', '₦220,000']], trail: ['Prepared by you, 21 Oct, 10:20', 'Accountant role told in the app, 21 Oct, 10:20'] },
+{ id: 'R-0209', type: 'Purchase request', what: 'Sugar, 100 kg', sub: 'Fresh Farms Co.', by: ME, date: '16 Oct', age: 5, appr: 'Chidi O.', st: 'rejected', why: 'Ask two other suppliers before we buy.', lines: [['Item', 'Sugar, 100 kg'], ['Supplier', 'Fresh Farms Co.']], trail: ['Raised by you, 16 Oct, 14:00', 'Rejected by Chidi O., 17 Oct, 09:45'] },
+{ id: 'R-0213', type: 'Purchase request', what: 'Cooking oil, 60 litres', sub: 'Lagos Oil Traders', by: 'Ibrahim S.', date: '18 Oct', age: 4, appr: 'Ngozi A.', st: 'approved', lines: [['Item', 'Cooking oil, 60 litres'], ['Supplier', 'Lagos Oil Traders']], trail: ['Raised by Ibrahim S., 18 Oct, 15:10', 'Approved by Ngozi A., 19 Oct, 10:30'] },
+{ id: 'R-0211', type: 'Purchase request', what: 'Chicken, 80 kg', sub: 'Fresh Farms Co.', by: 'Kelechi M.', date: '19 Oct', age: 3, appr: ME, st: 'approved', lines: [['Item', 'Chicken, 80 kg'], ['Supplier', 'Fresh Farms Co.']], trail: ['Raised by Kelechi M., 19 Oct, 08:50', 'Approved by Bola K., 20 Oct, 09:15', 'Kelechi M. told in the app, 20 Oct, 09:15'] },
+{ id: 'D-0091', type: 'Dispatch', what: 'Meat pie 120, Sausage roll 80', sub: 'To MM2 outlet', by: 'Kelechi M.', date: '21 Oct', age: 0, appr: ME, st: 'approved', lines: [['Going to', 'MM2 outlet'], ['Items', 'Meat pie 120, Sausage roll 80']], trail: ['Raised by Kelechi M., 21 Oct, 11:55', 'Approved by Bola K., 21 Oct, 12:10'] },
+{ id: 'AD-0031', type: 'Airline delivery', what: 'Weekly in-flight order, week 42', sub: 'In-flight catering', by: 'Ibrahim S.', date: '20 Oct', age: 1, appr: 'Ngozi A.', st: 'approved', lines: [['Order', 'Weekly in-flight order, week 42']], trail: ['Raised by Ibrahim S., 20 Oct, 16:20', 'Approved by Ngozi A., 20 Oct, 17:05'] }
+];
+// requests raised in Purchasing and Distribution are remembered, so they show here under Raised by me
+const fromPurch = ld('purchAdded', []).map((p) => ({ id: p.no, type: 'Purchase request', what: p.item + ', ' + p.qty, sub: p.supplier, by: ME, date: p.date || '22 Oct', age: 0, appr: 'Supervisor role', st: 'wait', lines: [['Item', p.item + ', ' + p.qty], ['Supplier', p.supplier], ['Why', p.why || '']], trail: ['Raised by you, ' + (p.when || '22 Oct'), 'Supervisor role told in the app, ' + (p.when || '22 Oct')] }));
+const fromDisp = ld('dispAdded', []).map((d) => ({ id: d.no, type: 'Dispatch', what: d.items, sub: 'To ' + d.outlet, by: ME, date: '22 Oct', age: 0, appr: 'Management role', st: 'wait', link: 'Distribution.dc.html', linkLabel: 'Open dispatch ' + d.no, lines: [['Going to', d.outlet], ['Items', d.items], ['Time', d.time]], trail: ['Raised by you, 22 Oct, ' + d.time, 'Management role told in the app, 22 Oct, ' + d.time] }));
+const REQS = fromPurch.concat(fromDisp, BASE);
+const view = REQS.map((r) => {
+const d = decided[r.id] || null; const a = acts[r.id] || {};
+let status = r.st === 'wait' ? 'Awaiting approval' : r.st === 'rejected' ? 'Sent back' : 'Approved';
+let appr = r.appr; let trail = r.trail.slice(); let why = r.why || '';
+if (d && d.kind === 'approved') { status = 'Approved'; appr = ME; trail = trail.concat(['Approved by you, 22 Oct', r.by + ' told in the app']); }
+if (d && d.kind === 'rejected') { status = 'Sent back'; appr = ME; why = d.why; trail = trail.concat(['Rejected by you, 22 Oct. Reason: ' + d.why, r.by + ' told in the app']); }
+if (a.withdrawn) { status = 'Withdrawn'; trail = trail.concat(['Withdrawn by you, 22 Oct', r.appr + ' told it is no longer needed']); }
+if (a.resub) { status = 'Awaiting approval'; why = ''; trail = trail.concat(['Sent again by you, 22 Oct. ' + a.resub, r.appr + ' told in the app']); }
+if (a.reminded) trail = trail.concat(['Reminder sent by you, 22 Oct']);
+const waiting = status === 'Awaiting approval';
+const overdue = waiting && r.age >= 2;
+if (overdue) trail = trail.concat(['No decision after 2 days. Management role has also been told.']);
+const own = r.by === ME;
+return Object.assign({}, r, { status, appr, trail, why, waiting, overdue, own, a, forMeNow: !!r.forMe && waiting && !own });
+});
+const waitList = view.filter((r) => r.forMeNow);
+const mineList = view.filter((r) => r.own);
+const mineOpen = mineList.filter((r) => r.waiting || r.status === 'Sent back');
+const overdueN = view.filter((r) => r.overdue).length;
+if (W.trBadge) W.trBadge('appr', waitList.length);
+const typeMatch = (r) => typeF === 'All' || r.type === typeF;
+const list = (tab === 'wait' ? waitList : tab === 'mine' ? mineList : view).filter(typeMatch);
+const chip = (s) => s === 'Awaiting approval' ? ['var(--warning-bg)', 'var(--warning-fg)'] : s === 'Approved' ? ['var(--brand-bg)', 'var(--brand-strong)'] : s === 'Sent back' ? ['var(--danger-bg)', 'var(--danger-fg)'] : ['var(--border)', 'var(--neutral-fg)'];
+const ageText = (r) => r.age === 0 ? 'today' : r.age === 1 ? '1 day' : r.age + ' days';
+const save = (nd, na) => { sv('appr', nd); sv('apprActs', na); };
+const NMAP = { 'R-0216': 'n1', 'R-0214': 'n3', 'D-0092': 'n2' };
+const markNote = (id) => { const k = NMAP[id]; if (!k) return; const rd = ld('read', null) || { n5: true, n7: true }; const nx = Object.assign({}, rd, { [k]: true }); sv('read', nx); if (W.trBadge) W.trBadge('notif', 7 - Object.keys(nx).filter((x) => nx[x]).length); };
+const banner = (head, text, href, link) => ({ bannerHead: head, bannerText: text, bannerHref: href || '', bannerLink: link || '' });
+const cell = (o) => Object.assign({ cls: '', lab: '', main: '', w: 400, sub: '', pill: '', pillBg: '', pillColor: '' }, o, { hasMain: !!o.main, hasSub: !!o.sub, hasPill: !!o.pill });
+const rows = list.map((r) => {
+const c = r.overdue ? ['var(--danger-bg)', 'var(--danger-fg)'] : chip(r.status);
+const label = r.forMeNow ? 'Review' : (r.own && r.status === 'Sent back') ? 'Fix and resend' : (r.own && r.waiting) ? 'Track' : 'View';
+const stText = r.overdue ? 'Overdue, ' + ageText(r) : r.status;
+const reqCell = cell({ cls: 'c1', main: r.id, w: 700, sub: r.date + (r.waiting ? ', ' + ageText(r) : ''), pill: (tab === 'wait' && r.overdue) ? 'Overdue' : '', pillBg: c[0], pillColor: c[1] });
+const detCell = cell({ cls: 'c2', main: r.what, w: 600, sub: r.type + ' · ' + r.sub });
+const byCell = cell({ lab: 'Raised by', main: r.own ? 'You' : r.by });
+const apprCell = cell({ lab: 'Approver', main: r.forMeNow ? 'You' : r.appr === ME ? 'You' : r.appr, sub: r.waiting ? (r.forMeNow ? r.appr : 'Waiting') : r.status === 'Approved' ? 'Approved' : r.status === 'Sent back' ? 'Decided' : '' });
+const stCell = cell({ lab: 'Status', pill: stText, pillBg: c[0], pillColor: c[1] });
+const cells = tab === 'wait' ? [reqCell, detCell, byCell] : tab === 'mine' ? [reqCell, detCell, apprCell, stCell] : [reqCell, detCell, byCell, apprCell, stCell];
+return {
+cells, btnCls: (r.forMeNow || (r.own && r.status === 'Sent back')) ? 'btn sm' : 'lnkb', btnLabel: label, aria: label + ' ' + r.id,
+open: () => this.setState({ sel: r.id, reasonText: '', reasonErr: '', bannerHead: '', bannerText: '' })
+};
+});
+const heads = tab === 'wait' ? ['Request', 'Details', 'Raised by', ''] : tab === 'mine' ? ['Request', 'Details', 'Approver', 'Status', ''] : ['Request', 'Details', 'Raised by', 'Approver', 'Status', ''];
+const grid = tab === 'wait' ? 'minmax(0, 1.1fr) minmax(0, 3fr) minmax(0, 1.3fr) 130px' : tab === 'mine' ? 'minmax(0, 1.1fr) minmax(0, 3fr) minmax(0, 1.4fr) minmax(0, 1.4fr) 130px' : 'minmax(0, 1.1fr) minmax(0, 2.6fr) minmax(0, 1.2fr) minmax(0, 1.3fr) minmax(0, 1.4fr) 130px';
+const cur = view.filter((r) => r.id === sel)[0] || null;
+let d = { title: '', status: '', chipBg: '', chipColor: '', role: '', lines: [], trail: [], by: '', link: '', linkLabel: '', appr: '', why: '' };
+let canDecideHere = false, decideElsewhere = false, canChase = false, canResubmit = false, reminded = false, canRemind = true;
+if (cur) {
+const c = cur.overdue ? ['var(--danger-bg)', 'var(--danger-fg)'] : chip(cur.status);
+canDecideHere = cur.forMeNow && !!cur.inline; decideElsewhere = cur.forMeNow && !cur.inline;
+canChase = cur.own && cur.waiting; canResubmit = cur.own && cur.status === 'Sent back' && cur.type === 'Purchase request';
+reminded = !!cur.a.reminded; canRemind = !cur.a.reminded;
+d = { title: cur.id + ' ' + cur.type.toLowerCase(), status: cur.overdue ? 'Overdue, ' + ageText(cur) : cur.status, chipBg: c[0], chipColor: c[1],
+role: cur.own ? 'You raised this, so someone else decides it.' : (cur.forMeNow ? 'You did not raise this, so you can decide it.' : ''),
+lines: cur.lines.map((x) => ({ s: x[0], t: x[1] })).concat([{ s: 'Raised by', t: cur.own ? 'You' : cur.by }, { s: 'Date', t: cur.date + ' 2026' }]),
+trail: cur.trail.map((t, i) => ({ t, dot: i === cur.trail.length - 1 ? 'var(--brand)' : 'var(--border-strong)' })),
+by: cur.by, link: cur.link || '', linkLabel: cur.linkLabel || '', appr: cur.appr, why: cur.why,
+canDecideHere, decideElsewhere, canChase, canResubmit, reminded, canRemind };
+}
+const close = () => this.setState({ sel: '', reasonText: '', reasonErr: '' });
+const failReason = (msg) => { this.setState({ reasonErr: msg }); setTimeout(() => { const el = document.querySelector('.drawer [aria-invalid="true"]'); if (el && el.focus) el.focus(); }, 0); };
+const tabs = [['wait', 'Waiting for me (' + waitList.length + ')'], ['mine', 'Raised by me (' + mineOpen.length + ' open)'], ['all', 'All requests (' + view.length + ')']];
+const filtered = typeF !== 'All';
+const empty = filtered ? { t: 'No ' + typeF.toLowerCase() + ' requests here', x: 'Try another type, or show every type.', b: 'Show all types', a: () => this.setState({ typeF: 'All' }) }
+: tab === 'wait' ? { t: 'You are all caught up', x: 'Nothing is waiting for your approval. You will be told when something needs it.', b: 'Show all requests', a: () => this.setState({ tab: 'all' }) }
+: tab === 'mine' ? { t: 'You have not raised anything', x: 'Requests you raise in Purchasing, Distribution or Journals appear here so you can follow them.', b: '', a: () => {} }
+: { t: 'No requests yet', x: 'Nothing has been raised.', b: '', a: () => {} };
+return {
+rows, heads, grid, minW: tab === 'wait' ? 760 : tab === 'mine' ? 860 : 960, noRows: rows.length === 0,
+emptyTitle: empty.t, emptyText: empty.x, hasEmptyBtn: !!empty.b, emptyBtn: empty.b, emptyAct: empty.a,
+tabs: tabs.map((t) => ({ label: t[1], on: t[0] === tab, pick: () => this.setState({ tab: t[0], bannerHead: '', bannerText: '' }), bg: t[0] === tab ? 'var(--brand)' : 'var(--bg-surface)', color: t[0] === tab ? 'var(--bg-surface)' : 'var(--text)', border: t[0] === tab ? 'var(--brand)' : 'var(--border-strong)' })),
+types: ['All', 'Purchase request', 'Dispatch', 'Airline delivery', 'Manual journal'].map((t) => ({ label: t, on: t === typeF, pick: () => this.setState({ typeF: t }), bg: t === typeF ? 'var(--brand-bg)' : 'var(--bg-surface)', color: t === typeF ? 'var(--brand-strong)' : 'var(--text)', border: t === typeF ? 'var(--brand)' : 'var(--border-strong)' })),
+summary: waitList.length + ' waiting for you. ' + mineOpen.length + ' you raised ' + (mineOpen.length === 1 ? 'is' : 'are') + ' still open.' + (overdueN ? ' ' + overdueN + ' ' + (overdueN === 1 ? 'is' : 'are') + ' overdue.' : ''),
+hasBanner: !!st.bannerHead, bannerHead: st.bannerHead || '', bannerText: st.bannerText || '', hasBannerLink: !!st.bannerHref, bannerHref: st.bannerHref || '', bannerLink: st.bannerLink || '',
+dismiss: () => this.setState({ bannerHead: '', bannerText: '', bannerHref: '', bannerLink: '' }),
+drawerOpen: !!cur, d, closeDrawer: close,
+reasonText, onReason: (e) => this.setState({ reasonText: e.target.value, reasonErr: '' }),
+hasReasonErr: !!reasonErr, reasonErr, reasonInvalid: reasonErr ? 'true' : 'false',
+approve: () => { const nd = Object.assign({}, decided, { [cur.id]: { kind: 'approved' } }); save(nd, acts); markNote(cur.id); this.setState(Object.assign({ decided: nd, sel: '', reasonText: '', reasonErr: '' }, banner(cur.id + ' is approved.', cur.by + ' has been told in the app. ' + (cur.type === 'Purchase request' ? 'You can receive the stock once it arrives.' : ''), cur.type === 'Purchase request' ? 'ReceiveStock.dc.html?r=' + cur.id : '', cur.type === 'Purchase request' ? 'Receive stock' : ''))); },
+reject: () => { if (!reasonText.trim()) { failReason('Give a reason so ' + cur.by + ' knows what to change.'); return; } const nd = Object.assign({}, decided, { [cur.id]: { kind: 'rejected', why: reasonText.trim() } }); save(nd, acts); markNote(cur.id); this.setState(Object.assign({ decided: nd, sel: '', reasonText: '', reasonErr: '' }, banner(cur.id + ' is rejected.', cur.by + ' has been told, with your reason.'))); },
+remind: () => { const na = Object.assign({}, acts, { [cur.id]: Object.assign({}, acts[cur.id] || {}, { reminded: true }) }); save(decided, na); this.setState(Object.assign({ acts: na }, banner('Reminder sent.', cur.appr + ' has been told that ' + cur.id + ' is waiting.'))); },
+withdraw: () => { const na = Object.assign({}, acts, { [cur.id]: Object.assign({}, acts[cur.id] || {}, { withdrawn: true }) }); save(decided, na); this.setState(Object.assign({ acts: na, sel: '' }, banner(cur.id + ' is withdrawn.', cur.appr + ' has been told it is no longer needed.'))); },
+resubmit: () => { if (!reasonText.trim()) { failReason('Say what you changed so the approver can see it.'); return; } const na = Object.assign({}, acts, { [cur.id]: Object.assign({}, acts[cur.id] || {}, { resub: reasonText.trim() }) }); save(decided, na); this.setState(Object.assign({ acts: na, sel: '', reasonText: '', reasonErr: '' }, banner(cur.id + ' is sent again.', 'The Supervisor role has been told, and can see what you changed.'))); }
+};
+}
+}
+</script>
+</body>
+</html>

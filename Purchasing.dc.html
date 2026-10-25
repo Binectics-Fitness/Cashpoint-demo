@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Back office: purchasing</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./app.css">
+<style>
+textarea.field:focus-visible,.lbl[tabindex="-1"]:focus-visible,.sh[tabindex="-1"]:focus-visible{outline:var(--ring);outline-offset:2px}
+.acts2{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.stl2{display:block;margin-top:2px;font-size:12px;line-height:1.4;color:var(--text-muted)}
+.stl2.bad{color:var(--danger-fg)}
+.qrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+textarea.field{padding:10px 12px;min-height:84px;line-height:1.45;resize:vertical}
+@media (max-width:640px){
+.stk>div{min-width:0 !important}
+.stk .th{display:none}
+.stk .tr{display:flex !important;flex-wrap:wrap;align-items:flex-start;gap:4px 14px;padding-top:12px;padding-bottom:12px}
+.stk .tr>*{min-width:0}
+.stk .tr>.c1{flex:1 0 100%}
+.stk .tr>.ca{flex:1 0 100%;justify-content:flex-start}
+.stk .tr>[data-l]:before{content:attr(data-l) ": ";font-size:12px;font-weight:600;color:var(--text-muted)}
+}
+</style>
+</helmet>
+<div class="shell">
+
+<aside class="side" aria-label="Main">
+<input type="checkbox" class="sbt" id="sbt" aria-label="Collapse or expand the menu">
+<div class="sbtop"><div class="brand"><span class="logo" aria-hidden="true">TR</span><span class="bt"><b>Things Remembered</b><small>Back office</small></span></div><a class="sbbell" href="Notifications.dc.html" title="Notifications" aria-label="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a><label for="sbt" class="sbtl" title="Collapse or expand the menu"><span class="chev" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E&quot;)"></span></label></div>
+<nav class="navs" aria-label="Sections">
+<div class="grp">Your work</div>
+<a class="nav" href="Notifications.dc.html" title="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Notifications</span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a>
+<a class="nav" href="Approvals.dc.html" title="Approvals"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Approvals</span><span class="bdg" data-badge="appr" data-word="waiting for you" aria-label="4 waiting for you">4</span></a>
+<div class="grp">Operations</div>
+<a class="nav" href="Production.dc.html" title="Production"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Production</span></a>
+<a class="nav" href="Distribution.dc.html" title="Distribution"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 7h13v9H1zM14 10h4l3 3v3h-7zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Distribution</span></a>
+<a class="nav" href="Inflight.dc.html" title="In-flight catering"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2 3.5 7.5l6.3 3.2-3.5 3.5-3-.5L2 15l4 2 2 4 1.3-1.3-.5-3 3.5-3.5 3.2 6.3z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">In-flight catering</span></a>
+<a class="nav" href="Inventory.dc.html" title="Inventory"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8l-9-5-9 5v8l9 5 9-5zM3.3 7.5L12 12l8.7-4.5M12 22V12'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Inventory</span></a>
+<a class="nav on" href="Purchasing.dc.html" title="Purchasing" aria-current="page"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100-2 1 1 0 000 2zM18 20a1 1 0 100-2 1 1 0 000 2z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Purchasing</span></a>
+<div class="grp">Finance</div>
+<a class="nav" href="AccountsHome.dc.html" title="Accounts"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16v16H4zM4 9h16M9 9v11'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Accounts</span></a>
+<a class="nav" href="Reports.dc.html" title="Reports"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20V10M10 20V4M16 20v-8M22 20H2'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Reports</span></a>
+<div class="grp">Admin</div>
+<a class="nav" href="ItemsPrices.dc.html" title="Settings"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3h0a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5h0a1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8v0a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Settings</span></a>
+</nav><div class="bot">
+<div class="who"><span class="av">BK</span><span class="wt"><b>Bola K.</b><small>Operations manager · All states</small></span></div>
+<a class="nav ghost" href="Main.dc.html" title="Open Cash Point"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5h18v10H3zM8 21h8M12 15v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Open Cash Point</span></a>
+<a class="nav" href="BackOfficeSignIn.dc.html" title="Sign out"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Sign out</span></a>
+</div></aside>
+
+<main class="pg" id="main">
+
+<div class="hd">
+<div class="hdt"><h1>Purchasing</h1><span class="sub">Ask to buy raw materials and in-flight supplies. Someone else approves.</span></div>
+<div class="hda"><button class="btnp" onClick="{{ openNew }}">New request</button></div>
+</div>
+<nav class="tabs" aria-label="Purchasing sections"><a class="tab on" href="Purchasing.dc.html" aria-current="page">Requests</a><a class="tab" href="Suppliers.dc.html">Suppliers</a></nav>
+
+<sc-if value="{{ hasBanner }}" hint-placeholder-val="{{ false }}">
+<div role="status" class="ok toast"><span><strong>Request {{ sentNo }} sent for approval.</strong> The Supervisor role has been told in the app. You made this request, so you cannot approve it. Another approver has to decide it.</span><span class="acts2"><a class="lnkb" href="Approvals.dc.html">Follow it in Approvals ›</a><button type="button" class="lnkb" onClick="{{ dismiss }}">Dismiss</button></span></div>
+</sc-if>
+
+<div class="band" role="group" aria-label="Filter requests">
+<sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+<button class="fc" onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" style="border-color: {{f.border}}; background: {{f.bg}}; color: {{f.color}}">{{ f.label }}</button>
+</sc-for>
+</div>
+<div class="card tbl stk">
+<div style="min-width: 820px; display: flex; flex-direction: column">
+<div class="th" style="grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.7fr) minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1.6fr) minmax(0, 1.6fr)"><span>Request</span><span>Item</span><span>Quantity</span><span>Requested by</span><span>Status</span><span>Next step</span></div>
+<sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}"><div class="empty" role="status"><strong>{{ emptyTitle }}</strong><span>{{ emptyText }}</span><sc-if value="{{ canClear }}" hint-placeholder-val="{{ false }}"><button class="btn sm" onClick="{{ showAll }}">Show all requests</button></sc-if></div></sc-if>
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+<div class="tr" style="grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.7fr) minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1.6fr) minmax(0, 1.6fr)">
+<strong class="c1">{{ r.no }}</strong>
+<span><strong style="font-weight: 600">{{ r.item }}</strong><span class="sub2">{{ r.supplier }}</span></span>
+<span data-l="Quantity">{{ r.qty }}</span>
+<span data-l="Requested by">{{ r.by }}</span>
+<span data-l="Status"><span class="pill" style="background: {{r.chipBg}}; color: {{r.chipColor}}">{{ r.status }}</span><sc-if value="{{ r.hasNote }}" hint-placeholder-val="{{ false }}"><span class="stl2 bad">{{ r.note }}</span></sc-if></span>
+<span class="ca acts">
+<sc-if value="{{ r.isWait }}" hint-placeholder-val="{{ true }}"><a class="lnkb" href="Approvals.dc.html" aria-label="{{ r.waitAria }}">{{ r.waitLabel }} ›</a></sc-if>
+<sc-if value="{{ r.isApproved }}" hint-placeholder-val="{{ false }}"><a class="btn sm" href="{{ r.recvHref }}" aria-label="Receive stock for {{ r.no }}">Receive stock</a></sc-if>
+<sc-if value="{{ r.canResend }}" hint-placeholder-val="{{ false }}"><a class="lnkb" href="Approvals.dc.html" aria-label="Fix and resend {{ r.no }} in Approvals">Fix and resend ›</a></sc-if>
+<sc-if value="{{ r.isDone }}" hint-placeholder-val="{{ false }}"><span class="stl">{{ r.doneText }}</span></sc-if>
+</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+</main>
+</div>
+
+<sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+<div class="scrim" onClick="{{ closeDrawer }}"></div>
+<aside class="drawer" role="dialog" aria-label="New purchase request">
+<div class="dh"><h2>New purchase request</h2><button class="btn" onClick="{{ closeDrawer }}">Close</button></div>
+<form class="db" style="flex: 1; overflow-y: auto" novalidate onSubmit="{{ onSubmit }}" id="req-form">
+<sc-if value="{{ hasErrs }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert">{{ errSummary }}</p></sc-if>
+<datalist id="buy-items"><sc-for list="{{ itemList }}" as="o" hint-placeholder-count="6"><option value="{{ o.v }}"></option></sc-for></datalist>
+<div class="fld">
+<label class="lbl">What do you need<input class="field" id="f-item" type="text" list="buy-items" autocomplete="off" value="{{ fItem }}" onInput="{{ onItem }}" placeholder="Start typing a name" aria-invalid="{{ itemInvalid }}" aria-describedby="e-item"></label>
+<sc-if value="{{ errItem }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-item">{{ errItem }}</p></sc-if>
+</div>
+<div class="fld">
+<label class="lbl">{{ qtyLabel }}<input class="field" id="f-qty" type="text" inputmode="decimal" autocomplete="off" value="{{ fQty }}" onInput="{{ onQty }}" aria-invalid="{{ qtyInvalid }}" aria-describedby="e-qty"></label>
+<sc-if value="{{ errQty }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-qty">{{ errQty }}</p></sc-if>
+</div>
+<div class="fld">
+<div class="lbl" role="group" aria-label="Supplier" id="f-supplier" tabindex="-1" aria-invalid="{{ supplierInvalid }}" aria-describedby="e-supplier">Supplier
+<div class="seg"><sc-for list="{{ suppliers }}" as="s" hint-placeholder-count="3"><button type="button" class="{{ s.cls }}" aria-pressed="{{ s.on }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div>
+</div>
+<sc-if value="{{ errSupplier }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-supplier">{{ errSupplier }}</p></sc-if>
+</div>
+<div class="fld">
+<label class="lbl">Why is it needed<textarea class="field" id="f-reason" rows="3" value="{{ fReason }}" onInput="{{ onReason }}" placeholder="For example: stock runs out on Friday" aria-invalid="{{ reasonInvalid }}" aria-describedby="e-reason"></textarea></label>
+<sc-if value="{{ errReason }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-reason">{{ errReason }}</p></sc-if>
+</div>
+<p class="note">The request goes to an approver. The person who makes a request cannot approve it.</p>
+</form>
+<div class="df"><button type="submit" form="req-form" class="btnp">Send for approval</button><button type="button" class="btn" onClick="{{ closeDrawer }}">Cancel</button></div>
+</aside>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const W = (typeof window !== 'undefined') ? window : {};
+const ld = (k, d) => (W.trLoad ? W.trLoad(k, d) : d);
+const sv = (k, v) => { if (W.trSave) W.trSave(k, v); };
+const filter = st.filter || 'All';
+const errs = st.errs || {};
+const units = { 'Flour': 'kg', 'Sugar': 'kg', 'Cooking oil': 'litres', 'Butter': 'kg', 'Chicken': 'kg', 'Rice': 'kg', 'Eggs': 'units', 'Packaging boxes': 'units', 'Toiletry kits': 'units', 'Snack boxes': 'units', 'Bottled water': 'units', 'Blankets': 'units' };
+const supplierNames = ['Agro Mills Ltd', 'Lagos Oil Traders', 'Fresh Farms Co.'];
+const base = [
+{ no: 'R-0216', item: 'Toiletry kits', qty: '400 units', supplier: 'Fresh Farms Co.', by: 'Ibrahim S.', status: 'Awaiting approval' },
+{ no: 'R-0214', item: 'Flour', qty: '200 kg', supplier: 'Agro Mills Ltd', by: 'Kelechi M.', status: 'Awaiting approval' },
+{ no: 'R-0213', item: 'Cooking oil', qty: '60 litres', supplier: 'Lagos Oil Traders', by: 'Ibrahim S.', status: 'Approved' },
+{ no: 'R-0212', item: 'Packaging boxes', qty: '1,500 units', supplier: 'Fresh Farms Co.', by: 'Bola K. (you)', status: 'Awaiting approval', own: true },
+{ no: 'R-0211', item: 'Chicken', qty: '80 kg', supplier: 'Fresh Farms Co.', by: 'Kelechi M.', status: 'Received' },
+{ no: 'R-0209', item: 'Sugar', qty: '100 kg', supplier: 'Fresh Farms Co.', by: 'Bola K. (you)', status: 'Rejected', note: 'Ask two other suppliers before we buy.', own: true }
+];
+const added = st.added || ld('purchAdded', []);
+// decisions made in Approvals and stock received are remembered, so every screen tells the same story
+const decided = ld('appr', {}), acts = ld('apprActs', {}), recv = ld('recv', {});
+const all = added.map((r) => Object.assign({ own: true }, r)).concat(base).map((r) => {
+const d = decided[r.no], a = acts[r.no] || {};
+let status = r.status, note = r.note || '';
+if (d && d.kind === 'approved') { status = 'Approved'; note = ''; }
+if (d && d.kind === 'rejected') { status = 'Rejected'; note = d.why; }
+if (a.withdrawn) { status = 'Withdrawn'; note = ''; }
+if (a.resub) { status = 'Awaiting approval'; note = ''; }
+if (recv[r.no]) status = 'Received';
+return Object.assign({}, r, { status, note });
+});
+const look = { 'Awaiting approval': ['var(--warning-bg)', 'var(--warning-fg)'], 'Approved': ['var(--brand-bg)', 'var(--brand-strong)'], 'Rejected': ['var(--danger-bg)', 'var(--danger-fg)'], 'Received': ['var(--border)', 'var(--neutral-fg)'], 'Withdrawn': ['var(--border)', 'var(--neutral-fg)'] };
+const FILTERS = ['All', 'Awaiting approval', 'Approved', 'Rejected', 'Received'];
+const count = (f) => all.filter((r) => f === 'All' || r.status === f).length;
+const rows = all.filter((r) => filter === 'All' || r.status === filter).map((r) => ({
+no: r.no, item: r.item, qty: r.qty, supplier: r.supplier, by: r.by, status: r.status, note: r.note || '', hasNote: !!r.note,
+chipBg: look[r.status][0], chipColor: look[r.status][1],
+isWait: r.status === 'Awaiting approval', waitLabel: r.own ? 'Track in Approvals' : 'Review in Approvals', waitAria: (r.own ? 'Track ' : 'Review ') + r.no + ' in Approvals',
+isApproved: r.status === 'Approved', recvHref: 'ReceiveStock.dc.html?r=' + r.no,
+canResend: r.status === 'Rejected' && !!r.own,
+isDone: r.status === 'Received' || r.status === 'Withdrawn', doneText: r.status === 'Received' ? 'Stock added' : 'Withdrawn'
+}));
+const fItem = st.fItem || '', fQty = st.fQty || '', fSupplier = st.fSupplier || '', fReason = st.fReason || '';
+const unit = units[fItem] || '';
+const clr = (k) => Object.assign({}, errs, { [k]: '' });
+const send = () => {
+const e = {};
+if (!units[fItem]) e.item = 'Pick an item from the list.';
+if (!String(fQty).trim()) e.qty = 'Enter how many you need.'; else if (!/^\d+(\.\d+)?$/.test(String(fQty).trim().replace(/,/g, '')) || !(parseFloat(String(fQty).replace(/,/g, '')) > 0)) e.qty = 'Quantity must be a number above 0.';
+if (!fSupplier) e.supplier = 'Choose a supplier.';
+if (!fReason.trim()) e.reason = 'Say why it is needed, so the approver can decide.';
+if (Object.keys(e).length) {
+this.setState({ errs: e });
+setTimeout(() => { const el = document.querySelector('.drawer [aria-invalid="true"]'); if (el && el.focus) el.focus(); }, 0);
+return;
+}
+const no = 'R-' + String(217 + added.length).padStart(4, '0');
+const rec = { no, item: fItem, qty: String(fQty).trim() + ' ' + units[fItem], supplier: fSupplier, by: 'Bola K. (you)', status: 'Awaiting approval', why: fReason.trim(), date: '22 Oct', when: '22 Oct, 10:15' };
+const next = [rec].concat(added); sv('purchAdded', next);
+this.setState({ added: next, open: false, filter: 'All', sentNo: no, fItem: '', fQty: '', fSupplier: '', fReason: '', errs: {} });
+};
+const nErr = Object.keys(errs).filter((k) => errs[k]).length;
+return {
+openNew: () => this.setState({ open: true, sentNo: undefined, errs: {} }),
+closeDrawer: () => this.setState({ open: false, errs: {} }),
+drawerOpen: !!st.open,
+hasBanner: !!st.sentNo, sentNo: st.sentNo || '', dismiss: () => this.setState({ sentNo: undefined }),
+filters: FILTERS.map((f) => ({ label: f + ' ' + count(f), on: f === filter, pick: () => this.setState({ filter: f, sentNo: undefined }), bg: f === filter ? 'var(--brand)' : 'var(--bg-surface)', color: f === filter ? 'var(--bg-surface)' : 'var(--text)', border: f === filter ? 'var(--brand)' : 'var(--border-strong)' })),
+rows, noRows: rows.length === 0,
+emptyTitle: filter === 'All' ? 'No purchase requests yet' : 'No ' + filter.toLowerCase() + ' requests',
+emptyText: filter === 'All' ? 'Use New request to ask for raw materials or in-flight supplies.' : 'Nothing matches this filter. Try another, or show every request.',
+canClear: filter !== 'All', showAll: () => this.setState({ filter: 'All' }),
+itemList: Object.keys(units).map((v) => ({ v })),
+suppliers: supplierNames.map((s) => ({ label: s, on: s === fSupplier, cls: s === fSupplier ? 'chip on' : 'chip', pick: () => this.setState({ fSupplier: s, errs: clr('supplier') }) })),
+fItem, fQty, fReason, qtyLabel: 'Quantity' + (unit ? ' (' + unit + ')' : ''),
+onItem: (e) => this.setState({ fItem: e.target.value, errs: clr('item') }),
+onQty: (e) => this.setState({ fQty: e.target.value, errs: clr('qty') }),
+onReason: (e) => this.setState({ fReason: e.target.value, errs: clr('reason') }),
+errItem: errs.item || '', itemInvalid: errs.item ? 'true' : 'false',
+errQty: errs.qty || '', qtyInvalid: errs.qty ? 'true' : 'false',
+errSupplier: errs.supplier || '', supplierInvalid: errs.supplier ? 'true' : 'false',
+errReason: errs.reason || '', reasonInvalid: errs.reason ? 'true' : 'false',
+hasErrs: nErr > 0, errSummary: nErr === 1 ? 'One thing needs fixing before this can be sent.' : nErr + ' things need fixing before this can be sent.',
+onSubmit: (e) => { if (e && e.preventDefault) e.preventDefault(); send(); }
+};
+}
+}
+</script>
+</body>
+</html>

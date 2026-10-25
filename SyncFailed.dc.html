@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: sales not yet synced</title>
+<script src="./support.js"></script>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos">
+<header class="bar">
+<a class="btn back" href="NewSale.dc.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Back to sale</a>
+<div class="bar-id"><h1 class="bar-title">Sales not yet synced</h1><span class="bar-sub">MM2 outlet · Amaka O.</span></div>
+<span class="status {{chipCls}}">{{ chipText }}</span>
+</header>
+<main class="page col">
+<div class="wrap w-lg" style="gap:18px">
+<sc-if value="{{ allDone }}" hint-placeholder-val="{{ false }}"><div role="status" class="alert ok plain" style="flex-direction:column;gap:4px"><strong>All sales are saved on the server.</strong><span>Nothing was lost. You can carry on selling.</span></div></sc-if>
+<sc-if value="{{ notDone }}" hint-placeholder-val="{{ true }}"><div role="alert" class="alert err plain" style="flex-direction:column;gap:4px"><strong>{{ headline }}</strong><span>{{ detail }}</span></div></sc-if>
+<section class="card flush" aria-label="Sales waiting to sync">
+<div class="scroll"><div role="table" class="dt stack"><div role="rowgroup" class="thead"><div role="row" class="tr"><div role="columnheader" class="th">Receipt</div><div role="columnheader" class="th">Time</div><div role="columnheader" class="th">Paid by</div><div role="columnheader" class="th">Total</div><div role="columnheader" class="th">Status</div></div></div><div role="rowgroup" class="tbody">
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="3">
+<div role="row" class="tr"><div role="cell" class="td b">{{ r.no }}</div><div role="cell" data-l="Time" class="td">{{ r.time }}</div><div role="cell" data-l="Paid by" class="td">{{ r.method }}</div><div role="cell" data-l="Total" class="td b">{{ r.total }}</div><div role="cell" data-l="Status" class="td"><span class="pill {{r.chip}}">{{ r.status }}</span><div class="small muted" style="margin-top:4px;max-width:260px">{{ r.reason }}</div></div></div>
+</sc-for>
+</div></div></div>
+</section>
+<div class="actions">
+<sc-if value="{{ notDone }}" hint-placeholder-val="{{ true }}"><button class="btn primary lg" onClick="{{ retry }}">{{ retryLabel }}</button></sc-if>
+<a class="btn lg" href="NewSale.dc.html">Keep selling</a>
+<a class="btn lg" href="TodaysSales.dc.html">Today's sales</a>
+</div>
+<details class="more"><summary>Is my data safe?</summary><p>Every sale is kept safe on this device until the server has it. Sending the same sale twice does not create it twice. Do not clear the browser data on this device until everything is synced.</p></details>
+</div>
+</main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const tries = st.tries || 0;
+const sales = [
+{ no: 'MM2-0414', time: '13:02', method: 'Transfer', total: '₦5,200' },
+{ no: 'MM2-0415', time: '13:09', method: 'Cash', total: '₦2,700' },
+{ no: 'MM2-0416', time: '13:15', method: 'POS card + Cash', total: '₦9,800' }
+];
+// first try: two sales get through, one is refused. second try: the last one goes through.
+const state = (i) => tries >= 2 ? 'ok' : tries === 1 ? (i === 2 ? 'fail' : 'ok') : (i === 2 ? 'fail' : 'wait');
+const look = { ok: ['Saved on server', '', ''], wait: ['Waiting to send', 'warn', 'Saved on this device.'], fail: ['Not accepted yet', 'bad', 'The server did not accept this sale. It will be tried again. The sale is still safe here.'] };
+const rows = sales.map((s, i) => { const k = state(i); return { no: s.no, time: s.time, method: s.method, total: s.total, status: look[k][0], chip: look[k][1], reason: look[k][2] }; });
+const left = rows.filter((r) => r.status !== 'Saved on server').length;
+const done = tries >= 2;
+return {
+rows, allDone: done, notDone: !done,
+headline: tries === 0 ? 'Some sales have not reached the server.' : left + ' sale is still not accepted.',
+detail: tries === 0 ? 'You can keep selling. Tap Try again now when the connection is good.' : 'The other sales were saved. Try again, or keep selling and it will retry by itself.',
+retry: () => this.setState({ tries: tries + 1 }),
+retryLabel: tries === 0 ? 'Try again now' : 'Try the last one again',
+chipText: done ? 'Online · all synced' : 'Online · ' + left + ' to sync',
+chipCls: done ? '' : 'bad'
+};
+}
+}
+</script>
+</body>
+</html>

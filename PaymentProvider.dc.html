@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings: payment provider</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./app.css">
+<style>
+</style>
+</helmet>
+<div class="shell">
+<aside class="side" aria-label="Main">
+<input type="checkbox" class="sbt" id="sbt" aria-label="Collapse or expand the menu">
+<div class="sbtop"><div class="brand"><span class="logo" aria-hidden="true">TR</span><span class="bt"><b>Things Remembered</b><small>Back office</small></span></div><a class="sbbell" href="Notifications.dc.html" title="Notifications" aria-label="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a><label for="sbt" class="sbtl" title="Collapse or expand the menu"><span class="chev" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E&quot;)"></span></label></div>
+<nav class="navs" aria-label="Sections">
+<div class="grp">Your work</div>
+<a class="nav" href="Notifications.dc.html" title="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Notifications</span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a>
+<a class="nav" href="Approvals.dc.html" title="Approvals"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Approvals</span><span class="bdg" data-badge="appr" data-word="waiting for you" aria-label="4 waiting for you">4</span></a>
+<div class="grp">Operations</div>
+<a class="nav" href="Production.dc.html" title="Production"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Production</span></a>
+<a class="nav" href="Distribution.dc.html" title="Distribution"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 7h13v9H1zM14 10h4l3 3v3h-7zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Distribution</span></a>
+<a class="nav" href="Inflight.dc.html" title="In-flight catering"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2 3.5 7.5l6.3 3.2-3.5 3.5-3-.5L2 15l4 2 2 4 1.3-1.3-.5-3 3.5-3.5 3.2 6.3z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">In-flight catering</span></a>
+<a class="nav" href="Inventory.dc.html" title="Inventory"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8l-9-5-9 5v8l9 5 9-5zM3.3 7.5L12 12l8.7-4.5M12 22V12'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Inventory</span></a>
+<a class="nav" href="Purchasing.dc.html" title="Purchasing"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100-2 1 1 0 000 2zM18 20a1 1 0 100-2 1 1 0 000 2z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Purchasing</span></a>
+<div class="grp">Finance</div>
+<a class="nav" href="AccountsHome.dc.html" title="Accounts"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16v16H4zM4 9h16M9 9v11'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Accounts</span></a>
+<a class="nav" href="Reports.dc.html" title="Reports"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20V10M10 20V4M16 20v-8M22 20H2'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Reports</span></a>
+<div class="grp">Admin</div>
+<a class="nav on" href="ItemsPrices.dc.html" title="Settings" aria-current="page"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3h0a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5h0a1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8v0a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Settings</span></a>
+</nav><div class="bot">
+<div class="who"><span class="av">BK</span><span class="wt"><b>Bola K.</b><small>Operations manager · All states</small></span></div>
+<a class="nav ghost" href="Main.dc.html" title="Open Cash Point"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5h18v10H3zM8 21h8M12 15v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Open Cash Point</span></a>
+<a class="nav" href="BackOfficeSignIn.dc.html" title="Sign out"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Sign out</span></a>
+</div></aside>
+<main class="pg">
+
+<div class="hd">
+<div class="hdt"><h1>Payment provider</h1><span class="sub">How the system connects to the provider that confirms transfers.</span></div>
+</div>
+<nav class="tabs" aria-label="Settings sections"><a class="tab" href="ItemsPrices.dc.html">Sales</a><a class="tab" href="Locations.dc.html">Locations</a><a class="tab" href="UsersRoles.dc.html">People</a><a class="tab on" href="PaymentProvider.dc.html">Money</a></nav><nav class="subtabs" aria-label="Money pages"><a href="PaymentProvider.dc.html" aria-current="page">Payment provider</a><a href="TaxCurrency.dc.html">Tax and currency</a></nav>
+<sc-if value="{{ hasDone }}" hint-placeholder-val="{{ false }}"><div role="status" class="ok"><strong>{{ doneHead }}</strong><span>{{ doneText }}</span></div></sc-if>
+<sc-if value="{{ hasNote }}" hint-placeholder-val="{{ false }}"><p role="status" class="note" style="padding: 12px 14px; border-radius: 12px; background: #FFF8E6; color: var(--warning-fg); font-weight: 600">{{ note }}</p></sc-if>
+
+<div class="card" style="padding: 20px 22px; display: flex; flex-direction: column; gap: 0">
+<div class="hd" style="padding-bottom: 12px"><div class="hdt"><strong style="font-size: 17px">Moniepoint <span class="pill" style="background: var(--brand-bg); color: var(--brand-strong); margin-left: 6px">In use</span></strong><span class="note">One virtual terminal for each cash point. Confirms transfers, names the payer, and settles the next day.</span></div>
+<div class="hda"><span class="pill" style="background: {{ stBg }}; color: {{ stColor }}">{{ stText }}</span><button class="btn" onClick="{{ testNow }}">Test connection</button></div></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 0; border-top: 1px solid var(--border)"><span class="note" style="min-width: 220px">Business</span><span style="flex: 1 1 260px; font-size: 14px; font-weight: 600">Things Remembered Nig. Ltd</span></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 0; border-top: 1px solid var(--border)"><span class="note" style="min-width: 220px">Live secret key</span><span style="flex: 1 1 260px; font-size: 14px; font-weight: 600">{{ keyText }}</span><button class="btn" onClick="{{ openKey }}">Replace keys</button></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 0; border-top: 1px solid var(--border)"><span class="note" style="min-width: 220px">Payment alerts reach the system at</span><span style="flex: 1 1 260px; font-size: 14px; font-weight: 600">Set up by Binectics at go-live</span></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 0; border-top: 1px solid var(--border)"><span class="note" style="min-width: 220px">Settlement</span><span style="flex: 1 1 260px; font-size: 14px; font-weight: 600">The next day (T+1), into the settlement account ending 4821</span></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 0; border-top: 1px solid var(--border)"><span class="note" style="min-width: 220px">Fee for each transfer</span><span style="flex: 1 1 260px"><span class="pill" style="background: var(--warning-bg); color: var(--warning-fg)">To be confirmed with Moniepoint</span></span></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 0; border-top: 1px solid var(--border)"><span class="note" style="min-width: 220px">A sale waits for its transfer for<br>After this time the sale is flagged in Payments so a supervisor can follow it up.</span><span style="flex: 1 1 260px; display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{ waits }}" as="w" hint-placeholder-count="3"><button class="fc" onClick="{{ w.pick }}" style="border-color: {{w.border}}; background: {{w.bg}}; color: {{w.color}}">{{ w.label }}</button></sc-for></span></div>
+</div>
+
+<details class="done"><summary>How a transfer is matched to a sale</summary>
+<div class="card" style="padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; margin-top: 10px">
+<sc-for list="{{ rules }}" as="r" hint-placeholder-count="4"><div style="display: flex; gap: 10px; font-size: 14px; line-height: 1.5"><span style="flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--brand-bg); color: var(--brand-strong); font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center">{{ r.n }}</span><span>{{ r.t }}</span></div></sc-for>
+</div></details>
+<details class="done"><summary>Other providers</summary>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px">
+<button class="card" onClick="{{ pickMoni }}" style="flex: 1 1 300px; padding: 18px 20px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; text-align: left; cursor: pointer; font: inherit; color: inherit">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%"><strong style="font-size: 17px">Paystack</strong><span class="pill" style="background: var(--border); color: var(--neutral-fg)">Not used at launch</span></div>
+<span class="note">Not connected. It can be added later if Moniepoint cannot meet a need.</span>
+</button>
+<div class="card" style="flex: 1 1 300px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><strong style="font-size: 17px">OPay and other banks</strong><span class="pill" style="background: var(--border); color: var(--neutral-fg)">Can be added</span></div>
+<span class="note">Customers can already pay from any bank. Another provider can be added later if it can report transfers per cash point.</span>
+</div>
+</div></details>
+</main>
+</div>
+<sc-if value="{{ keyOpen }}" hint-placeholder-val="{{ false }}">
+<div class="scrim" onClick="{{ closeKey }}"></div>
+<aside class="drawer dlg" role="dialog" aria-label="Replace keys">
+<div class="dh"><h2>Replace the Moniepoint keys</h2><button class="btn" onClick="{{ closeKey }}">Close</button></div>
+<div class="db">
+<label class="lbl">New live secret key<input class="field" type="text" value="{{ fKey }}" onInput="{{ onKey }}" aria-invalid="{{ hasMsg }}" placeholder="Paste the key from Moniepoint"></label>
+<p class="note">The key is stored securely and is never shown again. After replacing it, test the connection.</p>
+<sc-if value="{{ hasMsg }}" hint-placeholder-val="{{ false }}"><p role="alert" class="ferr">{{ msg }}</p></sc-if>
+</div>
+<div class="df"><button class="btnp" onClick="{{ saveKey }}">Save key</button><button class="btn" onClick="{{ closeKey }}">Cancel</button></div>
+</aside>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const COA = [{"c": "1000", "n": "Cash at outlets", "t": "Asset", "d": "D", "b": 703800}, {"c": "1020", "n": "Moniepoint clearing", "t": "Asset", "d": "D", "b": 1138500}, {"c": "1010", "n": "Bank, main account", "t": "Asset", "d": "D", "b": 14260500}, {"c": "1100", "n": "Trade receivables", "t": "Asset", "d": "D", "b": 5980000}, {"c": "1200", "n": "Stock, raw materials", "t": "Asset", "d": "D", "b": 3120400}, {"c": "1210", "n": "Stock, finished goods", "t": "Asset", "d": "D", "b": 1248000}, {"c": "1220", "n": "Stock, in-flight items", "t": "Asset", "d": "D", "b": 2410000}, {"c": "1300", "n": "Input VAT", "t": "Asset", "d": "D", "b": 184600}, {"c": "1400", "n": "Prepayments", "t": "Asset", "d": "D", "b": 0}, {"c": "1500", "n": "Equipment, at cost", "t": "Asset", "d": "D", "b": 9600000}, {"c": "1510", "n": "Accumulated depreciation", "t": "Asset", "d": "C", "b": 2400000}, {"c": "2000", "n": "Trade payables", "t": "Liability", "d": "C", "b": 4175200}, {"c": "2100", "n": "Output VAT payable", "t": "Liability", "d": "C", "b": 612300}, {"c": "2110", "n": "Withholding tax payable", "t": "Liability", "d": "C", "b": 96000}, {"c": "2200", "n": "Accruals", "t": "Liability", "d": "C", "b": 380000}, {"c": "3000", "n": "Share capital", "t": "Equity", "d": "C", "b": 5000000}, {"c": "3100", "n": "Retained earnings, opening", "t": "Equity", "d": "C", "b": 4822300}, {"c": "4000", "n": "Restaurant sales", "t": "Income", "d": "C", "b": 38420000}, {"c": "4100", "n": "Pastry and bakery sales", "t": "Income", "d": "C", "b": 24310000}, {"c": "4200", "n": "In-flight catering income", "t": "Income", "d": "C", "b": 19800000}, {"c": "4900", "n": "Discounts given", "t": "Income", "d": "D", "b": 0}, {"c": "5000", "n": "Ingredients used", "t": "Expense", "d": "D", "b": 31200000}, {"c": "5100", "n": "Packaging", "t": "Expense", "d": "D", "b": 2150000}, {"c": "6000", "n": "Salaries and wages", "t": "Expense", "d": "D", "b": 17400000}, {"c": "6100", "n": "Rent", "t": "Expense", "d": "D", "b": 4800000}, {"c": "6200", "n": "Utilities and fuel", "t": "Expense", "d": "D", "b": 3260000}, {"c": "6300", "n": "Depreciation", "t": "Expense", "d": "D", "b": 1920000}, {"c": "6400", "n": "Bank and card charges", "t": "Expense", "d": "D", "b": 640000}, {"c": "6500", "n": "Petty cash and supplies", "t": "Expense", "d": "D", "b": 0}];
+const JNL = [{"no": "J-0412", "date": "20 Oct", "nar": "Takings, MM2 outlet, 20 Oct", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1000", "dr": 120000, "cr": 0}, {"a": "1010", "dr": 66500, "cr": 0}, {"a": "4000", "dr": 0, "cr": 186500}], "rev": ""}, {"no": "J-0413", "date": "20 Oct", "nar": "Packaged goods sales, Ikeja outlet (VAT 7.5%)", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1000", "dr": 80625, "cr": 0}, {"a": "4100", "dr": 0, "cr": 75000}, {"a": "2100", "dr": 0, "cr": 5625}], "rev": ""}, {"no": "J-0414", "date": "21 Oct", "nar": "Flour, 200 kg, Agro Mills Ltd (R-0214)", "src": "Purchasing", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1200", "dr": 840000, "cr": 0}, {"a": "1300", "dr": 63000, "cr": 0}, {"a": "2000", "dr": 0, "cr": 903000}], "rev": ""}, {"no": "J-0416", "date": "20 Oct", "nar": "Meals delivered on flight SA 204, cost of stock", "src": "In-flight", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "5000", "dr": 540000, "cr": 0}, {"a": "1220", "dr": 0, "cr": 540000}], "rev": ""}, {"no": "J-0417", "date": "21 Oct", "nar": "Airline invoice INV-SA-0042, Savanna Air", "src": "In-flight", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1100", "dr": 2460000, "cr": 0}, {"a": "4200", "dr": 0, "cr": 2460000}], "rev": ""}, {"no": "J-0418", "date": "19 Oct", "nar": "Count difference, cooking oil, Lagos store", "src": "Inventory", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "5000", "dr": 18000, "cr": 0}, {"a": "1200", "dr": 0, "cr": 18000}], "rev": ""}, {"no": "J-0421", "date": "20 Oct", "nar": "Reversal of J-0398, posted to the wrong account", "src": "Manual", "by": "Ngozi A.", "ap": "Bola K.", "st": "Posted", "lines": [{"a": "4100", "dr": 40000, "cr": 0}, {"a": "4000", "dr": 0, "cr": 40000}], "rev": "J-0398"}, {"no": "J-0422", "date": "21 Oct", "nar": "Transfers confirmed by Moniepoint, 19 to 21 Oct, moved from outlet cash to clearing", "src": "Payments", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1020", "dr": 1138500, "cr": 0}, {"a": "1000", "dr": 0, "cr": 1138500}], "rev": ""}, {"no": "J-0423", "date": "21 Oct", "nar": "Card and transfer charges, week 42", "src": "Bank", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "6400", "dr": 18400, "cr": 0}, {"a": "1010", "dr": 0, "cr": 18400}], "rev": ""}, {"no": "J-0424", "date": "21 Oct", "nar": "Takings, MM2 outlet, 21 Oct to 14:00, gross sales with discounts shown separately", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1000", "dr": 5500, "cr": 0}, {"a": "1010", "dr": 61800, "cr": 0}, {"a": "1020", "dr": 45000, "cr": 0}, {"a": "4900", "dr": 1800, "cr": 0}, {"a": "4000", "dr": 0, "cr": 114100}], "rev": ""}, {"no": "J-0425", "date": "21 Oct", "nar": "Cash out, petty cash and supplies, MM2 outlet (cleaning supplies, within limit)", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "6500", "dr": 2000, "cr": 0}, {"a": "1000", "dr": 0, "cr": 2000}], "rev": ""}, {"no": "J-0419", "date": "21 Oct", "nar": "Accrue October electricity, Lagos production", "src": "Manual", "by": "Bola K.", "ap": "", "st": "Awaiting approval", "lines": [{"a": "6200", "dr": 220000, "cr": 0}, {"a": "2200", "dr": 0, "cr": 220000}], "rev": ""}, {"no": "J-0420", "date": "21 Oct", "nar": "Prepay November rent, MM2 outlet", "src": "Manual", "by": "Ngozi A.", "ap": "", "st": "Awaiting approval", "lines": [{"a": "1400", "dr": 400000, "cr": 0}, {"a": "1010", "dr": 0, "cr": 400000}], "rev": ""}];
+const N = (n) => String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const M = (n) => (n < 0 ? '-' : '') + '\u20A6' + N(n);
+const acct = (c) => COA.filter((a) => a.c === c)[0];
+const signed = (a) => (a.d === 'D' ? a.b : -a.b);
+const total = (j) => j.lines.reduce((s, l) => s + l.dr, 0);
+const move = (c, js) => { let s = 0; js.forEach((j) => { if (j.st === 'Posted') j.lines.forEach((l) => { if (l.a === c) s += l.dr - l.cr; }); }); return s; };
+
+
+const tested = st.tested || 'ok';
+const wait = st.wait || 15;
+const keyEnd = st.keyEnd || '3f9a';
+return {
+hasDone: !!st.done, doneHead: 'Saved.', doneText: st.done || '',
+hasNote: !!st.note, note: st.note || '',
+pickMoni: () => this.setState({ note: 'Moniepoint is the payment provider for launch. Paystack is not connected.', done: '' }),
+stText: tested === 'ok' ? 'Connected' : 'Not tested', stBg: tested === 'ok' ? 'var(--brand-bg)' : 'var(--warning-bg)', stColor: tested === 'ok' ? 'var(--brand-strong)' : 'var(--warning-fg)',
+testNow: () => this.setState({ tested: 'ok', done: 'Connected on 21 Oct 2026 at 14:32. Moniepoint answered and a test payment alert reached the system.', note: '' }),
+keyText: '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022' + keyEnd,
+openKey: () => this.setState({ keyOpen: true, fKey: '', msg: '', done: '' }),
+closeKey: () => this.setState({ keyOpen: false, msg: '' }),
+keyOpen: !!st.keyOpen, fKey: st.fKey || '', onKey: (e) => this.setState({ fKey: e.target.value, msg: '' }),
+hasMsg: !!st.msg, msg: st.msg || '',
+saveKey: () => {
+const k = String(st.fKey || '').trim();
+if (k.length < 16) { this.setState({ msg: 'Paste the full live secret key from Moniepoint. It is longer than this.' }); return; }
+this.setState({ keyOpen: false, keyEnd: k.slice(-4), tested: 'no', msg: '', done: 'The key is replaced. Test the connection before the next sale.' });
+},
+rules: [
+{ n: 1, t: 'A transfer completes a sale only when it is paid to that cash point\u2019s account and the amount is exactly the amount asked.' },
+{ n: 2, t: 'The payer\u2019s name is shown to the sales representative, who confirms it with the customer. When two sales at the same cash point wait for the same amount, the representative picks the sale by the payer\u2019s name.' },
+{ n: 3, t: 'A transfer that matches nothing is held as unmatched. A supervisor links it to a sale or marks it as not a sale, with a reason, in Payments.' },
+{ n: 4, t: 'A transfer for a different amount never completes a sale by itself.' }
+],
+waits: [10, 15, 30].map((m) => ({ label: m + ' minutes', pick: () => this.setState({ wait: m, done: 'Sales now wait ' + m + ' minutes for a transfer before they are flagged.', note: '' }), bg: m === wait ? 'var(--brand)' : 'var(--bg-surface)', color: m === wait ? 'var(--bg-surface)' : 'var(--text)', border: m === wait ? 'var(--brand)' : 'var(--border-strong)' }))
+};
+
+}
+}
+</script>
+</body>
+</html>

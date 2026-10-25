@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: held sales</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos">
+<header class="bar">
+<a class="btn back" href="NewSale.dc.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Back to sale</a>
+<div class="bar-id"><h1 class="bar-title">Held sales</h1><span class="bar-sub">MM2 outlet · Amaka O. · {{ countText }}</span></div>
+
+</header>
+<main class="page col">
+<div class="wrap w-lg">
+<sc-if value="{{ hasMsg }}" hint-placeholder-val="{{ false }}"><div role="status" class="alert ok"><span>{{ msg }}</span><sc-if value="{{ canUndo }}" hint-placeholder-val="{{ false }}"><button class="btn quiet" onClick="{{ undo }}">Undo</button></sc-if></div></sc-if>
+<sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}"><section class="card" style="align-items:center;text-align:center;gap:10px;padding:32px"><b style="font-size:16px">No held sales</b><span class="muted" style="max-width:320px">When a customer steps aside, tap Hold sale on the sale screen. The basket waits here.</span><a class="btn primary" href="NewSale.dc.html">Back to sale</a></section></sc-if>
+<sc-if value="{{ hasRows }}" hint-placeholder-val="{{ true }}">
+<section class="card flush list" aria-label="Held sales">
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="2">
+<div class="li">
+<div class="li-main"><b>{{ r.customer }}</b><span>{{ r.itemsText }}</span><span class="small muted">{{ r.id }} · {{ r.meta }}</span></div>
+<span class="li-amt">{{ r.totalText }}</span>
+<a class="btn outline go" href="NewSale.dc.html" onClick="{{ r.recall }}" aria-label="Recall {{r.id}} for {{r.customer}}">Recall</a>
+<button class="btn quiet danger above" onClick="{{ r.discard }}" aria-label="Discard {{r.id}} for {{r.customer}}">Discard</button>
+</div>
+</sc-for>
+</section>
+</sc-if>
+<p class="note">Held sales must be recalled or discarded before the shift can close.</p>
+<details class="more"><summary>How holding works</summary><p>A held sale keeps its items, prices and customer name. Stock is not taken off while a sale is held, so recalling it checks the stock again and tells you if an item has run low. Discarding at close of shift needs a supervisor PIN.</p></details>
+</div>
+</main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+seed() {
+return [
+{ id: 'H-0001', customer: 'Mrs Okoye', lines: [{ name: 'Meat pie', qty: 3 }, { name: 'Zobo', qty: 2 }], total: 5900, time: '11:42', by: 'Amaka O.' },
+{ id: 'H-0002', customer: '', lines: [{ name: 'Jollof rice', qty: 1 }, { name: 'Moi moi', qty: 1 }], total: 4500, time: '12:05', by: 'Amaka O.' }
+];
+}
+renderVals() {
+const fmt = (n) => '₦' + String(Math.abs(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const ld = (k, d) => { try { return window.trLoad ? window.trLoad(k, d) : d; } catch (e) { return d; } };
+const sv = (k, v) => { try { if (window.trSave) window.trSave(k, v); } catch (e) {} };
+const st = this.state || {};
+const list = st.list || ld('held', this.seed());
+const save = (l, m, prev) => { sv('held', l); this.setState({ list: l, msg: m, prev: prev || null }); };
+const rows = list.map((h) => ({
+id: h.id,
+customer: h.customer || 'Walk-in customer',
+meta: 'held at ' + h.time + ' by ' + h.by,
+itemsText: h.lines.map((l) => l.qty + ' × ' + l.name).join(', '),
+totalText: fmt(h.total),
+recall: () => { sv('recall', h); sv('held', list.filter((x) => x.id !== h.id)); },
+discard: () => save(list.filter((x) => x.id !== h.id), h.id + ' is discarded. Its items were never taken off stock.', list)
+}));
+return {
+rows,
+empty: rows.length === 0, hasRows: rows.length > 0,
+canUndo: !!st.prev, undo: () => { const pv = st.prev; sv('held', pv); this.setState({ list: pv, prev: null, msg: 'The discarded sale is back in held sales.' }); },
+hasMsg: !!st.msg,
+msg: st.msg || '',
+countText: rows.length + (rows.length === 1 ? ' sale held' : ' sales held')
+};
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: receipt, offline</title>
+<script src="./support.js"></script>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos">
+<header class="bar">
+<div class="bar-id"><span class="bar-title">Things Remembered</span><span class="bar-sub">MM2 outlet · Cash Point</span></div>
+<div class="who-t"><span class="who-n">Amaka O.</span><span class="who-s">Shift started 08:00</span></div>
+</header>
+<main class="page mid" style="gap:32px;padding-top:32px">
+<article class="paper" aria-label="Receipt">
+<div class="c"><b style="font-size:18px">Things Remembered</b><span class="note">MM2 outlet</span><span class="note">21 Oct 2026 · 12:42</span></div>
+<div class="rl dash"><span>Receipt no. MM2-0412</span><span>Cashier: Amaka O.</span></div>
+<div class="grp" style="border:0;padding:0">
+<div class="rl"><span>2 × Meat pie</span><span>₦3,000</span></div>
+<div class="rl"><span>1 × Jollof rice</span><span>₦3,500</span></div>
+<div class="rl"><span>1 × Pepper soup</span><span>₦4,500</span></div>
+</div>
+<div class="grp">
+<div class="rl muted"><span>Subtotal</span><span>₦11,000</span></div>
+<div class="rl muted"><span>VAT</span><span>₦0</span></div>
+<div class="rl tot"><span>Total</span><span>₦11,000</span></div>
+</div>
+<div class="grp" style="color:#3F4A43;font-size:13px">
+<div class="rl"><span>Transfer</span><span>₦6,000</span></div>
+<div class="rl"><span>Cash</span><span>₦5,000</span></div>
+<div class="rl"><span>Change</span><span>₦0</span></div>
+</div>
+<p class="note" style="text-align:center;margin-top:6px">Thank you for your purchase.</p>
+</article>
+<div style="flex:0 1 380px;min-width:0;display:flex;flex-direction:column;gap:18px;padding-top:8px">
+<div class="wrap" style="gap:10px">
+<span class="done-ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1B6B48" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+<h1 class="page-h">Sale complete</h1>
+<p class="lead" style="font-size:15px;color:#3F4A43">₦11,000 taken: ₦6,000 by transfer, waiting for confirmation, and ₦5,000 in cash. You are offline, so the sale is saved on this device and will sync when the connection returns.</p>
+</div>
+<div class="card" style="gap:8px;padding:14px 16px" role="status" aria-live="polite">
+<div class="kv"><span>Receipt</span><b>{{ printText }}</b></div>
+<div class="kv"><span>Sync</span><b>Saved here. Syncs when online</b></div>
+</div>
+<div class="wrap" style="gap:12px">
+<a class="btn primary lg block" href="OfflineSale.dc.html">Start a new sale</a>
+<button class="btn lg block" onClick="{{ printAgain }}">Print receipt again</button>
+</div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const n = (this.state && this.state.printed) || 1;
+return {
+printText: n === 1 ? 'Sent to printer' : 'Sent to printer (' + n + ' copies)',
+printAgain: () => this.setState({ printed: n + 1 })
+};
+}
+}
+</script>
+</body>
+</html>

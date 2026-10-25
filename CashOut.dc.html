@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: cash out</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos">
+<header class="bar">
+<a class="btn back" href="NewSale.dc.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Back to sale</a>
+<div class="bar-id"><h1 class="bar-title">Cash out</h1><span class="bar-sub">MM2 outlet · Amaka O. · Shift started 08:00</span></div>
+
+</header>
+<main class="page">
+<section class="card" style="flex:1 1 400px;max-width:520px" aria-label="Take cash out of the drawer">
+<h2 class="card-h">Take cash out of the drawer</h2>
+<div class="chips" role="group" aria-label="Kind of cash out">
+<sc-for list="{{ kinds }}" as="k" hint-placeholder-count="4"><button class="chip {{k.on}}" aria-pressed="{{k.pressed}}" onClick="{{ k.pick }}">{{ k.label }}</button></sc-for>
+</div>
+<label class="lbl">Amount (₦)<input class="field big" type="text" inputmode="numeric" placeholder="For example: 2000" value="{{ amount }}" onInput="{{ onAmount }}" aria-invalid="{{ eAmount }}"></label>
+<sc-if value="{{ eAmount }}" hint-placeholder-val="{{ false }}"><p role="alert" class="fe">{{ err }}</p></sc-if>
+<label class="lbl">What is it for?<input class="field big" type="text" placeholder="For example: Cleaning supplies" value="{{ note }}" onInput="{{ onNote }}" aria-invalid="{{ eNote }}"></label>
+<sc-if value="{{ eNote }}" hint-placeholder-val="{{ false }}"><p role="alert" class="fe">{{ err }}</p></sc-if>
+<sc-if value="{{ needPin }}" hint-placeholder-val="{{ false }}">
+<div class="alert plain" style="flex-direction:column;gap:6px">
+<span class="strong">Over {{ limTxt }} needs a supervisor. Bola K. enters the PIN.</span>
+<label class="lbl">Supervisor PIN<input class="field" style="max-width:220px" type="password" inputmode="numeric" maxlength="6" placeholder="Supervisor PIN" value="{{ pin }}" onInput="{{ onPin }}" aria-invalid="{{ ePin }}"></label>
+<span class="small">Demo PIN: 1234</span>
+</div>
+<sc-if value="{{ ePin }}" hint-placeholder-val="{{ false }}"><p role="alert" class="fe">{{ err }}</p></sc-if>
+</sc-if>
+<sc-if value="{{ hasOk }}" hint-placeholder-val="{{ false }}"><p role="status" class="alert ok">{{ ok }}</p></sc-if>
+<button class="btn primary lg" onClick="{{ record }}">Record cash out</button>
+</section>
+<div class="col-a" style="flex:1 1 360px">
+<section class="card" aria-label="Cash in the drawer">
+<h2 class="card-h">Cash in the drawer</h2>
+<div class="kv"><span>Cash sales this shift</span><b>₦5,500</b></div>
+<div class="kv"><span>Cash taken out</span><b>{{ outText }}</b></div>
+<div class="kv total"><span>The system now expects</span><b style="font-size:24px">{{ expText }}</b></div>
+</section>
+<section class="card" aria-label="Cash out this shift">
+<h2 class="card-h">Cash out this shift</h2>
+<sc-if value="{{ noneYet }}" hint-placeholder-val="{{ false }}"><span class="muted">Nothing has been taken out yet.</span></sc-if>
+<sc-for list="{{ done }}" as="d" hint-placeholder-count="2">
+<div class="kv sep-t"><div style="display:flex;flex-direction:column;gap:2px"><span class="strong" style="color:var(--text)">{{ d.kind }} · {{ d.note }}</span><span class="small muted">{{ d.meta }}</span></div><b>{{ d.amountText }}</b></div>
+</sc-for>
+<details class="more"><summary>What happens to a cash out</summary><p>Every cash out is saved with who did it and why. It lowers the cash the system expects at close and a manager can review it in Reports, Counter approvals. Petty cash and supplies are posted to the books as an expense; change float and cash drops only move cash.</p></details>
+</section>
+</div>
+</main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const fmt = (n) => '₦' + String(Math.abs(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const ld = (k, d) => { try { return window.trLoad ? window.trLoad(k, d) : d; } catch (e) { return d; } };
+const sv = (k, v) => { try { if (window.trSave) window.trSave(k, v); } catch (e) {} };
+const st = this.state || {};
+const rule = (name, def) => { const rows = ld('rows:SalesRules', null); if (!rows) return def; const on = rows.filter((r) => r.name === name && r.status === 'Active'); const mine = on.filter((r) => /MM2/.test(r.applies))[0] || on.filter((r) => r.applies === 'All outlets')[0]; if (!mine) return def; const n = parseInt(String(mine.value).replace(/[^0-9]/g, ''), 10); return isNaN(n) ? def : n; };
+const limit = rule('Cash out limit without a supervisor', 5000);
+const limTxt = fmt(limit);
+const list = st.list || ld('cashouts', []);
+const kind = st.kind || 'Petty cash';
+const amt = parseInt(String(st.amount || '').replace(/[^0-9]/g, ''), 10) || 0;
+const needPin = amt > limit;
+const kinds = ['Petty cash', 'Supplies', 'Change float', 'Cash drop to safe'].map((k) => ({ label: k, pick: () => this.setState({ kind: k, err: '', errF: '', ok: '' }), on: k === kind ? 'on' : '', pressed: k === kind }));
+const total = list.reduce((s, x) => s + x.amount, 0);
+const record = () => {
+if (!amt) { this.setState({ err: 'Amount: enter how much is being taken out.', errF: 'amount', ok: '' }); return; }
+if (!(st.note || '').trim()) { this.setState({ err: 'What is it for: say what the cash is for.', errF: 'note', ok: '' }); return; }
+if (amt > 5500 - total) { this.setState({ err: 'Amount: there is only ' + fmt(5500 - total) + ' of cash sales in the drawer to take from.', errF: 'amount', ok: '' }); return; }
+if (needPin && st.pin !== '1234') { this.setState({ err: 'Supervisor PIN: that PIN is not right. Ask the supervisor to try again.', errF: 'pin', ok: '' }); return; }
+const d = new Date();
+const t = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+const next = list.concat([{ kind, note: st.note.trim(), amount: amt, time: t, by: 'Amaka O.', sup: needPin ? 'Bola K.' : '' }]);
+sv('cashouts', next);
+const logEv = (ev) => { const cur = ld('ctrNew', []); sv('ctrNew', [Object.assign({ id: 'n' + Date.now() + Math.floor(Math.random() * 1000), outlet: 'MM2 outlet', who: 'Amaka O.', status: 'To review', when: 'Today ' + new Date().toTimeString().slice(0, 5) }, ev)].concat(cur)); };
+logEv({ type: 'Cash out', what: kind + ' · ' + st.note.trim() + '|Taken from the drawer', amount: fmt(amt), amt, how: needPin ? 'Supervisor PIN: Bola K.' : 'Within the ' + limTxt + ' limit', pin: needPin ? 'Yes' : 'No' });
+this.setState({ list: next, amount: '', note: '', pin: '', err: '', ok: fmt(amt) + ' is recorded as ' + kind.toLowerCase() + (needPin ? ', approved by Bola K.' : '') + '. Take it out of the drawer now.' });
+};
+return {
+kinds,
+amount: st.amount || '', note: st.note || '', pin: st.pin || '',
+onAmount: (e) => this.setState({ amount: e.target.value, err: '', errF: '', ok: '' }),
+onNote: (e) => this.setState({ note: e.target.value, err: '', errF: '', ok: '' }),
+onPin: (e) => this.setState({ pin: e.target.value, err: '', errF: '' }),
+eAmount: st.errF === 'amount' && !!st.err, eNote: st.errF === 'note' && !!st.err, ePin: st.errF === 'pin' && !!st.err,
+needPin, limTxt,
+err: st.err || '', hasOk: !!st.ok, ok: st.ok || '',
+record,
+outText: total ? '−' + fmt(total) : '₦0',
+expText: fmt(5500 - total),
+noneYet: list.length === 0,
+done: list.map((x) => ({ kind: x.kind, note: x.note, amountText: '−' + fmt(x.amount), meta: x.time + ' · ' + x.by + (x.sup ? ' · approved by ' + x.sup : '') }))
+};
+}
+}
+</script>
+</body>
+</html>

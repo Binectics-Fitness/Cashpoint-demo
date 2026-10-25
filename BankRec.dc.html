@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accounts: bank reconciliation</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./app.css">
+<style>
+</style>
+</helmet>
+<div class="shell">
+<aside class="side" aria-label="Main">
+<input type="checkbox" class="sbt" id="sbt" aria-label="Collapse or expand the menu">
+<div class="sbtop"><div class="brand"><span class="logo" aria-hidden="true">TR</span><span class="bt"><b>Things Remembered</b><small>Back office</small></span></div><a class="sbbell" href="Notifications.dc.html" title="Notifications" aria-label="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a><label for="sbt" class="sbtl" title="Collapse or expand the menu"><span class="chev" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E&quot;)"></span></label></div>
+<nav class="navs" aria-label="Sections">
+<div class="grp">Your work</div>
+<a class="nav" href="Notifications.dc.html" title="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Notifications</span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a>
+<a class="nav" href="Approvals.dc.html" title="Approvals"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Approvals</span><span class="bdg" data-badge="appr" data-word="waiting for you" aria-label="4 waiting for you">4</span></a>
+<div class="grp">Operations</div>
+<a class="nav" href="Production.dc.html" title="Production"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Production</span></a>
+<a class="nav" href="Distribution.dc.html" title="Distribution"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 7h13v9H1zM14 10h4l3 3v3h-7zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Distribution</span></a>
+<a class="nav" href="Inflight.dc.html" title="In-flight catering"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2 3.5 7.5l6.3 3.2-3.5 3.5-3-.5L2 15l4 2 2 4 1.3-1.3-.5-3 3.5-3.5 3.2 6.3z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">In-flight catering</span></a>
+<a class="nav" href="Inventory.dc.html" title="Inventory"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8l-9-5-9 5v8l9 5 9-5zM3.3 7.5L12 12l8.7-4.5M12 22V12'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Inventory</span></a>
+<a class="nav" href="Purchasing.dc.html" title="Purchasing"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100-2 1 1 0 000 2zM18 20a1 1 0 100-2 1 1 0 000 2z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Purchasing</span></a>
+<div class="grp">Finance</div>
+<a class="nav on" href="AccountsHome.dc.html" title="Accounts" aria-current="page"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16v16H4zM4 9h16M9 9v11'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Accounts</span></a>
+<a class="nav" href="Reports.dc.html" title="Reports"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20V10M10 20V4M16 20v-8M22 20H2'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Reports</span></a>
+<div class="grp">Admin</div>
+<a class="nav" href="ItemsPrices.dc.html" title="Settings"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3h0a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5h0a1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8v0a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Settings</span></a>
+</nav><div class="bot">
+<div class="who"><span class="av">BK</span><span class="wt"><b>Bola K.</b><small>Operations manager · All states</small></span></div>
+<a class="nav ghost" href="Main.dc.html" title="Open Cash Point"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5h18v10H3zM8 21h8M12 15v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Open Cash Point</span></a>
+<a class="nav" href="BackOfficeSignIn.dc.html" title="Sign out"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Sign out</span></a>
+</div></aside>
+<main class="pg">
+
+<div class="hd">
+<div class="hdt"><h1>Bank reconciliation</h1><span class="sub">Check the bank statement against the ledger for 1010 Bank, main account.</span></div>
+</div>
+<nav class="tabs" aria-label="Accounts sections"><a class="tab" href="AccountsHome.dc.html">Overview</a><a class="tab" href="Journals.dc.html">Journals</a><a class="tab on" href="BankRec.dc.html">Banking</a><a class="tab" href="Ledger.dc.html">Books</a><a class="tab" href="Periods.dc.html">Month-end</a><a class="tab" href="ChartOfAccounts.dc.html">Setup</a></nav><nav class="subtabs" aria-label="Banking pages"><a href="BankRec.dc.html" aria-current="page">Bank reconciliation</a><a href="Payments.dc.html">Payments</a></nav>
+<sc-if value="{{ hasDone }}" hint-placeholder-val="{{ false }}"><div role="status" class="ok"><strong>{{ doneHead }}</strong><span>{{ doneText }}</span></div></sc-if>
+<div class="banner {{ bannerCls }}" role="status"><span><strong>{{ bannerHead }}</strong>{{ bannerText }}</span><span class="fig">Ledger {{ ledgerBal }}<br>Statement {{ stmtBal }} at 21 Oct 2026</span></div>
+
+<sc-if value="{{ hasTodo }}" hint-placeholder-val="{{ true }}">
+<section aria-label="Statement lines to record" style="display: flex; flex-direction: column; gap: 10px">
+<div class="sh"><h2>To record</h2><span>{{ todoCount }}</span></div>
+<div class="card tbl m-rec">
+<div style="min-width: 640px; display: flex; flex-direction: column">
+<sc-for list="{{ toRecord }}" as="l" hint-placeholder-count="2">
+<div class="tr" style="grid-template-columns: minmax(0, 0.6fr) minmax(0, 3fr) minmax(0, 1.1fr) minmax(0, 1.7fr)"><span>{{ l.date }}</span><span>{{ l.text }}</span><span class="num" style="font-weight: 600">{{ l.amt }}</span><span style="display: flex; justify-content: flex-end"><sc-if value="{{ l.canRecord }}" hint-placeholder-val="{{ true }}"><button class="btn sm" onClick="{{ l.record }}" aria-label="Record in ledger: {{ l.text }}">Record in ledger</button></sc-if><sc-if value="{{ l.waiting }}" hint-placeholder-val="{{ false }}"><span class="pill" style="background: {{l.chipBg}}; color: {{l.chipColor}}">{{ l.status }}</span></sc-if></span></div>
+</sc-for>
+</div>
+</div>
+</section>
+</sc-if>
+
+<details class="done"><summary>{{ matchedLabel }}</summary>
+<div class="card tbl m-rec" style="margin-top: 10px">
+<div style="min-width: 640px; display: flex; flex-direction: column">
+<sc-for list="{{ matched }}" as="l" hint-placeholder-count="2">
+<div class="tr" style="grid-template-columns: minmax(0, 0.6fr) minmax(0, 3fr) minmax(0, 1.1fr) minmax(0, 1.7fr)"><span>{{ l.date }}</span><span>{{ l.text }}</span><span class="num">{{ l.amt }}</span><span class="stl" style="text-align: right">{{ l.status }}</span></div>
+</sc-for>
+</div>
+</div>
+</details>
+
+<details class="done"><summary>Show the working</summary>
+<div class="card work" style="margin-top: 10px">
+<sc-for list="{{ recon }}" as="r" hint-placeholder-count="5"><div style="display: flex; justify-content: space-between; gap: 16px; font-size: 14px; font-weight: {{ r.w }}"><span>{{ r.t }}</span><span style="font-variant-numeric: tabular-nums">{{ r.v }}</span></div></sc-for>
+</div>
+</details>
+
+<p class="note" style="max-width: 760px">Moniepoint clearing (1020) holds {{ clearBal }} until Moniepoint settles the transfers, the next day. Fees are recorded as bank and card charges. See <a href="Payments.dc.html" style="font-weight: 600; color: var(--brand-strong)">Payments</a> for the transfers behind it.</p>
+</main>
+</div>
+<sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+<div class="scrim" onClick="{{ closeDrawer }}"></div>
+<aside class="drawer dlg" role="dialog" aria-label="Record in ledger">
+<div class="dh"><h2>Record in ledger</h2><button class="btn" onClick="{{ closeDrawer }}">Close</button></div>
+<div class="db">
+<div class="ctx"><strong>{{ selText }}</strong><span class="note">{{ selAmt }}</span></div>
+<datalist id="rec-accts"><sc-for list="{{ acctList }}" as="a" hint-placeholder-count="5"><option value="{{ a.v }}"></option></sc-for></datalist>
+<label class="lbl">The other side of the entry<input class="field" type="text" list="rec-accts" value="{{ fAcct }}" onInput="{{ onAcct }}" aria-invalid="{{ hasMsg }}" placeholder="For example: 1100 Trade receivables"></label>
+<p class="note">The bank account is debited with the amount. The account you pick takes the other side. The entry waits for approval like any journal.</p>
+<sc-if value="{{ hasMsg }}" hint-placeholder-val="{{ false }}"><p role="alert" class="ferr">{{ msg }}</p></sc-if>
+</div>
+<div class="df"><button class="btnp" onClick="{{ save }}">Prepare the entry</button><button class="btn" onClick="{{ closeDrawer }}">Cancel</button></div>
+</aside>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const COA = [{"c": "1000", "n": "Cash at outlets", "t": "Asset", "d": "D", "b": 703800}, {"c": "1020", "n": "Moniepoint clearing", "t": "Asset", "d": "D", "b": 1138500}, {"c": "1010", "n": "Bank, main account", "t": "Asset", "d": "D", "b": 14260500}, {"c": "1100", "n": "Trade receivables", "t": "Asset", "d": "D", "b": 5980000}, {"c": "1200", "n": "Stock, raw materials", "t": "Asset", "d": "D", "b": 3120400}, {"c": "1210", "n": "Stock, finished goods", "t": "Asset", "d": "D", "b": 1248000}, {"c": "1220", "n": "Stock, in-flight items", "t": "Asset", "d": "D", "b": 2410000}, {"c": "1300", "n": "Input VAT", "t": "Asset", "d": "D", "b": 184600}, {"c": "1400", "n": "Prepayments", "t": "Asset", "d": "D", "b": 0}, {"c": "1500", "n": "Equipment, at cost", "t": "Asset", "d": "D", "b": 9600000}, {"c": "1510", "n": "Accumulated depreciation", "t": "Asset", "d": "C", "b": 2400000}, {"c": "2000", "n": "Trade payables", "t": "Liability", "d": "C", "b": 4175200}, {"c": "2100", "n": "Output VAT payable", "t": "Liability", "d": "C", "b": 612300}, {"c": "2110", "n": "Withholding tax payable", "t": "Liability", "d": "C", "b": 96000}, {"c": "2200", "n": "Accruals", "t": "Liability", "d": "C", "b": 380000}, {"c": "3000", "n": "Share capital", "t": "Equity", "d": "C", "b": 5000000}, {"c": "3100", "n": "Retained earnings, opening", "t": "Equity", "d": "C", "b": 4822300}, {"c": "4000", "n": "Restaurant sales", "t": "Income", "d": "C", "b": 38420000}, {"c": "4100", "n": "Pastry and bakery sales", "t": "Income", "d": "C", "b": 24310000}, {"c": "4200", "n": "In-flight catering income", "t": "Income", "d": "C", "b": 19800000}, {"c": "4900", "n": "Discounts given", "t": "Income", "d": "D", "b": 0}, {"c": "5000", "n": "Ingredients used", "t": "Expense", "d": "D", "b": 31200000}, {"c": "5100", "n": "Packaging", "t": "Expense", "d": "D", "b": 2150000}, {"c": "6000", "n": "Salaries and wages", "t": "Expense", "d": "D", "b": 17400000}, {"c": "6100", "n": "Rent", "t": "Expense", "d": "D", "b": 4800000}, {"c": "6200", "n": "Utilities and fuel", "t": "Expense", "d": "D", "b": 3260000}, {"c": "6300", "n": "Depreciation", "t": "Expense", "d": "D", "b": 1920000}, {"c": "6400", "n": "Bank and card charges", "t": "Expense", "d": "D", "b": 640000}, {"c": "6500", "n": "Petty cash and supplies", "t": "Expense", "d": "D", "b": 0}];
+const JNL = [{"no": "J-0412", "date": "20 Oct", "nar": "Takings, MM2 outlet, 20 Oct", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1000", "dr": 120000, "cr": 0}, {"a": "1010", "dr": 66500, "cr": 0}, {"a": "4000", "dr": 0, "cr": 186500}], "rev": ""}, {"no": "J-0413", "date": "20 Oct", "nar": "Packaged goods sales, Ikeja outlet (VAT 7.5%)", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1000", "dr": 80625, "cr": 0}, {"a": "4100", "dr": 0, "cr": 75000}, {"a": "2100", "dr": 0, "cr": 5625}], "rev": ""}, {"no": "J-0414", "date": "21 Oct", "nar": "Flour, 200 kg, Agro Mills Ltd (R-0214)", "src": "Purchasing", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1200", "dr": 840000, "cr": 0}, {"a": "1300", "dr": 63000, "cr": 0}, {"a": "2000", "dr": 0, "cr": 903000}], "rev": ""}, {"no": "J-0416", "date": "20 Oct", "nar": "Meals delivered on flight SA 204, cost of stock", "src": "In-flight", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "5000", "dr": 540000, "cr": 0}, {"a": "1220", "dr": 0, "cr": 540000}], "rev": ""}, {"no": "J-0417", "date": "21 Oct", "nar": "Airline invoice INV-SA-0042, Savanna Air", "src": "In-flight", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1100", "dr": 2460000, "cr": 0}, {"a": "4200", "dr": 0, "cr": 2460000}], "rev": ""}, {"no": "J-0418", "date": "19 Oct", "nar": "Count difference, cooking oil, Lagos store", "src": "Inventory", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "5000", "dr": 18000, "cr": 0}, {"a": "1200", "dr": 0, "cr": 18000}], "rev": ""}, {"no": "J-0421", "date": "20 Oct", "nar": "Reversal of J-0398, posted to the wrong account", "src": "Manual", "by": "Ngozi A.", "ap": "Bola K.", "st": "Posted", "lines": [{"a": "4100", "dr": 40000, "cr": 0}, {"a": "4000", "dr": 0, "cr": 40000}], "rev": "J-0398"}, {"no": "J-0422", "date": "21 Oct", "nar": "Transfers confirmed by Moniepoint, 19 to 21 Oct, moved from outlet cash to clearing", "src": "Payments", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1020", "dr": 1138500, "cr": 0}, {"a": "1000", "dr": 0, "cr": 1138500}], "rev": ""}, {"no": "J-0423", "date": "21 Oct", "nar": "Card and transfer charges, week 42", "src": "Bank", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "6400", "dr": 18400, "cr": 0}, {"a": "1010", "dr": 0, "cr": 18400}], "rev": ""}, {"no": "J-0424", "date": "21 Oct", "nar": "Takings, MM2 outlet, 21 Oct to 14:00, gross sales with discounts shown separately", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1000", "dr": 5500, "cr": 0}, {"a": "1010", "dr": 61800, "cr": 0}, {"a": "1020", "dr": 45000, "cr": 0}, {"a": "4900", "dr": 1800, "cr": 0}, {"a": "4000", "dr": 0, "cr": 114100}], "rev": ""}, {"no": "J-0425", "date": "21 Oct", "nar": "Cash out, petty cash and supplies, MM2 outlet (cleaning supplies, within limit)", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "6500", "dr": 2000, "cr": 0}, {"a": "1000", "dr": 0, "cr": 2000}], "rev": ""}, {"no": "J-0419", "date": "21 Oct", "nar": "Accrue October electricity, Lagos production", "src": "Manual", "by": "Bola K.", "ap": "", "st": "Awaiting approval", "lines": [{"a": "6200", "dr": 220000, "cr": 0}, {"a": "2200", "dr": 0, "cr": 220000}], "rev": ""}, {"no": "J-0420", "date": "21 Oct", "nar": "Prepay November rent, MM2 outlet", "src": "Manual", "by": "Ngozi A.", "ap": "", "st": "Awaiting approval", "lines": [{"a": "1400", "dr": 400000, "cr": 0}, {"a": "1010", "dr": 0, "cr": 400000}], "rev": ""}];
+const N = (n) => String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const M = (n) => (n < 0 ? '-' : '') + '\u20A6' + N(n);
+const acct = (c) => COA.filter((a) => a.c === c)[0];
+const signed = (a) => (a.d === 'D' ? a.b : -a.b);
+const total = (j) => j.lines.reduce((s, l) => s + l.dr, 0);
+const move = (c, js) => { let s = 0; js.forEach((j) => { if (j.st === 'Posted') j.lines.forEach((l) => { if (l.a === c) s += l.dr - l.cr; }); }); return s; };
+
+
+const stmt = 14922800;
+const base = [
+{ id: 'b1', date: '20 Oct', text: 'Transfer, MM2 outlet takings', amt: 66500, kind: 'matched', jno: 'J-0412' },
+{ id: 'b2', date: '21 Oct', text: 'Bank charges, card and transfer, week 42', amt: -18400, kind: 'matched', jno: 'J-0423' },
+{ id: 'b3', date: '21 Oct', text: 'Moniepoint settlement, 20 Oct (net of fees)', amt: 412300, kind: 'open' },
+{ id: 'b4', date: '21 Oct', text: 'Transfer NG-77821, Harmattan Airways', amt: 250000, kind: 'open' }
+];
+const rec = st.rec || {};
+const sel = st.sel || '';
+const fAcct = st.fAcct || '';
+const lookup = (s) => { const m = String(s || '').match(/^\s*(\d{4})/); return m ? acct(m[1]) : undefined; };
+const lines = base.map((l) => {
+const r = rec[l.id];
+const status = l.kind === 'matched' ? 'Matched to ' + l.jno : (r ? 'Entry ' + r.no + ' waiting approval' : 'Not recorded');
+return { id: l.id, kind: l.kind, waiting: l.kind === 'open' && !!r, date: l.date, text: l.text, amt: (l.amt < 0 ? '-' : '') + N(l.amt), status,
+chipBg: l.kind === 'matched' ? 'var(--brand-bg)' : (r ? 'var(--warning-bg)' : 'var(--danger-bg)'), chipColor: l.kind === 'matched' ? 'var(--brand-strong)' : (r ? 'var(--warning-fg)' : 'var(--danger-fg)'),
+canRecord: l.kind === 'open' && !r, record: () => this.setState({ sel: l.id, fAcct: l.id === 'b3' ? '1020 Moniepoint clearing' : '', msg: '', open: true, done: '' }) };
+});
+const open = base.filter((l) => l.kind === 'open' && !rec[l.id]);
+const waitAmt = base.filter((l) => l.kind === 'open' && rec[l.id]).reduce((s, l) => s + l.amt, 0);
+const openAmt = open.reduce((s, l) => s + l.amt, 0);
+const ledger = acct('1010').b;
+const expected = ledger + openAmt + waitAmt;
+const diff = stmt - expected;
+const cur = base.filter((l) => l.id === sel)[0] || base[2];
+const n = Object.keys(rec).length;
+return {
+clearBal: M(acct('1020').b), ledgerBal: M(ledger), stmtBal: M(stmt),
+bannerCls: open.length === 0 && diff === 0 && waitAmt === 0 ? 'good' : 'warn',
+bannerHead: open.length ? open.length + ' statement ' + (open.length === 1 ? 'line is' : 'lines are') + ' not in the ledger yet' : (waitAmt ? 'Recorded, waiting for approval' : 'Reconciled'),
+bannerText: open.length ? M(openAmt) + ' on the statement still needs recording. Record ' + (open.length === 1 ? 'it' : 'them') + ' below, then someone else approves the entry.' : (waitAmt ? 'Once the entries are approved the ledger matches the statement.' : 'The ledger matches the bank statement.'),
+hasTodo: lines.some((l) => l.kind === 'open'), todoCount: open.length ? open.length + ' to record' : 'All recorded',
+toRecord: lines.filter((l) => l.kind === 'open'), matched: lines.filter((l) => l.kind === 'matched'),
+matchedLabel: lines.filter((l) => l.kind === 'matched').length + ' lines already matched',
+recon: [
+{ t: 'Ledger balance (posted entries)', v: M(ledger), w: 400 },
+{ t: 'Add: statement lines not yet recorded', v: M(openAmt), w: 400 },
+{ t: 'Add: recorded, waiting for approval', v: M(waitAmt), w: 400 },
+{ t: 'Expected statement balance', v: M(expected), w: 700 },
+{ t: 'Bank statement balance', v: M(stmt), w: 700 },
+{ t: 'Difference', v: M(diff), w: 700 }
+],
+drawerOpen: !!st.open, closeDrawer: () => this.setState({ open: false, msg: '' }),
+selText: cur.text, selAmt: '₦' + N(cur.amt) + ' received on ' + cur.date,
+acctList: COA.map((a) => ({ v: a.c + ' ' + a.n })), fAcct, onAcct: (e) => this.setState({ fAcct: e.target.value, msg: '' }),
+hasMsg: !!st.msg, msg: st.msg || '',
+save: () => {
+const a = lookup(fAcct);
+if (!a) { this.setState({ msg: 'Pick the other account from the list.' }); return; }
+if (a.c === '1010') { this.setState({ msg: 'The other side cannot be the bank account itself.' }); return; }
+const no = 'J-' + String(426 + n).padStart(4, '0');
+this.setState({ rec: Object.assign({}, rec, { [cur.id]: { no, a: a.c } }), open: false, msg: '', done: no + ' prepared for ' + cur.text + '. It waits for someone other than you to approve it.' });
+},
+hasDone: !!st.done, doneHead: 'Entry prepared.', doneText: st.done || ''
+};
+
+}
+}
+</script>
+</body>
+</html>

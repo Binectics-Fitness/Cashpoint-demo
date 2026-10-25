@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Back office: production</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./app.css">
+<style>
+textarea.field:focus-visible,.lbl[tabindex="-1"]:focus-visible,.sh[tabindex="-1"]:focus-visible{outline:var(--ring);outline-offset:2px}
+.fcard{max-width:960px;box-sizing:border-box;display:flex;flex-direction:column;gap:24px;padding:24px}
+.fsec{display:flex;flex-direction:column;gap:12px}
+.fsec+.fsec{padding-top:24px;border-top:1px solid var(--border)}
+.grpl{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted);margin-top:4px}
+.qtyf{max-width:260px}
+.ln{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) 72px 88px;gap:4px 12px;align-items:start}
+.ln.lnh{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em}
+.ln .u{padding-top:12px;font-size:14px;color:var(--text-muted)}
+.ln .rm{justify-self:end}
+.mlab{display:none}
+.lnone{margin:0;padding:14px 16px;border:1px dashed var(--border-strong);border-radius:12px;font-size:14px;color:var(--text-muted)}
+.foot{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding-top:20px;border-top:1px solid var(--border)}
+.foot .note{flex:1 1 260px}
+.acts2{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+@media (max-width:640px){
+.fcard{padding:16px}
+.ln.lnh{display:none}
+.ln{grid-template-columns:minmax(0,1fr) auto auto;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.ln>.cm{grid-column:1/-1}
+.ln>.cq{grid-column:1}
+.ln .u,.ln .rm{align-self:end;padding-top:0;margin-bottom:12px}
+.fit>div{min-width:0 !important}
+.mlab{display:block;margin-bottom:6px;font-size:13px;font-weight:600;color:var(--text-label)}
+}
+</style>
+</helmet>
+<div class="shell">
+<aside class="side" aria-label="Main">
+<input type="checkbox" class="sbt" id="sbt" aria-label="Collapse or expand the menu">
+<div class="sbtop"><div class="brand"><span class="logo" aria-hidden="true">TR</span><span class="bt"><b>Things Remembered</b><small>Back office</small></span></div><a class="sbbell" href="Notifications.dc.html" title="Notifications" aria-label="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a><label for="sbt" class="sbtl" title="Collapse or expand the menu"><span class="chev" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E&quot;)"></span></label></div>
+<nav class="navs" aria-label="Sections">
+<div class="grp">Your work</div>
+<a class="nav" href="Notifications.dc.html" title="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Notifications</span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a>
+<a class="nav" href="Approvals.dc.html" title="Approvals"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Approvals</span><span class="bdg" data-badge="appr" data-word="waiting for you" aria-label="4 waiting for you">4</span></a>
+<div class="grp">Operations</div>
+<a class="nav on" href="Production.dc.html" title="Production" aria-current="page"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Production</span></a>
+<a class="nav" href="Distribution.dc.html" title="Distribution"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 7h13v9H1zM14 10h4l3 3v3h-7zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Distribution</span></a>
+<a class="nav" href="Inflight.dc.html" title="In-flight catering"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2 3.5 7.5l6.3 3.2-3.5 3.5-3-.5L2 15l4 2 2 4 1.3-1.3-.5-3 3.5-3.5 3.2 6.3z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">In-flight catering</span></a>
+<a class="nav" href="Inventory.dc.html" title="Inventory"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8l-9-5-9 5v8l9 5 9-5zM3.3 7.5L12 12l8.7-4.5M12 22V12'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Inventory</span></a>
+<a class="nav" href="Purchasing.dc.html" title="Purchasing"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100-2 1 1 0 000 2zM18 20a1 1 0 100-2 1 1 0 000 2z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Purchasing</span></a>
+<div class="grp">Finance</div>
+<a class="nav" href="AccountsHome.dc.html" title="Accounts"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16v16H4zM4 9h16M9 9v11'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Accounts</span></a>
+<a class="nav" href="Reports.dc.html" title="Reports"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20V10M10 20V4M16 20v-8M22 20H2'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Reports</span></a>
+<div class="grp">Admin</div>
+<a class="nav" href="ItemsPrices.dc.html" title="Settings"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3h0a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5h0a1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8v0a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Settings</span></a>
+</nav><div class="bot">
+<div class="who"><span class="av">BK</span><span class="wt"><b>Bola K.</b><small>Operations manager · All states</small></span></div>
+<a class="nav ghost" href="Main.dc.html" title="Open Cash Point"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5h18v10H3zM8 21h8M12 15v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Open Cash Point</span></a>
+<a class="nav" href="BackOfficeSignIn.dc.html" title="Sign out"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Sign out</span></a>
+</div></aside>
+<main class="pg" id="main">
+
+<div class="hd">
+<div class="hdt"><h1>Record production</h1><span class="sub">Pastries and hot meals made, and the raw materials used.</span></div>
+</div>
+<nav class="tabs" aria-label="Production sections"><a class="tab on" href="Production.dc.html" aria-current="page">Record production</a><a class="tab" href="ProductionRecords.dc.html">Production records</a></nav>
+
+<sc-if value="{{ saved }}" hint-placeholder-val="{{ false }}">
+<div role="status" class="ok toast"><span><strong>{{ savedHead }}</strong> {{ savedText }}</span><span class="acts2"><a class="lnkb" href="Inventory.dc.html">See stock ›</a><button type="button" class="lnkb" onClick="{{ dismiss }}">Dismiss</button></span></div>
+</sc-if>
+
+<form class="card fcard" novalidate onSubmit="{{ onSubmit }}" aria-label="Record production">
+<datalist id="raw-mats"><sc-for list="{{ mats }}" as="m" hint-placeholder-count="7"><option value="{{ m.v }}"></option></sc-for></datalist>
+
+<div class="fsec">
+<div class="fld">
+<div class="lbl" role="group" aria-label="What was made" id="f-item" tabindex="-1" aria-invalid="{{ itemInvalid }}" aria-describedby="e-item">What was made
+<sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
+<span class="grpl">{{ g.name }}</span>
+<div class="seg"><sc-for list="{{ g.chips }}" as="c" hint-placeholder-count="4"><button type="button" class="{{ c.cls }}" aria-pressed="{{ c.on }}" onClick="{{ c.pick }}">{{ c.t }}</button></sc-for></div>
+</sc-for>
+</div>
+<sc-if value="{{ errItem }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-item">{{ errItemText }}</p></sc-if>
+</div>
+<div class="fld qtyf">
+<label class="lbl">{{ qtyLabel }}<input class="field" id="f-qty" type="text" inputmode="numeric" autocomplete="off" value="{{ qty }}" onInput="{{ onQty }}" aria-invalid="{{ qtyInvalid }}" aria-describedby="e-qty"></label>
+<sc-if value="{{ errQty }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-qty">{{ errQtyText }}</p></sc-if>
+</div>
+</div>
+
+<div class="fsec">
+<div class="sh"><h2>Raw materials used</h2><span>Taken off raw material stock when you save.</span></div>
+<sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}"><p class="lnone">No raw materials added yet. Add the ones used for this batch.</p></sc-if>
+<sc-if value="{{ hasRows }}" hint-placeholder-val="{{ true }}"><div class="ln lnh" aria-hidden="true"><span>Material</span><span>Quantity</span><span></span><span></span></div></sc-if>
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="3">
+<div class="ln" role="group" aria-label="Raw material {{ r.n }}">
+<div class="cm fld"><label><span class="mlab">Material</span><input class="field" id="{{ r.matId }}" type="text" list="raw-mats" autocomplete="off" value="{{ r.mat }}" onInput="{{ r.onMat }}" placeholder="Start typing a name" aria-label="Material, row {{ r.n }}" aria-invalid="{{ r.matInvalid }}" aria-describedby="{{ r.matErrId }}"></label><sc-if value="{{ r.errMat }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="{{ r.matErrId }}">{{ r.errMatText }}</p></sc-if></div>
+<div class="cq fld"><label><span class="mlab">Quantity</span><input class="field" id="{{ r.qtyId }}" type="text" inputmode="decimal" autocomplete="off" value="{{ r.qty }}" onInput="{{ r.onQty }}" aria-label="Quantity used, row {{ r.n }}" aria-invalid="{{ r.qtyInvalid }}" aria-describedby="{{ r.qtyErrId }}"></label><sc-if value="{{ r.errQty }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="{{ r.qtyErrId }}">{{ r.errQtyText }}</p></sc-if></div>
+<span class="u">{{ r.unit }}</span>
+<button type="button" class="lnkb rm" onClick="{{ r.remove }}" aria-label="Remove raw material row {{ r.n }}">Remove</button>
+</div>
+</sc-for>
+<div><button type="button" class="btn" onClick="{{ addRow }}">Add raw material</button></div>
+</div>
+
+<sc-if value="{{ hasErrs }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert">{{ errSummary }}</p></sc-if>
+
+<div class="foot">
+<button type="submit" class="btnp">Save production</button>
+<span class="note">Everything entered here comes off raw material stock and goes onto the stock of what was made.</span>
+</div>
+</form>
+
+<section aria-label="Made today" style="display: flex; flex-direction: column; gap: 12px">
+<div class="sh"><h2>Made today at Lagos production</h2><span>Your access covers Lagos production. Abuja production is kept separate and is seen by its own team and by management.</span></div>
+<div class="card tbl fit">
+<div style="min-width: 520px; display: flex; flex-direction: column">
+<div class="th" style="grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr)"><span>Item</span><span class="num">Made</span><span class="num">Last recorded</span></div>
+<sc-for list="{{ today }}" as="t" hint-placeholder-count="4">
+<div class="tr" style="grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr)"><span><strong>{{ t.name }}</strong><sc-if value="{{ t.fresh }}" hint-placeholder-val="{{ false }}"> <span class="pill" style="background: var(--brand-bg); color: var(--brand-strong)">Updated</span></sc-if></span><span class="num" style="font-weight: 600">{{ t.n }}</span><span class="num" style="color: var(--text-muted)">{{ t.at }}</span></div>
+</sc-for>
+</div>
+</div>
+</section>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const GROUPS = [{ name: 'Pastries', unit: 'units', items: ['Meat pie', 'Sausage roll', 'Chicken pie', 'Doughnut'] }, { name: 'Hot meals', unit: 'portions', items: ['Jollof rice', 'Fried rice', 'Moi moi', 'Pepper soup'] }];
+const shown = { 'Jollof rice': 'Jollof rice (portions)', 'Fried rice': 'Fried rice (portions)', 'Pepper soup': 'Pepper soup (portions)' };
+const unitOf = (it) => (GROUPS.filter((g) => g.items.indexOf(it) >= 0)[0] || {}).unit || '';
+const item = st.item !== undefined ? st.item : 'Meat pie';
+const qty = st.qty !== undefined ? st.qty : '120';
+const units = { 'Flour': 'kg', 'Sugar': 'kg', 'Cooking oil': 'litres', 'Butter': 'kg', 'Chicken': 'kg', 'Rice': 'kg', 'Eggs': 'units' };
+const rowsData = st.rows || [{ mat: 'Flour', qty: '18' }, { mat: 'Sugar', qty: '2' }, { mat: 'Cooking oil', qty: '1' }];
+const errs = st.errs || {};
+const batches = st.batches || [];
+const plural = (n, u) => (Number(n) === 1 && u === 'litres') ? 'litre' : u;
+// editing a field clears that field's error and any saved banner
+const setRows = (next) => this.setState({ rows: next, saved: false });
+const rows = rowsData.map((r, i) => ({
+n: i + 1, mat: r.mat, qty: r.qty, unit: units[r.mat] || '',
+matId: 'rm-mat-' + i, qtyId: 'rm-qty-' + i, matErrId: 'rm-mat-e-' + i, qtyErrId: 'rm-qty-e-' + i,
+errMat: !!r.eMat, errMatText: r.eMat || '', matInvalid: r.eMat ? 'true' : 'false',
+errQty: !!r.eQty, errQtyText: r.eQty || '', qtyInvalid: r.eQty ? 'true' : 'false',
+onMat: (e) => setRows(rowsData.map((x, j) => j === i ? { mat: e.target.value, qty: x.qty, eQty: x.eQty } : x)),
+onQty: (e) => setRows(rowsData.map((x, j) => j === i ? { mat: x.mat, qty: e.target.value, eMat: x.eMat } : x)),
+remove: () => setRows(rowsData.filter((x, j) => j !== i))
+}));
+const groups = GROUPS.map((g) => ({ name: g.name, chips: g.items.map((t) => ({ t, on: t === item, cls: t === item ? 'chip on' : 'chip', pick: () => this.setState({ item: t, saved: false, errs: Object.assign({}, errs, { item: '' }) }) })) }));
+const focusFirst = () => setTimeout(() => { const el = document.querySelector('main [aria-invalid="true"]'); if (el && el.focus) { el.focus(); if (el.scrollIntoView) el.scrollIntoView({ block: 'center' }); } }, 0);
+const save = () => {
+const e = {}; let nErr = 0;
+if (!item) { e.item = 'Choose what was made.'; nErr++; }
+if (!String(qty).trim()) { e.qty = 'Enter how many were made.'; nErr++; }
+else if (!/^\d+$/.test(String(qty).trim()) || parseInt(qty, 10) < 1) { e.qty = 'Quantity must be a whole number above 0.'; nErr++; }
+const checked = rowsData.map((r) => {
+const o = { mat: r.mat, qty: r.qty };
+if (!String(r.mat).trim()) { o.eMat = 'Choose a material.'; nErr++; } else if (!units[r.mat]) { o.eMat = 'Pick a material from the list.'; nErr++; }
+if (!String(r.qty).trim()) { o.eQty = 'Enter how much was used.'; nErr++; } else if (!(parseFloat(r.qty) > 0) || !/^\d+(\.\d+)?$/.test(String(r.qty).trim())) { o.eQty = 'Quantity must be a number above 0.'; nErr++; }
+return o;
+});
+if (nErr) { this.setState({ errs: e, rows: checked, saved: false }); focusFirst(); return; }
+const n = parseInt(qty, 10);
+const used = rowsData.map((r) => r.qty + ' ' + plural(r.qty, units[r.mat]) + ' of ' + String(r.mat).toLowerCase()).join(', ');
+this.setState({ saved: true, savedHead: 'Production saved.', savedText: item + ' × ' + n + ' added to stock at Lagos production. ' + (rowsData.length ? used.charAt(0).toUpperCase() + used.slice(1) + ' taken off raw material stock.' : 'No raw materials were entered.'),
+batches: batches.concat([{ name: shown[item] || item, qty: n }]), item: '', qty: '', rows: [], errs: {} });
+};
+const base = [{ name: 'Meat pie', n: 240, at: '10:20' }, { name: 'Sausage roll', n: 180, at: '10:20' }, { name: 'Jollof rice (portions)', n: 90, at: '11:05' }, { name: 'Pepper soup (portions)', n: 40, at: '11:40' }].map((x) => Object.assign({ fresh: false }, x));
+batches.forEach((b) => { const hit = base.filter((x) => x.name === b.name)[0]; if (hit) { hit.n += b.qty; hit.at = '14:40'; hit.fresh = true; } else base.unshift({ name: b.name, n: b.qty, at: '14:40', fresh: true }); });
+const nErrAll = Object.keys(errs).filter((k) => errs[k]).length + rowsData.reduce((s, r) => s + (r.eMat ? 1 : 0) + (r.eQty ? 1 : 0), 0);
+return {
+groups, rows, mats: Object.keys(units).map((n) => ({ v: n })),
+noRows: rowsData.length === 0, hasRows: rowsData.length > 0,
+qty, qtyLabel: 'Quantity made' + (unitOf(item) ? ' (' + unitOf(item) + ')' : ''),
+errItem: !!errs.item, errItemText: errs.item || '', itemInvalid: errs.item ? 'true' : 'false',
+errQty: !!errs.qty, errQtyText: errs.qty || '', qtyInvalid: errs.qty ? 'true' : 'false',
+onQty: (e) => this.setState({ qty: e.target.value, saved: false, errs: Object.assign({}, errs, { qty: '' }) }),
+addRow: () => setRows(rowsData.concat([{ mat: '', qty: '' }])),
+onSubmit: (e) => { if (e && e.preventDefault) e.preventDefault(); save(); },
+hasErrs: nErrAll > 0, errSummary: nErrAll === 1 ? 'One thing needs fixing before this can be saved.' : nErrAll + ' things need fixing before this can be saved.',
+saved: !!st.saved, savedHead: st.savedHead || '', savedText: st.savedText || '', dismiss: () => this.setState({ saved: false }),
+today: base.map((x) => ({ name: x.name, n: x.n, at: x.at, fresh: x.fresh }))
+};
+}
+}
+</script>
+</body>
+</html>

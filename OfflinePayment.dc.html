@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: payment, offline</title>
+<script src="./support.js"></script>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos">
+<header class="bar">
+<a class="btn back" href="OfflineSale.dc.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Back to sale</a>
+<div class="bar-id"><h1 class="bar-title">Take payment</h1><span class="bar-sub">Receipt no. {{ refText }} · Amaka O.</span></div>
+<span class="status warn">Offline · payments saved on this device</span>
+</header>
+
+<main class="page">
+<div class="col-a">
+<section class="card" aria-label="Amount due">
+<span class="eyebrow">Amount due</span>
+<span class="due">{{ dueText }}</span>
+<span class="note">{{ dueLine }}</span>
+
+<div class="fgrid" style="margin-top:4px">
+<div class="mini ok"><span>Paid so far</span><b>{{ paidText }}</b></div>
+<div class="mini"><span>Still to pay</span><b>{{ remainingText }}</b></div>
+</div>
+</section>
+
+<section class="card flush" aria-label="Payments on this sale">
+<h2 class="card-h" style="padding:16px 24px 12px">Payments on this sale</h2>
+<sc-if value="{{ noPays }}" hint-placeholder-val="{{ false }}"><p class="muted" style="padding:0 24px 20px">No payments added yet. Choose a method on the right.</p></sc-if>
+<sc-for list="{{ payments }}" as="p" hint-placeholder-count="2">
+<div class="pay">
+<div class="pay-n"><b>{{ p.method }}</b><span>{{ p.detail }}</span></div>
+<sc-if value="{{ p.confirmed }}" hint-placeholder-val="{{ false }}"><span class="pill">Confirmed</span></sc-if>
+
+<sc-if value="{{ p.pending }}" hint-placeholder-val="{{ false }}">
+<span class="pill warn">Waiting for confirmation</span>
+<button class="btn" onClick="{{ p.check }}" aria-label="Check {{p.method}} payment again">Check again</button>
+
+</sc-if>
+<sc-if value="{{ p.removable }}" hint-placeholder-val="{{ false }}">
+<button class="btn quiet danger" onClick="{{ p.remove }}" aria-label="Remove {{p.method}} payment">Remove</button>
+</sc-if>
+<span class="pay-a">{{ p.amountText }}</span>
+
+</div>
+</sc-for>
+</section>
+</div>
+
+<div class="col-a">
+<section class="card" aria-label="Add a payment">
+<h2 class="card-h">Add a payment</h2>
+<sc-if value="{{ hasNote }}" hint-placeholder-val="{{ false }}"><p role="status" class="alert">{{ note }}</p></sc-if>
+<div class="methods" role="group" aria-label="Payment method">
+<sc-for list="{{ methods }}" as="m" hint-placeholder-count="3">
+<button class="method" onClick="{{ m.pick }}" aria-pressed="{{ m.pressed }}">{{ m.label }}</button>
+</sc-for>
+</div>
+<sc-if value="{{ paidInFull }}" hint-placeholder-val="{{ false }}"><p role="status" class="alert ok">The sale is fully paid. Complete the sale to print the receipt.</p></sc-if>
+<sc-if value="{{ notPaid }}" hint-placeholder-val="{{ true }}">
+<div class="wrap">
+<label class="lbl">Amount to take (₦)<input class="field big" type="text" inputmode="numeric" value="{{ amountValue }}" onInput="{{ onAmount }}" aria-invalid="{{ amountBad }}"></label>
+<sc-if value="{{ isCash }}" hint-placeholder-val="{{ true }}">
+<div class="wrap">
+<label class="lbl">Cash received (₦)<input class="field big" type="text" inputmode="numeric" value="{{ recvValue }}" onInput="{{ onRecv }}" aria-invalid="{{ recvBad }}"></label>
+<div class="change"><span>Change to give</span><b>{{ changeText }}</b></div>
+</div>
+</sc-if>
+<sc-if value="{{ isTransfer }}" hint-placeholder-val="{{ false }}">
+<div class="transfer">
+<div class="qr" role="img" aria-label="Sample QR code"><i style="top:0;left:0"></i><i style="top:0;right:0"></i><i style="bottom:0;left:0"></i></div>
+<div style="flex:1 1 200px;display:flex;flex-direction:column;gap:4px">
+<span class="eyebrow" style="color:#14513A">Customer pays into</span>
+<span class="acct">9801234501</span>
+<span class="strong">Things Remembered / MM2 Cash Point 1</span>
+<span class="note">The customer can still pay from their banking app. This Cash Point cannot see the transfer yet.</span>
+</div>
+</div>
+</sc-if>
+<p class="note">{{ helpText }}</p>
+<sc-if value="{{ hasMsg }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert err">{{ msg }}</p></sc-if>
+<button class="btn primary lg block" onClick="{{ addNow }}">{{ addLabel }}</button>
+</div>
+</sc-if>
+</section>
+
+<div class="finish">
+<sc-if value="{{ paidInFull }}" hint-placeholder-val="{{ false }}"><a class="btn primary lg block" href="OfflineReceipt.dc.html">Complete sale and print receipt</a></sc-if>
+<sc-if value="{{ notPaid }}" hint-placeholder-val="{{ true }}"><button class="btn lg block" aria-disabled="true">Complete sale: {{ remainingText }} still to pay</button></sc-if>
+</div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const fmt = (n) => '₦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const num = (s) => parseInt(String(s).replace(/\D/g, ''), 10) || 0;
+const offline = true;
+const due = 11000;
+const payments = st.payments || [{ method: 'Transfer', detail: 'Confirmed by Moniepoint · ref MNP-20841', amount: 6000, status: 'ok', removable: false }];
+const method = st.method || 'Cash';
+const paid = payments.reduce((a, p) => a + ((p.status === 'ok' || (offline && p.status === 'pending')) ? p.amount : 0), 0);
+const anyPending = payments.some((p) => p.status === 'pending');
+const remaining = Math.max(0, due - paid);
+
+const amountValue = st.amountRaw !== undefined ? st.amountRaw : String(remaining);
+const amount = Math.min(num(amountValue), remaining);
+const recvValue = st.recvRaw !== undefined ? st.recvRaw : String(amount);
+const received = num(recvValue);
+const change = Math.max(0, received - amount);
+
+const reset = { amountRaw: undefined, recvRaw: undefined, msg: '', msgF: '' };
+const addNow = () => {
+if (amount <= 0) { this.setState({ msg: 'Amount to take: enter an amount.', msgF: 'amount' }); return; }
+let p;
+if (method === 'Cash') {
+if (received < amount) { this.setState({ msg: 'Cash received: it is less than the amount to take.', msgF: 'recv' }); return; }
+p = { method: 'Cash', detail: 'Received ' + fmt(received) + ' · change ' + fmt(change), amount, status: 'ok', removable: true };
+} else if (method === 'POS card') {
+p = { method: 'POS card', detail: 'Card approved · ref POS-0412', amount, status: 'ok', removable: false };
+} else {
+p = { method: 'Transfer', detail: offline ? 'Saved on this device. Confirmed when back online, from the transfer into 9801234501' : 'Waiting for Moniepoint to confirm', amount, status: 'pending', removable: true };
+}
+this.setState(Object.assign({ payments: payments.concat([p]) }, reset));
+};
+
+const list = payments.map((p, idx) => ({
+method: p.method,
+detail: p.detail,
+amountText: fmt(p.amount),
+confirmed: p.status === 'ok' && p.method !== 'Cash',
+pending: p.status === 'pending',
+removable: p.removable,
+check: () => {
+if (offline) { this.setState({ pendMsg: 'Still offline. This transfer will be confirmed when the connection returns.' }); return; }
+this.setState({ pendMsg: '', payments: payments.map((x, j) => j === idx ? Object.assign({}, x, { status: 'ok', detail: 'Confirmed by Moniepoint · ref MNP-20842', removable: false }) : x) });
+},
+remove: () => this.setState(Object.assign({ payments: payments.filter((x, j) => j !== idx) }, reset))
+}));
+
+const methods = ['POS card', 'Transfer', 'Cash'].map((m) => ({
+label: m,
+pressed: m === method,
+pick: () => this.setState(Object.assign({ method: m }, reset)),
+}));
+
+const help = {
+'Cash': 'The cash drawer opens when you add the cash payment.',
+'POS card': 'Take the card on the POS terminal, then add the payment once it is approved.',
+'Transfer': 'The sale can be completed while the transfer waits. Moniepoint confirms it when the connection returns.'
+};
+const addLabel = { 'Cash': 'Add cash payment', 'POS card': 'Add POS payment', 'Transfer': 'Add transfer payment' };
+
+return {
+payments: list,
+methods,
+refText: 'MM2-0412', dueText: fmt(due), dueLine: '4 items \u00b7 VAT not applied',
+paidText: fmt(paid),
+remainingText: fmt(remaining),
+paidInFull: remaining === 0,
+notPaid: remaining > 0,
+isCash: method === 'Cash',
+amountValue,
+recvValue,
+changeText: fmt(change),
+onAmount: (e) => this.setState({ amountRaw: e.target.value, msg: '', msgF: '' }),
+amountBad: st.msgF === 'amount',
+recvBad: st.msgF === 'recv',
+noPays: payments.length === 0,
+onRecv: (e) => this.setState({ recvRaw: e.target.value, msg: '', msgF: '' }),
+helpText: help[method],
+isTransfer: method === 'Transfer',
+addLabel: addLabel[method],
+addNow,
+hasNote: anyPending || !!st.pendMsg,
+note: st.pendMsg || (offline ? 'You are offline. Transfers are saved and confirmed when the connection returns, and the sale can still be completed.' : 'A transfer is waiting for Moniepoint to confirm. Check again once the customer has paid.'),
+hasMsg: !!st.msg,
+msg: st.msg || ''
+};
+}
+}
+</script>
+</body>
+</html>

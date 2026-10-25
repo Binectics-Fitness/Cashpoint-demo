@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Back office: in-flight catering</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./app.css">
+<style>
+textarea.field:focus-visible,.lbl[tabindex="-1"]:focus-visible,.sh[tabindex="-1"]:focus-visible{outline:var(--ring);outline-offset:2px}
+.acts2{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:start}
+.hint2{margin:0;font-size:13px;line-height:1.5;color:var(--text-muted)}
+@media (max-width:640px){
+.fit>div{min-width:0 !important}
+.stk>div{min-width:0 !important}
+.stk .th{display:none}
+.stk .tr{display:flex !important;flex-wrap:wrap;align-items:flex-start;gap:4px 14px;padding-top:12px;padding-bottom:12px}
+.stk .tr>*{min-width:0}
+.stk .tr>.c1{order:-1;flex:1 0 100%}
+.stk .tr>[data-l]:before{content:attr(data-l) ": ";font-size:12px;font-weight:600;color:var(--text-muted)}
+.two{grid-template-columns:minmax(0,1fr)}
+.stk .tr.rl{display:grid !important;grid-template-columns:minmax(0,1fr) auto 24px !important}
+}
+</style>
+</helmet>
+<div class="shell">
+<aside class="side" aria-label="Main">
+<input type="checkbox" class="sbt" id="sbt" aria-label="Collapse or expand the menu">
+<div class="sbtop"><div class="brand"><span class="logo" aria-hidden="true">TR</span><span class="bt"><b>Things Remembered</b><small>Back office</small></span></div><a class="sbbell" href="Notifications.dc.html" title="Notifications" aria-label="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a><label for="sbt" class="sbtl" title="Collapse or expand the menu"><span class="chev" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E&quot;)"></span></label></div>
+<nav class="navs" aria-label="Sections">
+<div class="grp">Your work</div>
+<a class="nav" href="Notifications.dc.html" title="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Notifications</span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a>
+<a class="nav" href="Approvals.dc.html" title="Approvals"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Approvals</span><span class="bdg" data-badge="appr" data-word="waiting for you" aria-label="4 waiting for you">4</span></a>
+<div class="grp">Operations</div>
+<a class="nav" href="Production.dc.html" title="Production"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Production</span></a>
+<a class="nav" href="Distribution.dc.html" title="Distribution"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 7h13v9H1zM14 10h4l3 3v3h-7zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Distribution</span></a>
+<a class="nav on" href="Inflight.dc.html" title="In-flight catering" aria-current="page"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2 3.5 7.5l6.3 3.2-3.5 3.5-3-.5L2 15l4 2 2 4 1.3-1.3-.5-3 3.5-3.5 3.2 6.3z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">In-flight catering</span></a>
+<a class="nav" href="Inventory.dc.html" title="Inventory"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8l-9-5-9 5v8l9 5 9-5zM3.3 7.5L12 12l8.7-4.5M12 22V12'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Inventory</span></a>
+<a class="nav" href="Purchasing.dc.html" title="Purchasing"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100-2 1 1 0 000 2zM18 20a1 1 0 100-2 1 1 0 000 2z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Purchasing</span></a>
+<div class="grp">Finance</div>
+<a class="nav" href="AccountsHome.dc.html" title="Accounts"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16v16H4zM4 9h16M9 9v11'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Accounts</span></a>
+<a class="nav" href="Reports.dc.html" title="Reports"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20V10M10 20V4M16 20v-8M22 20H2'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Reports</span></a>
+<div class="grp">Admin</div>
+<a class="nav" href="ItemsPrices.dc.html" title="Settings"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3h0a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5h0a1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8v0a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Settings</span></a>
+</nav><div class="bot">
+<div class="who"><span class="av">BK</span><span class="wt"><b>Bola K.</b><small>Operations manager · All states</small></span></div>
+<a class="nav ghost" href="Main.dc.html" title="Open Cash Point"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5h18v10H3zM8 21h8M12 15v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Open Cash Point</span></a>
+<a class="nav" href="BackOfficeSignIn.dc.html" title="Sign out"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Sign out</span></a>
+</div></aside>
+<main class="pg" id="main">
+
+<div class="hd">
+<div class="hdt"><h1>In-flight catering</h1><span class="sub">Deliveries to airlines. Each airline is invoiced weekly and the invoice goes to the main account.</span></div>
+<div class="hda"><button class="btnp" onClick="{{ openDrawer }}">Record delivery</button></div>
+</div>
+<nav class="tabs" aria-label="In-flight sections"><a class="tab on" href="Inflight.dc.html" aria-current="page">Deliveries and invoices</a><a class="tab" href="AirlineAccounts.dc.html">Airline accounts</a></nav>
+
+<sc-if value="{{ hasDone }}" hint-placeholder-val="{{ false }}">
+<div role="status" class="ok toast"><span><strong>Delivery recorded.</strong> {{ doneText }}</span><button type="button" class="lnkb" onClick="{{ dismiss }}">Dismiss</button></div>
+</sc-if>
+
+<div class="statrow" role="group" aria-label="This week">
+<div class="stat"><span style="font-size: 12px; font-weight: 600; color: var(--text-muted)">Deliveries this week</span><span style="font-size: 22px; font-weight: 700">{{ nDeliveries }}</span></div>
+<div class="stat"><span style="font-size: 12px; font-weight: 600; color: var(--text-muted)">Airlines served</span><span style="font-size: 22px; font-weight: 700">{{ nAirlines }}</span></div>
+<div class="stat"><span style="font-size: 12px; font-weight: 600; color: var(--text-muted)">Items delivered</span><span style="font-size: 22px; font-weight: 700">{{ nItems }}</span></div>
+</div>
+
+<section aria-label="Deliveries this week" style="display: flex; flex-direction: column; gap: 12px">
+<div class="sh"><h2>Deliveries this week</h2></div>
+<div class="band" role="group" aria-label="Filter by airline"><span class="gl">Airline</span>
+<sc-for list="{{ filters }}" as="f" hint-placeholder-count="6">
+<button class="fc" onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" style="border-color: {{f.border}}; background: {{f.bg}}; color: {{f.color}}">{{ f.label }}</button>
+</sc-for>
+</div>
+<div class="card tbl stk">
+<div style="min-width: 640px; display: flex; flex-direction: column">
+<div class="th" style="grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 2fr) minmax(0, 0.7fr)"><span>Date</span><span>Airline</span><span>Flight</span><span>Item</span><span class="num">Quantity</span></div>
+<sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}"><div class="empty" role="status"><strong>No deliveries for {{ filterName }} this week</strong><span>Record one with Record delivery, or show every airline.</span><button class="btn sm" onClick="{{ showAll }}">Show all airlines</button></div></sc-if>
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+<div class="tr" style="grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 2fr) minmax(0, 0.7fr)"><span data-l="Date">{{ r.date }}</span><strong class="c1">{{ r.airline }}</strong><span data-l="Flight">{{ r.flight }}</span><span data-l="Item">{{ r.item }}</span><span class="num" data-l="Quantity" style="font-weight: 600">{{ r.qty }}</span></div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section aria-label="Weekly invoices" style="display: flex; flex-direction: column; gap: 12px">
+<div class="sh"><h2>Weekly invoices</h2><span>Week of 12 to 18 Oct</span></div>
+<div class="card tbl fit">
+<div style="min-width: 560px; display: flex; flex-direction: column">
+<div class="th" style="grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.4fr) minmax(0, 1.4fr) 24px"><span>Airline</span><span>Week</span><span>Status</span><span></span></div>
+<sc-for list="{{ invoices }}" as="v" hint-placeholder-count="5">
+<div class="tr rl" style="grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.4fr) minmax(0, 1.4fr) 24px"><a class="rlb" href="AirlineInvoice.dc.html" aria-label="Open invoice for {{ v.airline }}">{{ v.airline }}</a><span>12 to 18 Oct</span><span><span class="pill" style="background: {{v.chipBg}}; color: {{v.chipColor}}">{{ v.status }}</span></span><span class="go" aria-hidden="true">›</span></div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<p class="note">The invoice day and the prices are still to be confirmed. In this demo every invoice row opens the Savanna Air sample.</p>
+
+</main>
+</div>
+
+<sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+<div class="scrim" onClick="{{ closeDrawer }}"></div>
+<aside class="drawer" role="dialog" aria-label="Record a delivery">
+<div class="dh"><h2>Record a delivery</h2><button class="btn" onClick="{{ closeDrawer }}">Close</button></div>
+<form class="db" novalidate onSubmit="{{ onSubmit }}" id="deliv-form">
+<sc-if value="{{ hasErrs }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert">{{ errSummary }}</p></sc-if>
+<div class="fld">
+<div class="lbl" role="group" aria-label="Airline" id="f-airline" tabindex="-1" aria-invalid="{{ airlineInvalid }}" aria-describedby="e-airline">Airline
+<div class="seg"><sc-for list="{{ airlinePick }}" as="a" hint-placeholder-count="5"><button type="button" class="{{ a.cls }}" aria-pressed="{{ a.on }}" onClick="{{ a.pick }}">{{ a.label }}</button></sc-for></div>
+</div>
+<sc-if value="{{ errAirline }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-airline">{{ errAirline }}</p></sc-if>
+</div>
+<datalist id="flight-items"><sc-for list="{{ itemList }}" as="i" hint-placeholder-count="7"><option value="{{ i.v }}"></option></sc-for></datalist>
+<div class="fld">
+<label class="lbl">Item<input class="field" id="f-item" type="text" list="flight-items" autocomplete="off" value="{{ fItem }}" onInput="{{ onItem }}" placeholder="Start typing a name" aria-invalid="{{ itemInvalid }}" aria-describedby="e-item"></label>
+<sc-if value="{{ errItem }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-item">{{ errItem }}</p></sc-if>
+</div>
+<div class="two">
+<div class="fld"><label class="lbl">Quantity<input class="field" id="f-qty" type="text" inputmode="numeric" autocomplete="off" value="{{ fQty }}" onInput="{{ onQty }}" aria-invalid="{{ qtyInvalid }}" aria-describedby="e-qty"></label><sc-if value="{{ errQty }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-qty">{{ errQty }}</p></sc-if></div>
+<div class="fld"><label class="lbl">Flight<input class="field" id="f-flight" type="text" autocomplete="off" value="{{ fFlight }}" onInput="{{ onFlight }}" placeholder="For example SA 206" aria-invalid="{{ flightInvalid }}" aria-describedby="e-flight"></label><sc-if value="{{ errFlight }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-flight">{{ errFlight }}</p></sc-if></div>
+</div>
+<p class="hint2" aria-live="polite">{{ stockLine }}</p>
+</form>
+<div class="df"><button type="submit" form="deliv-form" class="btnp">Record delivery</button><button type="button" class="btn" onClick="{{ closeDrawer }}">Cancel</button></div>
+</aside>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const airlines = ['Savanna Air', 'Harmattan Airways', 'Lagoon Jet', 'Niger Wings', 'Atlas West'];
+const stock = { 'Meal tray (chicken)': 400, 'Meal tray (vegetarian)': 120, 'Snack box': 500, 'Toiletry kit': 350, 'Bottled water': 900, 'Blanket': 80, 'Hot towel pack': 600 };
+const base = [
+{ date: '21 Oct', airline: 'Savanna Air', flight: 'SA 204', item: 'Meal tray (chicken)', qty: 120 },
+{ date: '21 Oct', airline: 'Harmattan Airways', flight: 'HA 118', item: 'Snack box', qty: 90 },
+{ date: '20 Oct', airline: 'Savanna Air', flight: 'SA 202', item: 'Toiletry kit', qty: 150 },
+{ date: '20 Oct', airline: 'Lagoon Jet', flight: 'LJ 31', item: 'Meal tray (vegetarian)', qty: 40 },
+{ date: '20 Oct', airline: 'Niger Wings', flight: 'NW 77', item: 'Bottled water', qty: 300 },
+{ date: '19 Oct', airline: 'Atlas West', flight: 'AW 9', item: 'Meal tray (chicken)', qty: 80 },
+{ date: '19 Oct', airline: 'Harmattan Airways', flight: 'HA 116', item: 'Toiletry kit', qty: 100 },
+{ date: '19 Oct', airline: 'Lagoon Jet', flight: 'LJ 29', item: 'Snack box', qty: 60 }
+];
+const added = st.added || [];
+const all = added.concat(base);
+const airline = st.airline || '';
+const filter = st.filter || 'All';
+const fItem = st.fItem || '', fQty = st.fQty || '', fFlight = st.fFlight || '';
+const errs = st.errs || {};
+const clr = (k) => Object.assign({}, errs, { [k]: '' });
+const left = (name) => { let n = stock[name] || 0; added.forEach((d) => { if (d.item === name) n -= d.qty; }); return n; };
+const rows = all.filter((r) => filter === 'All' || r.airline === filter);
+const record = () => {
+const q = parseInt(fQty, 10); const e = {};
+if (!airline) e.airline = 'Choose the airline.';
+if (!fItem.trim()) e.item = 'Choose an item.'; else if (stock[fItem] === undefined) e.item = 'Pick an item from the list.';
+if (!String(fQty).trim()) e.qty = 'Enter how many were delivered.'; else if (!/^\d+$/.test(String(fQty).trim()) || !(q > 0)) e.qty = 'Quantity must be a whole number above 0.'; else if (stock[fItem] !== undefined && q > left(fItem)) e.qty = 'Only ' + left(fItem) + ' ' + fItem + ' are in stock.';
+if (!fFlight.trim()) e.flight = 'Enter the flight number so the invoice shows it.';
+if (Object.keys(e).length) { this.setState({ errs: e }); setTimeout(() => { const el = document.querySelector('.drawer [aria-invalid="true"]'); if (el && el.focus) el.focus(); }, 0); return; }
+const rec = { date: '21 Oct', airline, flight: fFlight.trim().toUpperCase(), item: fItem, qty: q };
+this.setState({ added: [rec].concat(added), doneText: q + ' ' + fItem + ' for ' + airline + ' (' + rec.flight + '). Taken off in-flight stock; ' + (left(fItem) - q) + ' left.', fItem: '', fQty: '', fFlight: '', airline: '', errs: {}, open: false, filter: 'All' });
+};
+const inv = [['Savanna Air', 'Draft'], ['Harmattan Airways', 'Sent'], ['Lagoon Jet', 'Paid'], ['Niger Wings', 'Draft'], ['Atlas West', 'Draft']];
+const ilook = { 'Draft': ['var(--warning-bg)', 'var(--warning-fg)'], 'Sent': ['var(--brand-bg)', 'var(--brand-strong)'], 'Paid': ['var(--border)', 'var(--neutral-fg)'] };
+const seen = {}; all.forEach((r) => { seen[r.airline] = 1; });
+const nErr = Object.keys(errs).filter((k) => errs[k]).length;
+return {
+openDrawer: () => this.setState({ open: true, errs: {}, doneText: '' }),
+closeDrawer: () => this.setState({ open: false, errs: {} }),
+drawerOpen: !!st.open,
+nDeliveries: all.length, nAirlines: Object.keys(seen).length, nItems: all.reduce((s, r) => s + r.qty, 0),
+airlinePick: airlines.map((a) => ({ label: a, on: a === airline, cls: a === airline ? 'chip on' : 'chip', pick: () => this.setState({ airline: a, errs: clr('airline') }) })),
+errAirline: errs.airline || '', airlineInvalid: errs.airline ? 'true' : 'false',
+itemList: Object.keys(stock).map((v) => ({ v })),
+fItem, fQty, fFlight,
+onItem: (e) => this.setState({ fItem: e.target.value, errs: clr('item') }),
+onQty: (e) => this.setState({ fQty: e.target.value, errs: clr('qty') }),
+onFlight: (e) => this.setState({ fFlight: e.target.value, errs: clr('flight') }),
+errItem: errs.item || '', itemInvalid: errs.item ? 'true' : 'false', errQty: errs.qty || '', qtyInvalid: errs.qty ? 'true' : 'false', errFlight: errs.flight || '', flightInvalid: errs.flight ? 'true' : 'false',
+hasErrs: nErr > 0, errSummary: nErr === 1 ? 'One thing needs fixing before this can be saved.' : nErr + ' things need fixing before this can be saved.',
+stockLine: stock[fItem] !== undefined ? 'In stock: ' + left(fItem) + ' ' + fItem + '. Recording a delivery takes it off in-flight stock.' : 'In-flight items (meals, snack boxes, toiletries) are kept in inventory. Recording a delivery takes them off stock.',
+onSubmit: (e) => { if (e && e.preventDefault) e.preventDefault(); record(); },
+hasDone: !!st.doneText, doneText: st.doneText || '', dismiss: () => this.setState({ doneText: '' }),
+filters: ['All'].concat(airlines).map((f) => ({ label: f, on: f === filter, pick: () => this.setState({ filter: f }), bg: f === filter ? 'var(--brand)' : 'var(--bg-surface)', color: f === filter ? 'var(--bg-surface)' : 'var(--text)', border: f === filter ? 'var(--brand)' : 'var(--border-strong)' })),
+filterName: filter, showAll: () => this.setState({ filter: 'All' }),
+rows, noRows: rows.length === 0,
+invoices: inv.map((x) => ({ airline: x[0], status: x[1], chipBg: ilook[x[1]][0], chipColor: ilook[x[1]][1] }))
+};
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Back office: airline invoice</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./app.css">
+<style>
+.ef{max-width:760px;box-sizing:border-box;padding:24px;display:flex;flex-direction:column;gap:24px}
+.ef fieldset{border:0;margin:0;padding:0;min-width:0;display:flex;flex-direction:column;gap:12px}
+.ef legend{padding:0 0 4px;font-size:16px;font-weight:700}
+.ef .hint{margin:0;font-size:13px;line-height:1.5;color:var(--text-muted)}
+.ef .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ef .full{grid-column:1/-1}
+.ef textarea.field{padding:10px 12px;min-height:84px;line-height:1.45;resize:vertical;font-family:inherit}
+.ef .seg{display:flex;flex-wrap:wrap;gap:8px}
+.ef .chip{min-height:40px;padding:0 14px;border:1px solid var(--border-strong);border-radius:999px;background:#fff;color:var(--text);font-size:14px;font-weight:600;cursor:pointer}
+.ef .chip.on{background:var(--brand-bg);border-color:var(--brand);color:var(--brand-strong)}
+.ef .chip:focus-visible,label.btn:focus-within{outline:var(--ring);outline-offset:2px}
+.ef .lrow{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,.8fr) minmax(0,1.2fr) auto;gap:8px;align-items:end}
+.ef .lh{font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em}
+.ef .logorow{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.ef .actions{display:flex;flex-wrap:wrap;gap:12px}
+.vh{position:absolute;opacity:0;width:1px;height:1px;overflow:hidden}
+.lg{display:block;max-height:56px;max-width:200px;object-fit:contain}
+.msg{max-width:760px;box-sizing:border-box;padding:14px 16px;border-radius:12px;font-size:14px;line-height:1.5}
+.msg.ok{background:var(--brand-bg);color:var(--brand-strong)}
+.msg.bad{background:var(--danger-bg);color:var(--danger-fg)}
+.msg.warn{background:var(--warning-bg);color:var(--warning-fg)}
+.msg ul{margin:6px 0 0;padding-left:20px}
+.inv{max-width:760px;box-sizing:border-box;padding:32px;display:flex;flex-direction:column;gap:24px;overflow:hidden}
+.inv .ih{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:16px}
+.inv .from{display:flex;flex-direction:column;gap:4px;font-size:13px;line-height:1.5;color:var(--text-muted)}
+.inv .from .bn{font-size:18px;color:var(--text)}
+.inv .pl{white-space:pre-line}
+.inv .ttl{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.inv .ttl h2{margin:0;font-size:28px;font-weight:700;letter-spacing:.06em}
+.inv .ttl .no{font-size:15px;font-weight:700}
+.inv .draft{padding:3px 10px;border-radius:999px;background:var(--warning-bg);color:var(--warning-fg);font-size:12px;font-weight:700;letter-spacing:.06em}
+.inv .parties{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.inv .k{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted)}
+.inv .to{display:flex;flex-direction:column;gap:4px;font-size:14px;line-height:1.5}
+.inv .meta{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin:0;font-size:13px}
+.inv .meta dt{color:var(--text-muted)}
+.inv .meta dd{margin:0;font-weight:600;text-align:right}
+.inv .tbl{border:1px solid var(--border);border-radius:var(--r-card);overflow:hidden}
+.inv .tr4{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,.8fr) minmax(0,1.2fr) minmax(0,1.3fr);gap:12px;padding:10px 16px;font-size:14px}
+.inv .tr4+.tr4{border-top:1px solid var(--border)}
+.inv .tr4.h{background:var(--bg-app);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted)}
+.inv .tr4 span:nth-child(n+2){text-align:right}
+.inv .tr4 strong{text-align:right}
+.inv .tot{align-self:flex-end;width:min(100%,340px);display:flex;flex-direction:column;gap:6px;font-size:14px}
+.inv .tot div{display:flex;justify-content:space-between;gap:16px}
+.inv .tot .g{padding-top:10px;margin-top:4px;border-top:2px solid var(--text);font-size:18px}
+.inv .tot small{display:block;font-size:12px;color:var(--text-muted)}
+.inv .words{margin:0;font-size:13px;color:var(--text-muted);text-align:right}
+.inv .pay{display:flex;flex-direction:column;gap:6px;padding:14px 16px;border:1px solid var(--border);border-radius:var(--r-card);background:var(--bg-subtle);font-size:13px}
+.inv .pay div{display:flex;justify-content:space-between;gap:16px}
+.inv .pay .pk{color:var(--text-muted)}
+.inv .pay strong{text-align:right}
+.inv .ft{padding-top:16px;border-top:1px solid var(--border);font-size:12px;line-height:1.5;color:var(--text-muted);text-align:center}
+@media (max-width:768px){
+.ef{padding:16px}
+.ef .grid,.inv .parties{grid-template-columns:minmax(0,1fr)}
+.ef .lrow{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.inv{padding:20px}
+.inv .ttl{align-items:flex-start}
+.inv .tr4{grid-template-columns:minmax(0,2fr) minmax(0,.7fr) minmax(0,1fr) minmax(0,1.2fr);gap:8px;padding:10px;font-size:13px}
+}
+@media print{
+@page{margin:14mm}
+body{background:#fff}
+.shell{display:block;min-height:0;background:#fff}
+.side,.noprint{display:none !important}
+.pg{padding:0;gap:0}
+.inv{max-width:none;border:0;border-radius:0;padding:0;break-inside:avoid}
+*{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</helmet>
+<div class="shell">
+
+<aside class="side" aria-label="Main">
+<input type="checkbox" class="sbt" id="sbt" aria-label="Collapse or expand the menu">
+<div class="sbtop"><div class="brand"><span class="logo" aria-hidden="true">TR</span><span class="bt"><b>Things Remembered</b><small>Back office</small></span></div><a class="sbbell" href="Notifications.dc.html" title="Notifications" aria-label="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a><label for="sbt" class="sbtl" title="Collapse or expand the menu"><span class="chev" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E&quot;)"></span></label></div>
+<nav class="navs" aria-label="Sections">
+<div class="grp">Your work</div>
+<a class="nav" href="Notifications.dc.html" title="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Notifications</span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a>
+<a class="nav" href="Approvals.dc.html" title="Approvals"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Approvals</span><span class="bdg" data-badge="appr" data-word="waiting for you" aria-label="4 waiting for you">4</span></a>
+<div class="grp">Operations</div>
+<a class="nav" href="Production.dc.html" title="Production"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Production</span></a>
+<a class="nav" href="Distribution.dc.html" title="Distribution"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 7h13v9H1zM14 10h4l3 3v3h-7zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Distribution</span></a>
+<a class="nav on" href="Inflight.dc.html" title="In-flight catering" aria-current="page"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2 3.5 7.5l6.3 3.2-3.5 3.5-3-.5L2 15l4 2 2 4 1.3-1.3-.5-3 3.5-3.5 3.2 6.3z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">In-flight catering</span></a>
+<a class="nav" href="Inventory.dc.html" title="Inventory"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8l-9-5-9 5v8l9 5 9-5zM3.3 7.5L12 12l8.7-4.5M12 22V12'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Inventory</span></a>
+<a class="nav" href="Purchasing.dc.html" title="Purchasing"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100-2 1 1 0 000 2zM18 20a1 1 0 100-2 1 1 0 000 2z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Purchasing</span></a>
+<div class="grp">Finance</div>
+<a class="nav" href="AccountsHome.dc.html" title="Accounts"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16v16H4zM4 9h16M9 9v11'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Accounts</span></a>
+<a class="nav" href="Reports.dc.html" title="Reports"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20V10M10 20V4M16 20v-8M22 20H2'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Reports</span></a>
+<div class="grp">Admin</div>
+<a class="nav" href="ItemsPrices.dc.html" title="Settings"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3h0a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5h0a1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8v0a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Settings</span></a>
+</nav><div class="bot">
+<div class="who"><span class="av">BK</span><span class="wt"><b>Bola K.</b><small>Operations manager · All states</small></span></div>
+<a class="nav ghost" href="Main.dc.html" title="Open Cash Point"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5h18v10H3zM8 21h8M12 15v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Open Cash Point</span></a>
+<a class="nav" href="BackOfficeSignIn.dc.html" title="Sign out"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Sign out</span></a>
+</div></aside>
+
+<main class="pg">
+
+<div class="hd noprint">
+<div class="hdt"><a class="crumb" href="Inflight.dc.html">‹ Back to in-flight catering</a><h1>Invoice {{ invNo }}</h1><span class="sub">{{ subtitle }}</span></div>
+<div class="hda">
+<span class="pill" style="background: {{chipBg}}; color: {{chipColor}}">{{ status }}</span>
+<sc-if value="{{ canEdit }}"><button class="btn" type="button" onClick="{{ openEdit }}">Edit invoice</button></sc-if>
+<sc-if value="{{ notEditing }}"><button class="btn" type="button" onClick="{{ download }}" aria-label="Download invoice {{ invNo }} as PDF">Download PDF</button></sc-if>
+</div>
+</div>
+
+<sc-if value="{{ hasMsg }}"><div class="msg ok noprint" role="status">{{ msg }}</div></sc-if>
+<sc-if value="{{ missingTin }}"><div class="msg warn noprint" role="status">Your business TIN is not set. Nigerian tax invoices normally show the supplier's TIN. Choose Edit invoice and add it under Your business.</div></sc-if>
+<sc-if value="{{ hasErrs }}"><div class="msg bad noprint" role="alert"><strong>Fix these before saving:</strong><ul><sc-for list="{{ errs }}" as="e"><li>{{ e }}</li></sc-for></ul></div></sc-if>
+
+<sc-if value="{{ editing }}">
+<div class="card ef noprint" role="group" aria-label="Edit invoice">
+<sc-for list="{{ sections }}" as="s">
+<fieldset><legend>{{ s.title }}</legend><p class="hint">{{ s.hint }}</p>
+<div class="grid">
+<sc-for list="{{ s.fields }}" as="f">
+<div class="{{ f.cls }}">
+<sc-if value="{{ f.isText }}"><label class="lbl">{{ f.l }}<input class="field" type="{{ f.type }}" value="{{ f.val }}" onInput="{{ f.on }}" placeholder="{{ f.ph }}" autocomplete="off"></label></sc-if>
+<sc-if value="{{ f.isArea }}"><label class="lbl">{{ f.l }}<textarea class="field" rows="3" value="{{ f.val }}" onInput="{{ f.on }}" placeholder="{{ f.ph }}"></textarea></label></sc-if>
+<sc-if value="{{ f.isChoice }}"><div class="lbl">{{ f.l }}<div class="seg" role="group" aria-label="{{ f.l }}"><sc-for list="{{ f.opts }}" as="o"><button type="button" class="{{ o.cls }}" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}">{{ o.t }}</button></sc-for></div></div></sc-if>
+<sc-if value="{{ f.isLogo }}"><div class="lbl">{{ f.l }}<div class="logorow"><sc-if value="{{ hasLogo }}"><img class="lg" src="{{ logoSrc }}" alt="Your logo"></sc-if><label class="btn sm">{{ logoBtn }}<input class="vh" type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp" onChange="{{ pickLogo }}"></label><sc-if value="{{ hasLogo }}"><button class="btn sm" type="button" onClick="{{ clearLogo }}">Remove logo</button></sc-if></div></div></sc-if>
+</div>
+</sc-for>
+</div>
+</fieldset>
+</sc-for>
+
+<fieldset><legend>Items</legend><p class="hint">Quantities start from the deliveries recorded for this airline. Change a description or price, add a line for an extra charge, or remove a line.</p>
+<div class="lrow"><span class="lh">Description</span><span class="lh">Quantity</span><span class="lh">Unit price</span><span></span></div>
+<sc-for list="{{ lineRows }}" as="r">
+<div class="lrow"><input class="field" type="text" value="{{ r.desc }}" onInput="{{ r.onDesc }}" aria-label="Description, line {{ r.n }}"><input class="field" type="text" inputmode="decimal" value="{{ r.qty }}" onInput="{{ r.onQty }}" aria-label="Quantity, line {{ r.n }}"><input class="field" type="text" inputmode="decimal" value="{{ r.price }}" onInput="{{ r.onPrice }}" aria-label="Unit price, line {{ r.n }}"><button class="btn sm" type="button" onClick="{{ r.remove }}" aria-label="Remove line {{ r.n }}">Remove</button></div>
+</sc-for>
+<div><button class="btn sm" type="button" onClick="{{ addLine }}">Add a line</button></div>
+</fieldset>
+
+<sc-for list="{{ sections2 }}" as="s">
+<fieldset><legend>{{ s.title }}</legend><p class="hint">{{ s.hint }}</p>
+<div class="grid">
+<sc-for list="{{ s.fields }}" as="f">
+<div class="{{ f.cls }}">
+<sc-if value="{{ f.isText }}"><label class="lbl">{{ f.l }}<input class="field" type="{{ f.type }}" value="{{ f.val }}" onInput="{{ f.on }}" placeholder="{{ f.ph }}" autocomplete="off"></label></sc-if>
+<sc-if value="{{ f.isArea }}"><label class="lbl">{{ f.l }}<textarea class="field" rows="3" value="{{ f.val }}" onInput="{{ f.on }}" placeholder="{{ f.ph }}"></textarea></label></sc-if>
+<sc-if value="{{ f.isChoice }}"><div class="lbl">{{ f.l }}<div class="seg" role="group" aria-label="{{ f.l }}"><sc-for list="{{ f.opts }}" as="o"><button type="button" class="{{ o.cls }}" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}">{{ o.t }}</button></sc-for></div></div></sc-if>
+</div>
+</sc-for>
+</div>
+</fieldset>
+</sc-for>
+
+<div class="actions"><button class="btnp" type="button" onClick="{{ save }}">Save invoice</button><button class="btn" type="button" onClick="{{ cancel }}">Cancel</button></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ notEditing }}">
+<article class="card inv" aria-label="Invoice {{ invNo }}">
+<div class="ih">
+<div class="from">
+<sc-if value="{{ hasLogo }}"><img class="lg" src="{{ logoSrc }}" alt="{{ bizName }} logo"></sc-if>
+<strong class="bn">{{ bizName }}</strong>
+<span class="pl">{{ bizAddr }}</span>
+<span>{{ bizContact }}</span>
+<span>{{ bizIds }}</span>
+</div>
+<div class="ttl"><h2>INVOICE</h2><span class="no">{{ invNo }}</span><sc-if value="{{ isDraft }}"><span class="draft">DRAFT</span></sc-if></div>
+</div>
+
+<div class="parties">
+<div class="to"><span class="k">Billed to</span><strong style="font-size: 16px">{{ toName }}</strong><span class="pl" style="color: var(--text-muted); font-size: 13px">{{ toBlock }}</span></div>
+<dl class="meta"><sc-for list="{{ meta }}" as="m"><dt>{{ m.k }}</dt><dd>{{ m.v }}</dd></sc-for></dl>
+</div>
+
+<div class="tbl" role="table" aria-label="Invoice items">
+<div class="tr4 h" role="row"><span>Description</span><span>Qty</span><span>Unit price</span><span>Amount</span></div>
+<sc-for list="{{ lines }}" as="l"><div class="tr4" role="row"><span>{{ l.item }}</span><span>{{ l.qty }}</span><span>{{ l.price }}</span><strong>{{ l.amount }}</strong></div></sc-for>
+</div>
+
+<div class="tot">
+<sc-for list="{{ totals }}" as="t"><div class="{{ t.cls }}"><span>{{ t.k }}<small>{{ t.sub }}</small></span><strong>{{ t.v }}</strong></div></sc-for>
+</div>
+<p class="words">Amount in words: {{ words }}</p>
+
+<div class="pay"><span class="k" style="margin-bottom: 2px">How to pay</span><sc-for list="{{ payRows }}" as="p"><div><span class="pk">{{ p.k }}</span><strong>{{ p.v }}</strong></div></sc-for></div>
+
+<sc-if value="{{ hasNotes }}"><div style="display: flex; flex-direction: column; gap: 4px"><span class="k">Notes and terms</span><span class="pl" style="font-size: 13px; line-height: 1.5">{{ notes }}</span></div></sc-if>
+
+<div class="ft">{{ footer }}</div>
+</article>
+
+<p class="noprint" style="margin: 0; max-width: 760px; font-size: 13px; line-height: 1.5; color: var(--text-muted)">Sample details for the design only. Real prices, the tax rate and the invoice day are still to be confirmed. The VAT rate for in-flight sales is set in <a href="Accounts.dc.html" style="font-weight: 600; color: var(--brand-strong)">Accounts</a>.</p>
+
+<div class="noprint" style="max-width: 760px; display: flex; flex-direction: column; gap: 12px">
+<div class="card" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding: 18px 22px">
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 15px">1. Post to the main account</strong><span style="font-size: 13px; line-height: 1.5; color: var(--text-muted)">Records the amount as owed by the airline in the main account. The invoice can't be edited after this.</span></div>
+<sc-if value="{{ canPost }}"><button class="btnp" onClick="{{ post }}">Post to main account</button></sc-if>
+<sc-if value="{{ isPosted }}"><span style="display: inline-block; padding: 6px 12px; border-radius: 999px; background: var(--brand-bg); color: var(--brand-strong); font-size: 13px; font-weight: 700">Posted · ref TR-AR-0042</span></sc-if>
+</div>
+<div class="card" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding: 18px 22px">
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 15px">2. Send to the airline</strong><span id="send-why" style="font-size: 13px; line-height: 1.5; color: var(--text-muted)">Available once the invoice is posted.</span></div>
+<sc-if value="{{ cantSend }}"><button class="btn" disabled aria-describedby="send-why">Send invoice</button></sc-if>
+<sc-if value="{{ canSend }}"><button class="btnp" onClick="{{ send }}">Send invoice</button></sc-if>
+<sc-if value="{{ isSent }}"><span style="display: inline-block; padding: 6px 12px; border-radius: 999px; background: var(--brand-bg); color: var(--brand-strong); font-size: 13px; font-weight: 700">Sent 21 Oct 2026, 14:35</span></sc-if>
+</div>
+</div>
+</sc-if>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+constructor() {
+super();
+const KB = 'tr-biz', KI = 'tr-inv-0042';
+this.KB = KB; this.KI = KI;
+const DB = { logo: '', name: 'Things Remembered Catering Ltd', addr: '14 Sample Road\nIkeja, Lagos\nNigeria', tin: '12345678-0001', rc: 'RC 0000000', phone: '+234 800 000 0000', email: 'accounts@thingsremembered.example', web: '', bank: 'Sample Bank Plc', acctName: 'Things Remembered Catering Ltd', acctNo: '0123456789', notes: 'Payment is due by the date shown. Please quote the invoice number when you pay.', footer: 'Thank you for your business.' };
+const DI = { toName: 'Savanna Air', toAddr: 'Murtala Muhammed Airport\nIkeja, Lagos\nNigeria', toContact: 'Accounts payable', toEmail: 'ap@savannaair.example', toTin: '', po: 'PO-SA-7731', invNo: 'INV-SA-0042', issue: '2026-10-21', from: '2026-10-12', to: '2026-10-18', terms: '14', currency: 'NGN', vat: '0', vatNote: 'Zero-rated: in-flight sales', discType: 'pct', disc: '0', notes: '', lines: [{ desc: 'Meal tray (chicken)', qty: '360', price: '4500' }, { desc: 'Toiletry kit', qty: '300', price: '1200' }, { desc: 'Snack box', qty: '200', price: '1800' }, { desc: 'Bottled water', qty: '400', price: '300' }] };
+const load = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v && typeof v === 'object' ? Object.assign({}, d, v) : JSON.parse(JSON.stringify(d)); } catch (e) { return JSON.parse(JSON.stringify(d)); } };
+this.biz = load(KB, DB); this.inv = load(KI, DI);
+this.draft = null;
+}
+persist() { try { localStorage.setItem(this.KB, JSON.stringify(this.biz)); localStorage.setItem(this.KI, JSON.stringify(this.inv)); } catch (e) {} }
+renderVals() {
+const st = this.state || {};
+const stage = st.stage || 0, editing = !!st.editing;
+const biz = this.biz, inv = this.inv, D = this.draft;
+const SYM = { NGN: '₦', USD: '$', GBP: '£', EUR: '€' };
+const NAMES = { NGN: ['Naira', 'Kobo'], USD: ['US dollars', 'cents'], GBP: ['Pounds', 'pence'], EUR: ['Euros', 'cents'] };
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const num = (s) => { const t = String(s == null ? '' : s).replace(/[,\s]/g, ''); if (t === '') return NaN; const v = Number(t); return isFinite(v) ? v : NaN; };
+const r2 = (n) => Math.round(n * 100) / 100;
+const fmt = (n, cur) => (SYM[cur] || '') + n.toLocaleString('en-US', { minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 });
+const validIso = (s) => /^\d{4}-\d{2}-\d{2}$/.test(s || '') && !isNaN(Date.parse(s));
+const fd = (s) => { if (!validIso(s)) return ''; const p = s.split('-'); return Number(p[2]) + ' ' + MON[Number(p[1]) - 1] + ' ' + p[0]; };
+const addDays = (s, n) => { const p = s.split('-').map(Number); const d = new Date(Date.UTC(p[0], p[1] - 1, p[2] + n)); return d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0'); };
+const ONES = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+const TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+const W = (n) => { if (n < 20) return ONES[n]; if (n < 100) return TENS[Math.floor(n / 10)] + (n % 10 ? '-' + ONES[n % 10] : ''); if (n < 1000) return ONES[Math.floor(n / 100)] + ' hundred' + (n % 100 ? ' and ' + W(n % 100) : ''); const S = [[1e12, 'trillion'], [1e9, 'billion'], [1e6, 'million'], [1e3, 'thousand']]; for (const x of S) { if (n >= x[0]) { const r = n % x[0]; return W(Math.floor(n / x[0])) + ' ' + x[1] + (r ? (r < 100 ? ' and ' : ' ') + W(r) : ''); } } return ''; };
+const words = (n, cur) => { const nm = NAMES[cur] || NAMES.NGN; const whole = Math.floor(n + 1e-9), minor = Math.round((n - whole) * 100); let s = W(whole) + ' ' + nm[0]; if (minor) s += ' and ' + W(minor) + ' ' + nm[1]; s += ' only'; return s.charAt(0).toUpperCase() + s.slice(1); };
+
+const cur = inv.currency;
+const lines = inv.lines.map((l) => ({ desc: l.desc, qty: num(l.qty) || 0, price: num(l.price) || 0 }));
+const sub = r2(lines.reduce((s, l) => s + l.qty * l.price, 0));
+const dv = num(inv.disc) || 0;
+const disc = r2(Math.min(sub, Math.max(0, inv.discType === 'pct' ? sub * dv / 100 : dv)));
+const taxable = r2(sub - disc);
+const vr = num(inv.vat) || 0;
+const vat = r2(taxable * vr / 100);
+const total = r2(taxable + vat);
+const termsN = Number(inv.terms) || 0;
+const due = validIso(inv.issue) ? fd(addDays(inv.issue, termsN)) : '';
+const termsTxt = termsN === 0 ? 'Due on receipt' : 'Net ' + termsN + ' days';
+
+const totals = [{ k: 'Subtotal', sub: '', v: fmt(sub, cur), cls: '' }];
+if (disc > 0) totals.push({ k: 'Discount', sub: inv.discType === 'pct' ? dv + '%' : '', v: '-' + fmt(disc, cur), cls: '' });
+totals.push({ k: 'VAT ' + vr + '%', sub: inv.vatNote || '', v: fmt(vat, cur), cls: '' });
+totals.push({ k: 'Total due', sub: '', v: fmt(total, cur), cls: 'g' });
+
+const meta = [['Invoice number', inv.invNo], ['Issue date', fd(inv.issue)], ['Date of supply', validIso(inv.from) && validIso(inv.to) ? fd(inv.from) + ' to ' + fd(inv.to) : fd(inv.from) || fd(inv.to)], ['Due date', due], ['Payment terms', termsTxt], ['PO or reference', inv.po]].filter((x) => x[1]).map((x) => ({ k: x[0], v: x[1] }));
+const toBlock = [inv.toAddr, [inv.toContact, inv.toEmail].filter(Boolean).join(' · '), inv.toTin ? 'TIN ' + inv.toTin : ''].filter(Boolean).join('\n');
+const payRows = [['Bank', biz.bank], ['Account name', biz.acctName], ['Account number', biz.acctNo], ['Payment reference', inv.invNo]].filter((x) => x[1]).map((x) => ({ k: x[0], v: x[1] }));
+const notes = inv.notes || biz.notes || '';
+
+const T = (obj, key, l, o) => { o = o || {}; return { l, isText: true, type: o.type || 'text', val: D[obj][key], ph: o.ph || '', cls: o.cls || '', on: (e) => { D[obj][key] = e.target.value; } }; };
+const A = (obj, key, l, o) => { o = o || {}; return { l, isArea: true, val: D[obj][key], ph: o.ph || '', cls: o.cls || 'full', on: (e) => { D[obj][key] = e.target.value; } }; };
+const C = (obj, key, l, opts, o) => ({ l, isChoice: true, cls: (o && o.cls) || '', opts: opts.map((x) => ({ t: x[1], on: D[obj][key] === x[0], cls: D[obj][key] === x[0] ? 'chip on' : 'chip', pick: () => { D[obj][key] = x[0]; if (key === 'vat') { const z = 'Zero-rated: in-flight sales'; if (x[0] === '0' && !D.inv.vatNote) D.inv.vatNote = z; if (x[0] !== '0' && D.inv.vatNote === z) D.inv.vatNote = ''; } this.setState({}); } })) });
+
+let sections = [], sections2 = [], lineRows = [];
+if (editing && D) {
+sections = [
+{ title: 'Your business (From)', hint: 'Saved once and shown on every invoice. Sample details are filled in.', fields: [
+{ l: 'Logo', isLogo: true, cls: 'full' },
+T('biz', 'name', 'Business name', { cls: 'full' }),
+A('biz', 'addr', 'Address', { ph: 'Street, city, country' }),
+T('biz', 'tin', 'Tax ID (TIN)', { ph: 'Required on Nigerian tax invoices' }),
+T('biz', 'rc', 'Registration number (RC)'),
+T('biz', 'phone', 'Phone'),
+T('biz', 'email', 'Email', { type: 'email' }),
+T('biz', 'web', 'Website', { cls: 'full' })] },
+{ title: 'Billed to', hint: 'The airline this invoice is for.', fields: [
+T('inv', 'toName', 'Customer name', { cls: 'full' }),
+A('inv', 'toAddr', 'Customer address'),
+T('inv', 'toContact', 'Contact person'),
+T('inv', 'toEmail', 'Customer email', { type: 'email' }),
+T('inv', 'toTin', 'Customer TIN (optional)'),
+T('inv', 'po', 'PO or reference number', { ph: 'Many airlines will not pay without it' })] },
+{ title: 'Invoice details', hint: 'The due date is worked out from the issue date and the payment terms.', fields: [
+T('inv', 'invNo', 'Invoice number'),
+T('inv', 'issue', 'Issue date', { type: 'date' }),
+T('inv', 'from', 'Supplied from', { type: 'date' }),
+T('inv', 'to', 'Supplied to', { type: 'date' }),
+C('inv', 'terms', 'Payment terms', [['0', 'Due on receipt'], ['7', 'Net 7'], ['14', 'Net 14'], ['30', 'Net 30'], ['60', 'Net 60']], { cls: 'full' }),
+C('inv', 'currency', 'Currency', [['NGN', '₦ Naira'], ['USD', '$ US dollar'], ['GBP', '£ Pound'], ['EUR', '€ Euro']], { cls: 'full' })] }
+];
+lineRows = D.inv.lines.map((l, i) => ({ n: i + 1, desc: l.desc, qty: l.qty, price: l.price, onDesc: (e) => { l.desc = e.target.value; }, onQty: (e) => { l.qty = e.target.value; }, onPrice: (e) => { l.price = e.target.value; }, remove: () => { D.inv.lines.splice(i, 1); this.setState({}); } }));
+sections2 = [
+{ title: 'Tax and discount', hint: 'VAT is shown on its own line. Zero-rated sales still show the 0% line.', fields: [
+C('inv', 'vat', 'VAT rate', [['0', '0% (zero-rated)'], ['7.5', '7.5%']], { cls: 'full' }),
+T('inv', 'vatNote', 'VAT note on the invoice', { cls: 'full' }),
+C('inv', 'discType', 'Discount type', [['pct', 'Percent'], ['amt', 'Fixed amount']]),
+T('inv', 'disc', 'Discount')] },
+{ title: 'Payment and notes', hint: 'Bank details are saved for every invoice. Notes you write here apply to this invoice only. Leave notes empty to use your default terms.', fields: [
+T('biz', 'bank', 'Bank'),
+T('biz', 'acctName', 'Account name'),
+T('biz', 'acctNo', 'Account number'),
+A('inv', 'notes', 'Notes and payment instructions for this invoice', { ph: biz.notes }),
+A('biz', 'notes', 'Default terms (used when an invoice has no notes)'),
+T('biz', 'footer', 'Footer line', { cls: 'full' })] }
+];
+}
+
+const dr = D && D.biz ? D.biz : biz;
+const status = stage === 0 ? 'Draft' : stage === 1 ? 'Posted to main account' : 'Sent to airline';
+const missingTin = !editing && !String(biz.tin || '').trim();
+return {
+subtitle: inv.toName + ' · ' + (validIso(inv.from) && validIso(inv.to) ? 'Supplied ' + fd(inv.from) + ' to ' + fd(inv.to) : 'Invoice ' + inv.invNo),
+status, chipBg: stage === 0 ? 'var(--warning-bg)' : 'var(--brand-bg)', chipColor: stage === 0 ? 'var(--warning-fg)' : 'var(--brand-strong)',
+editing, notEditing: !editing, canEdit: stage === 0 && !editing, isDraft: stage === 0,
+hasMsg: !!st.msg, msg: st.msg || '', missingTin, hasErrs: !!(st.errs && st.errs.length), errs: st.errs || [],
+invNo: inv.invNo,
+bizName: biz.name, bizAddr: biz.addr, bizContact: [biz.phone, biz.email, biz.web].filter(Boolean).join(' · '), bizIds: [biz.tin ? 'TIN ' + biz.tin : '', biz.rc].filter(Boolean).join(' · '),
+hasLogo: !!dr.logo, logoSrc: dr.logo || '', logoBtn: dr.logo ? 'Change logo' : 'Upload logo',
+toName: inv.toName, toBlock, meta,
+lines: lines.map((l) => ({ item: l.desc, qty: l.qty.toLocaleString('en-US'), price: fmt(l.price, cur), amount: fmt(r2(l.qty * l.price), cur) })),
+totals, words: words(total, cur), payRows, hasNotes: !!notes, notes, footer: biz.footer || '',
+sections, sections2, lineRows,
+canPost: stage === 0, isPosted: stage >= 1, cantSend: stage === 0, canSend: stage === 1, isSent: stage === 2,
+download: () => { const t = document.title; document.title = inv.invNo || 'invoice'; window.print(); document.title = t; },
+openEdit: () => { this.draft = JSON.parse(JSON.stringify({ biz: this.biz, inv: this.inv })); this.setState({ editing: true, errs: [], msg: '' }); },
+cancel: () => { this.draft = null; this.setState({ editing: false, errs: [], msg: '' }); },
+addLine: () => { D.inv.lines.push({ desc: '', qty: '1', price: '0' }); this.setState({}); },
+clearLogo: () => { D.biz.logo = ''; this.setState({}); },
+pickLogo: (e) => {
+const f = e.target.files && e.target.files[0]; if (!f) return;
+if (!/^image\//.test(f.type)) { this.setState({ errs: ['Choose an image file for the logo (PNG, JPG, SVG or WebP).'] }); return; }
+const rd = new FileReader();
+rd.onload = () => { const im = new Image(); im.onload = () => { const s = Math.min(1, 240 / Math.max(im.width, im.height, 1)); const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(im.width * s)); c.height = Math.max(1, Math.round(im.height * s)); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); D.biz.logo = c.toDataURL('image/png'); this.setState({ errs: [] }); }; im.onerror = () => this.setState({ errs: ['That image could not be read. Try another file.'] }); im.src = rd.result; };
+rd.readAsDataURL(f);
+},
+save: () => {
+const b = D.biz, i = D.inv, errs = [];
+if (!String(b.name).trim()) errs.push('Business name is required.');
+if (!String(i.toName).trim()) errs.push('Customer name is required.');
+if (!String(i.invNo).trim()) errs.push('Invoice number is required.');
+if (!validIso(i.issue)) errs.push('Choose a valid issue date.');
+if (i.from && i.to && validIso(i.from) && validIso(i.to) && i.to < i.from) errs.push('Supplied to cannot be before supplied from.');
+if (!i.lines.length) errs.push('Add at least one item.');
+i.lines.forEach((l, k) => { if (!String(l.desc).trim()) errs.push('Line ' + (k + 1) + ' needs a description.'); const q = num(l.qty), p = num(l.price); if (!(q > 0)) errs.push('Line ' + (k + 1) + ': quantity must be more than 0.'); if (!(p >= 0)) errs.push('Line ' + (k + 1) + ': enter a valid unit price.'); });
+const d = String(i.disc).trim() === '' ? 0 : num(i.disc); if (!(d >= 0)) errs.push('Discount must be 0 or more.'); else if (i.discType === 'pct' && d > 100) errs.push('A percentage discount cannot be more than 100.');
+if (errs.length) { this.setState({ errs }); return; }
+i.disc = String(d);
+this.biz = b; this.inv = i; this.draft = null; this.persist();
+this.setState({ editing: false, errs: [], msg: 'Invoice saved. Your business details will appear on every invoice.' });
+},
+post: () => this.setState({ stage: 1, msg: 'Posted to the main account as an amount owed by ' + inv.toName + '. You can now send the invoice.' }),
+send: () => this.setState({ stage: 2, msg: 'Invoice sent to ' + inv.toName + '. It stays linked to the main account until it is paid.' })
+};
+}
+}
+</script>

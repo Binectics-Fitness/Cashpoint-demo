@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: receive delivery</title>
+<script src="./support.js"></script>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos">
+<header class="bar">
+<a class="btn back" href="NewSale.dc.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Back to sale</a>
+<div class="bar-id"><h1 class="bar-title">Receive delivery</h1><span class="bar-sub">MM2 outlet · Amaka O. · Dispatch D-0091 from Lagos production, sent 12:10</span></div>
+
+</header>
+<main class="page col">
+<div class="wrap w-md" style="gap:18px">
+<sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+<div role="status" class="alert ok plain" style="flex-direction:column;gap:6px"><strong>Delivery counted and added to this outlet's stock.</strong><span>{{ doneText }}</span></div>
+<sc-if value="{{ anyDiff }}" hint-placeholder-val="{{ false }}"><p role="status" class="alert plain"><span><strong>Difference reported.</strong> The distribution officer can see what was sent and what you counted.</span></p></sc-if>
+<div class="actions"><a class="btn primary lg" href="NewSale.dc.html">Back to sale</a><a class="btn lg" href="Distribution.dc.html">See in distribution</a></div>
+</sc-if>
+<sc-if value="{{ notDone }}" hint-placeholder-val="{{ true }}">
+<section class="card flush" aria-label="Delivery count">
+<div class="scroll"><div role="table" class="dt stack"><div role="rowgroup" class="thead"><div role="row" class="tr"><div role="columnheader" class="th">Item</div><div role="columnheader" class="th">Sent</div><div role="columnheader" class="th">You counted</div><div role="columnheader" class="th">Difference</div></div></div><div role="rowgroup" class="tbody">
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="2">
+<div role="row" class="tr"><div role="cell" class="td b">{{ r.item }}</div><div role="cell" data-l="Sent" class="td">{{ r.sent }}</div><div role="cell" data-l="You counted" class="td"><input class="cell-in" type="text" inputmode="numeric" aria-label="{{r.item}} counted" value="{{ r.counted }}" onInput="{{ r.onCounted }}" aria-invalid="{{ r.bad }}"></div><div role="cell" data-l="Difference" class="td {{r.diffCls}}">{{ r.diff }}</div></div>
+</sc-for>
+</div></div></div>
+</section>
+<sc-if value="{{ hasMsg }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert err">{{ msg }}</p></sc-if>
+<p class="note">Count what arrived, then confirm. If the numbers differ, the difference is reported with your name and the time.</p>
+<div class="actions"><button class="btn primary lg" onClick="{{ confirm }}">Confirm what I counted</button><a class="btn lg" href="NewSale.dc.html">Count later</a></div>
+</sc-if>
+</div>
+</main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const sent = [{ item: 'Meat pie', n: 120 }, { item: 'Sausage roll', n: 80 }];
+const counted = st.counted || {};
+const val = (it) => counted[it.item] !== undefined ? counted[it.item] : String(it.n);
+const rows = sent.map((it) => {
+const c = parseInt(val(it), 10);
+const d = isNaN(c) ? null : c - it.n;
+return {
+item: it.item, sent: it.n, counted: val(it),
+diff: d === null ? 'Enter a number' : d === 0 ? 'Matches' : (d > 0 ? '+' + d : '\u2212' + (-d)),
+diffCls: d === 0 ? 'dpos' : d === null ? 'derr' : 'dneg', bad: d === null,
+onCounted: (e) => this.setState({ counted: Object.assign({}, counted, { [it.item]: e.target.value }), msg: '' })
+};
+});
+const diffs = sent.filter((it) => { const c = parseInt(val(it), 10); return !isNaN(c) && c !== it.n; });
+return {
+rows, done: !!st.done, notDone: !st.done,
+anyDiff: diffs.length > 0,
+doneText: sent.map((it) => (parseInt(val(it), 10) || 0) + ' ' + it.item).join(', ') + ' are now in stock at MM2 outlet.',
+hasMsg: !!st.msg, msg: st.msg || '',
+confirm: () => {
+const bad = sent.filter((it) => isNaN(parseInt(val(it), 10)));
+if (bad.length) { this.setState({ msg: 'You counted: enter the number you counted for each item.' }); return; }
+this.setState({ done: true, msg: '' });
+}
+};
+}
+}
+</script>
+</body>
+</html>

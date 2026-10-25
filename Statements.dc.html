@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accounts: financial statements</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./app.css">
+<style>
+</style>
+</helmet>
+<div class="shell">
+<aside class="side" aria-label="Main">
+<input type="checkbox" class="sbt" id="sbt" aria-label="Collapse or expand the menu">
+<div class="sbtop"><div class="brand"><span class="logo" aria-hidden="true">TR</span><span class="bt"><b>Things Remembered</b><small>Back office</small></span></div><a class="sbbell" href="Notifications.dc.html" title="Notifications" aria-label="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a><label for="sbt" class="sbtl" title="Collapse or expand the menu"><span class="chev" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E&quot;)"></span></label></div>
+<nav class="navs" aria-label="Sections">
+<div class="grp">Your work</div>
+<a class="nav" href="Notifications.dc.html" title="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Notifications</span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a>
+<a class="nav" href="Approvals.dc.html" title="Approvals"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Approvals</span><span class="bdg" data-badge="appr" data-word="waiting for you" aria-label="4 waiting for you">4</span></a>
+<div class="grp">Operations</div>
+<a class="nav" href="Production.dc.html" title="Production"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Production</span></a>
+<a class="nav" href="Distribution.dc.html" title="Distribution"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 7h13v9H1zM14 10h4l3 3v3h-7zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Distribution</span></a>
+<a class="nav" href="Inflight.dc.html" title="In-flight catering"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2 3.5 7.5l6.3 3.2-3.5 3.5-3-.5L2 15l4 2 2 4 1.3-1.3-.5-3 3.5-3.5 3.2 6.3z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">In-flight catering</span></a>
+<a class="nav" href="Inventory.dc.html" title="Inventory"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8l-9-5-9 5v8l9 5 9-5zM3.3 7.5L12 12l8.7-4.5M12 22V12'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Inventory</span></a>
+<a class="nav" href="Purchasing.dc.html" title="Purchasing"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100-2 1 1 0 000 2zM18 20a1 1 0 100-2 1 1 0 000 2z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Purchasing</span></a>
+<div class="grp">Finance</div>
+<a class="nav on" href="AccountsHome.dc.html" title="Accounts" aria-current="page"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16v16H4zM4 9h16M9 9v11'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Accounts</span></a>
+<a class="nav" href="Reports.dc.html" title="Reports"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20V10M10 20V4M16 20v-8M22 20H2'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Reports</span></a>
+<div class="grp">Admin</div>
+<a class="nav" href="ItemsPrices.dc.html" title="Settings"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3h0a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5h0a1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8v0a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Settings</span></a>
+</nav><div class="bot">
+<div class="who"><span class="av">BK</span><span class="wt"><b>Bola K.</b><small>Operations manager · All states</small></span></div>
+<a class="nav ghost" href="Main.dc.html" title="Open Cash Point"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5h18v10H3zM8 21h8M12 15v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Open Cash Point</span></a>
+<a class="nav" href="BackOfficeSignIn.dc.html" title="Sign out"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Sign out</span></a>
+</div></aside>
+<main class="pg">
+
+<div class="hd">
+<div class="hdt"><h1>Financial statements</h1><span class="sub">Built from the posted ledger. Year to date, compared with the end of September.</span></div>
+<div class="hda"><details class="xm"><summary class="btn" role="button" aria-label="Export this report">Export</summary><div class="xmenu" role="menu"><sc-for list="{{ xopts }}" as="o" hint-placeholder-count="3"><button class="xi" role="menuitem" onClick="{{ o.pick }}">{{ o.label }}</button></sc-for></div></details></div>
+</div>
+<nav class="tabs" aria-label="Accounts sections"><a class="tab" href="AccountsHome.dc.html">Overview</a><a class="tab" href="Journals.dc.html">Journals</a><a class="tab" href="BankRec.dc.html">Banking</a><a class="tab on" href="Ledger.dc.html">Books</a><a class="tab" href="Periods.dc.html">Month-end</a><a class="tab" href="ChartOfAccounts.dc.html">Setup</a></nav><nav class="subtabs" aria-label="Books pages"><a href="Ledger.dc.html">Ledger</a><a href="TrialBalance.dc.html">Trial balance</a><a href="ReceivablesPayables.dc.html">Receivables and payables</a><a href="Statements.dc.html" aria-current="page">Statements</a></nav>
+<sc-if value="{{ xHas }}" hint-placeholder-val="{{ false }}"><div role="status" class="ok"><strong>{{ xText }}</strong><span>Sample only. Nothing is downloaded in this design. The file would carry the filters and period you have set.</span></div></sc-if>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4"><button class="fc" onClick="{{ t.pick }}" style="border-color: {{t.border}}; background: {{t.bg}}; color: {{t.color}}">{{ t.label }}</button></sc-for>
+</div>
+<div class="card tbl" style="max-width: 900px">
+<div style="min-width: 560px; display: flex; flex-direction: column">
+<div class="th" style="grid-template-columns: minmax(0, 3fr) 1.3fr 1.3fr"><span>{{ title }}</span><span class="num">{{ h1 }}</span><span class="num">{{ h2 }}</span></div>
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="14">
+<div class="tr {{ r.cls }}" style="grid-template-columns: minmax(0, 3fr) 1.3fr 1.3fr; font-weight: {{ r.w }}; padding-left: {{ r.pad }}"><span>{{ r.t }}</span><span class="num">{{ r.a }}</span><span class="num">{{ r.b }}</span></div>
+</sc-for>
+</div>
+</div>
+<p class="note">{{ foot }}</p>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const COA = [{"c": "1000", "n": "Cash at outlets", "t": "Asset", "d": "D", "b": 703800}, {"c": "1020", "n": "Moniepoint clearing", "t": "Asset", "d": "D", "b": 1138500}, {"c": "1010", "n": "Bank, main account", "t": "Asset", "d": "D", "b": 14260500}, {"c": "1100", "n": "Trade receivables", "t": "Asset", "d": "D", "b": 5980000}, {"c": "1200", "n": "Stock, raw materials", "t": "Asset", "d": "D", "b": 3120400}, {"c": "1210", "n": "Stock, finished goods", "t": "Asset", "d": "D", "b": 1248000}, {"c": "1220", "n": "Stock, in-flight items", "t": "Asset", "d": "D", "b": 2410000}, {"c": "1300", "n": "Input VAT", "t": "Asset", "d": "D", "b": 184600}, {"c": "1400", "n": "Prepayments", "t": "Asset", "d": "D", "b": 0}, {"c": "1500", "n": "Equipment, at cost", "t": "Asset", "d": "D", "b": 9600000}, {"c": "1510", "n": "Accumulated depreciation", "t": "Asset", "d": "C", "b": 2400000}, {"c": "2000", "n": "Trade payables", "t": "Liability", "d": "C", "b": 4175200}, {"c": "2100", "n": "Output VAT payable", "t": "Liability", "d": "C", "b": 612300}, {"c": "2110", "n": "Withholding tax payable", "t": "Liability", "d": "C", "b": 96000}, {"c": "2200", "n": "Accruals", "t": "Liability", "d": "C", "b": 380000}, {"c": "3000", "n": "Share capital", "t": "Equity", "d": "C", "b": 5000000}, {"c": "3100", "n": "Retained earnings, opening", "t": "Equity", "d": "C", "b": 4822300}, {"c": "4000", "n": "Restaurant sales", "t": "Income", "d": "C", "b": 38420000}, {"c": "4100", "n": "Pastry and bakery sales", "t": "Income", "d": "C", "b": 24310000}, {"c": "4200", "n": "In-flight catering income", "t": "Income", "d": "C", "b": 19800000}, {"c": "4900", "n": "Discounts given", "t": "Income", "d": "D", "b": 0}, {"c": "5000", "n": "Ingredients used", "t": "Expense", "d": "D", "b": 31200000}, {"c": "5100", "n": "Packaging", "t": "Expense", "d": "D", "b": 2150000}, {"c": "6000", "n": "Salaries and wages", "t": "Expense", "d": "D", "b": 17400000}, {"c": "6100", "n": "Rent", "t": "Expense", "d": "D", "b": 4800000}, {"c": "6200", "n": "Utilities and fuel", "t": "Expense", "d": "D", "b": 3260000}, {"c": "6300", "n": "Depreciation", "t": "Expense", "d": "D", "b": 1920000}, {"c": "6400", "n": "Bank and card charges", "t": "Expense", "d": "D", "b": 640000}, {"c": "6500", "n": "Petty cash and supplies", "t": "Expense", "d": "D", "b": 0}];
+const JNL = [{"no": "J-0412", "date": "20 Oct", "nar": "Takings, MM2 outlet, 20 Oct", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1000", "dr": 120000, "cr": 0}, {"a": "1010", "dr": 66500, "cr": 0}, {"a": "4000", "dr": 0, "cr": 186500}], "rev": ""}, {"no": "J-0413", "date": "20 Oct", "nar": "Packaged goods sales, Ikeja outlet (VAT 7.5%)", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1000", "dr": 80625, "cr": 0}, {"a": "4100", "dr": 0, "cr": 75000}, {"a": "2100", "dr": 0, "cr": 5625}], "rev": ""}, {"no": "J-0414", "date": "21 Oct", "nar": "Flour, 200 kg, Agro Mills Ltd (R-0214)", "src": "Purchasing", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1200", "dr": 840000, "cr": 0}, {"a": "1300", "dr": 63000, "cr": 0}, {"a": "2000", "dr": 0, "cr": 903000}], "rev": ""}, {"no": "J-0416", "date": "20 Oct", "nar": "Meals delivered on flight SA 204, cost of stock", "src": "In-flight", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "5000", "dr": 540000, "cr": 0}, {"a": "1220", "dr": 0, "cr": 540000}], "rev": ""}, {"no": "J-0417", "date": "21 Oct", "nar": "Airline invoice INV-SA-0042, Savanna Air", "src": "In-flight", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1100", "dr": 2460000, "cr": 0}, {"a": "4200", "dr": 0, "cr": 2460000}], "rev": ""}, {"no": "J-0418", "date": "19 Oct", "nar": "Count difference, cooking oil, Lagos store", "src": "Inventory", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "5000", "dr": 18000, "cr": 0}, {"a": "1200", "dr": 0, "cr": 18000}], "rev": ""}, {"no": "J-0421", "date": "20 Oct", "nar": "Reversal of J-0398, posted to the wrong account", "src": "Manual", "by": "Ngozi A.", "ap": "Bola K.", "st": "Posted", "lines": [{"a": "4100", "dr": 40000, "cr": 0}, {"a": "4000", "dr": 0, "cr": 40000}], "rev": "J-0398"}, {"no": "J-0422", "date": "21 Oct", "nar": "Transfers confirmed by Moniepoint, 19 to 21 Oct, moved from outlet cash to clearing", "src": "Payments", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1020", "dr": 1138500, "cr": 0}, {"a": "1000", "dr": 0, "cr": 1138500}], "rev": ""}, {"no": "J-0423", "date": "21 Oct", "nar": "Card and transfer charges, week 42", "src": "Bank", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "6400", "dr": 18400, "cr": 0}, {"a": "1010", "dr": 0, "cr": 18400}], "rev": ""}, {"no": "J-0424", "date": "21 Oct", "nar": "Takings, MM2 outlet, 21 Oct to 14:00, gross sales with discounts shown separately", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1000", "dr": 5500, "cr": 0}, {"a": "1010", "dr": 61800, "cr": 0}, {"a": "1020", "dr": 45000, "cr": 0}, {"a": "4900", "dr": 1800, "cr": 0}, {"a": "4000", "dr": 0, "cr": 114100}], "rev": ""}, {"no": "J-0425", "date": "21 Oct", "nar": "Cash out, petty cash and supplies, MM2 outlet (cleaning supplies, within limit)", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "6500", "dr": 2000, "cr": 0}, {"a": "1000", "dr": 0, "cr": 2000}], "rev": ""}, {"no": "J-0419", "date": "21 Oct", "nar": "Accrue October electricity, Lagos production", "src": "Manual", "by": "Bola K.", "ap": "", "st": "Awaiting approval", "lines": [{"a": "6200", "dr": 220000, "cr": 0}, {"a": "2200", "dr": 0, "cr": 220000}], "rev": ""}, {"no": "J-0420", "date": "21 Oct", "nar": "Prepay November rent, MM2 outlet", "src": "Manual", "by": "Ngozi A.", "ap": "", "st": "Awaiting approval", "lines": [{"a": "1400", "dr": 400000, "cr": 0}, {"a": "1010", "dr": 0, "cr": 400000}], "rev": ""}];
+const N = (n) => String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const M = (n) => (n < 0 ? '-' : '') + '\u20A6' + N(n);
+const acct = (c) => COA.filter((a) => a.c === c)[0];
+const signed = (a) => (a.d === 'D' ? a.b : -a.b);
+const total = (j) => j.lines.reduce((s, l) => s + l.dr, 0);
+const move = (c, js) => { let s = 0; js.forEach((j) => { if (j.st === 'Posted') j.lines.forEach((l) => { if (l.a === c) s += l.dr - l.cr; }); }); return s; };
+
+
+const tab = st.tab || 'is';
+const sc = (a, k) => Math.round(a.b * k / 1000) * 1000;
+const cur = (c) => acct(c).b;
+const prevIS = (c) => sc(acct(c), 0.9);
+const prevBS = (c) => Math.round(acct(c).b * 0.94 / 100) * 100;
+const sumC = (cs, f) => cs.reduce((s, c) => s + f(c), 0);
+const R = (t, a, b, o) => ({ t, a: a === null ? '' : M(a), b: b === null ? '' : M(b), w: o && o.bold ? 700 : 400, pad: o && o.head ? '22px' : (o && o.sub ? '40px' : '22px'), cls: o && o.bold ? 'tot' : '' });
+const H = (t) => ({ t, a: '', b: '', w: 700, pad: '22px', cls: '' });
+const rev = ['4000', '4100', '4200'], cos = ['5000', '5100'], opx = ['6000', '6100', '6200', '6300', '6400'];
+const rows = [];
+let title = '';
+let h1 = '21 Oct 2026', h2 = '30 Sep 2026';
+const pr = (cs) => sumC(cs, prevIS);
+const profA = sumC(rev, cur) - sumC(cos, cur) - sumC(opx, cur), profB = sumC(rev, prevIS) - sumC(cos, prevIS) - sumC(opx, prevIS);
+const ncA = cur('1500') - cur('1510'), ncB = prevBS('1500') - prevBS('1510');
+const stk = ['1200', '1210', '1220'];
+const otherCA = ['1100', '1300', '1400', '1000', '1020'];
+const liab = ['2000', '2100', '2110', '2200'];
+const liabB = sumC(liab, prevBS), liabA = sumC(liab, cur);
+const eqB = cur('3000') + cur('3100') + profB;
+const eqA = cur('3000') + cur('3100') + profA;
+const caAnoBank = sumC(stk, cur) + sumC(otherCA, cur), caBnoBank = sumC(stk, prevBS) + sumC(otherCA, prevBS);
+const bankB = eqB + liabB - ncB - caBnoBank;
+const caA = caAnoBank + cur('1010'), caB = caBnoBank + bankB;
+
+if (tab === 'is') {
+title = 'Income statement, year to date';
+const rA = sumC(rev, cur), rB = sumC(rev, prevIS), cA = sumC(cos, cur), cB = sumC(cos, prevIS), oA = sumC(opx, cur), oB = sumC(opx, prevIS);
+rows.push(H('Revenue'));
+rev.forEach((c) => rows.push(R(acct(c).n, cur(c), prevIS(c), { sub: true })));
+rows.push(R('Total revenue', rA, rB, { bold: true }));
+rows.push(H('Cost of sales'));
+cos.forEach((c) => rows.push(R(acct(c).n, cur(c), prevIS(c), { sub: true })));
+rows.push(R('Total cost of sales', cA, cB, { bold: true }));
+rows.push(R('Gross profit', rA - cA, rB - cB, { bold: true }));
+rows.push(H('Operating expenses'));
+opx.forEach((c) => rows.push(R(acct(c).n, cur(c), prevIS(c), { sub: true })));
+rows.push(R('Total operating expenses', oA, oB, { bold: true }));
+rows.push(R('Profit for the period', rA - cA - oA, rB - cB - oB, { bold: true }));
+} else if (tab === 'bs') {
+title = 'Statement of financial position';
+rows.push(H('Non-current assets'));
+rows.push(R('Equipment at cost', cur('1500'), prevBS('1500'), { sub: true }));
+rows.push(R('Less accumulated depreciation', -cur('1510'), -prevBS('1510'), { sub: true }));
+rows.push(R('Net equipment', ncA, ncB, { bold: true }));
+rows.push(H('Current assets'));
+stk.forEach((c) => rows.push(R(acct(c).n, cur(c), prevBS(c), { sub: true })));
+rows.push(R('Trade receivables', cur('1100'), prevBS('1100'), { sub: true }));
+rows.push(R('Input VAT and prepayments', cur('1300') + cur('1400'), prevBS('1300') + prevBS('1400'), { sub: true }));
+rows.push(R('Cash at outlets', cur('1000'), prevBS('1000'), { sub: true }));
+rows.push(R('Moniepoint clearing', cur('1020'), prevBS('1020'), { sub: true }));
+rows.push(R('Bank, main account', cur('1010'), bankB, { sub: true }));
+rows.push(R('Total current assets', caA, caB, { bold: true }));
+rows.push(R('Total assets', ncA + caA, ncB + caB, { bold: true }));
+rows.push(H('Equity'));
+rows.push(R('Share capital', cur('3000'), cur('3000'), { sub: true }));
+rows.push(R('Retained earnings, opening', cur('3100'), cur('3100'), { sub: true }));
+rows.push(R('Profit for the period', profA, profB, { sub: true }));
+rows.push(R('Total equity', eqA, eqB, { bold: true }));
+rows.push(H('Liabilities'));
+liab.forEach((c) => rows.push(R(acct(c).n, cur(c), prevBS(c), { sub: true })));
+rows.push(R('Total liabilities', liabA, liabB, { bold: true }));
+rows.push(R('Total equity and liabilities', eqA + liabA, eqB + liabB, { bold: true }));
+} else if (tab === 'cf') {
+title = 'Cash flow statement, indirect method';
+h1 = '1 to 21 Oct 2026'; h2 = '';
+const dProfit = profA - profB;
+const dDep = cur('1510') - prevBS('1510');
+const dStk = sumC(stk, cur) - sumC(stk, prevBS);
+const dRec = cur('1100') - prevBS('1100');
+const dPre = (cur('1300') + cur('1400')) - (prevBS('1300') + prevBS('1400'));
+const dLiab = liabA - liabB;
+const ops = dProfit + dDep - dStk - dRec - dPre + dLiab;
+const inv = -(cur('1500') - prevBS('1500'));
+const net = ops + inv;
+const cashB = prevBS('1000') + prevBS('1020') + bankB, cashA = cur('1000') + cur('1020') + cur('1010');
+rows.push(H('Operating activities'));
+rows.push(R('Profit for the period', dProfit, null, { sub: true }));
+rows.push(R('Add back depreciation', dDep, null, { sub: true }));
+rows.push(R('Increase in stock', -dStk, null, { sub: true }));
+rows.push(R('Increase in trade receivables', -dRec, null, { sub: true }));
+rows.push(R('Increase in input VAT and prepayments', -dPre, null, { sub: true }));
+rows.push(R('Increase in payables and other liabilities', dLiab, null, { sub: true }));
+rows.push(R('Net cash from operating activities', ops, null, { bold: true }));
+rows.push(H('Investing activities'));
+rows.push(R('Purchase of equipment', inv, null, { sub: true }));
+rows.push(R('Net cash used in investing activities', inv, null, { bold: true }));
+rows.push(H('Financing activities'));
+rows.push(R('Share capital issued or loans taken', 0, null, { sub: true }));
+rows.push(R('Net cash from financing activities', 0, null, { bold: true }));
+rows.push(R('Net change in cash', net, null, { bold: true }));
+rows.push(R('Cash at 30 September 2026', cashB, null, { sub: true }));
+rows.push(R('Cash at 21 October 2026', cashA, null, { bold: true }));
+} else {
+title = 'Statement of changes in equity';
+h1 = 'Share capital'; h2 = 'Retained earnings';
+const retB = cur('3100') + profB, retA = cur('3100') + profA;
+rows.push(R('Balance at 30 September 2026', cur('3000'), retB, { bold: true }));
+rows.push(R('Profit for the period', null, profA - profB, { sub: true }));
+rows.push(R('Dividends paid', null, 0, { sub: true }));
+rows.push(R('Shares issued', 0, null, { sub: true }));
+rows.push(R('Balance at 21 October 2026', cur('3000'), retA, { bold: true }));
+rows.push(R('Total equity at 21 October 2026', null, cur('3000') + retA, { bold: true }));
+}
+return {
+tabs: [['is', 'Income statement'], ['bs', 'Balance sheet'], ['cf', 'Cash flow'], ['eq', 'Changes in equity']].map((t) => ({ label: t[1], pick: () => this.setState({ tab: t[0], xd: '' }), bg: t[0] === tab ? 'var(--brand)' : 'var(--bg-surface)', color: t[0] === tab ? 'var(--bg-surface)' : 'var(--text)', border: t[0] === tab ? 'var(--brand)' : 'var(--border-strong)' })),
+title, rows, h1, h2,
+foot: tab === 'is' ? 'The 30 September column is sample data. Figures are year to date.' : tab === 'bs' ? 'Total assets equal total equity and liabilities. The 30 September column is sample data.' : tab === 'cf' ? 'Shown for 1 to 21 October because the financial year end is still to be confirmed. It uses the same posted ledger, and the closing cash agrees to the balance sheet.' : 'Shown for 1 to 21 October because the financial year end is still to be confirmed. No dividends or new shares in this sample.',
+...(() => { const xs = this.state || {}; return { xopts: [['PDF', 'pdf'], ['Excel (.xlsx)', 'xlsx'], ['CSV', 'csv']].map((o) => ({ label: o[0], pick: () => this.setState({ xd: 'Prepared ' + ({ is: 'income-statement', bs: 'balance-sheet', cf: 'cash-flow-statement', eq: 'changes-in-equity' })[tab] + '.' + o[1] }) })), xHas: !!xs.xd, xText: xs.xd || '' }; })(), ok: true
+};
+
+}
+}
+</script>
+</body>
+</html>

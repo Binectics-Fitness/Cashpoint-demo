@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Back office: inventory</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./app.css">
+<style>
+textarea.field:focus-visible,.lbl[tabindex="-1"]:focus-visible,.sh[tabindex="-1"]:focus-visible{outline:var(--ring);outline-offset:2px}
+.acts2{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.srch{flex:1 1 200px;max-width:320px;margin-left:auto}
+.sort.num{text-align:right;width:100%}
+.pager{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 20px;border-top:1px solid var(--border);font-size:14px;color:var(--text-muted)}
+.pager .pn{display:flex;align-items:center;gap:8px}
+.cnt-info{margin:0;font-size:13px;line-height:1.5;color:var(--text-muted)}
+.cnt-info.diff{padding:10px 12px;border-radius:10px;background:var(--bg-app);color:var(--text-label);font-weight:600}
+@media (max-width:640px){
+.srch{max-width:none;margin-left:0;flex-basis:100%}
+.stk>div{min-width:0 !important}
+.stk .th{display:none}
+.stk .tr{display:flex !important;flex-wrap:wrap;align-items:flex-start;gap:4px 14px;padding-top:12px;padding-bottom:12px}
+.stk .tr>*{min-width:0}
+.stk .tr>.c1{flex:1 0 100%}
+.stk .tr>.ca{flex:1 0 100%;justify-content:flex-start}
+.stk .tr>[data-l]:before{content:attr(data-l) ": ";font-size:12px;font-weight:600;color:var(--text-muted)}
+.pager{padding:12px 14px}
+}
+</style>
+</helmet>
+<div class="shell">
+<aside class="side" aria-label="Main">
+<input type="checkbox" class="sbt" id="sbt" aria-label="Collapse or expand the menu">
+<div class="sbtop"><div class="brand"><span class="logo" aria-hidden="true">TR</span><span class="bt"><b>Things Remembered</b><small>Back office</small></span></div><a class="sbbell" href="Notifications.dc.html" title="Notifications" aria-label="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a><label for="sbt" class="sbtl" title="Collapse or expand the menu"><span class="chev" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E&quot;)"></span></label></div>
+<nav class="navs" aria-label="Sections">
+<div class="grp">Your work</div>
+<a class="nav" href="Notifications.dc.html" title="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Notifications</span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a>
+<a class="nav" href="Approvals.dc.html" title="Approvals"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Approvals</span><span class="bdg" data-badge="appr" data-word="waiting for you" aria-label="4 waiting for you">4</span></a>
+<div class="grp">Operations</div>
+<a class="nav" href="Production.dc.html" title="Production"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Production</span></a>
+<a class="nav" href="Distribution.dc.html" title="Distribution"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 7h13v9H1zM14 10h4l3 3v3h-7zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Distribution</span></a>
+<a class="nav" href="Inflight.dc.html" title="In-flight catering"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2 3.5 7.5l6.3 3.2-3.5 3.5-3-.5L2 15l4 2 2 4 1.3-1.3-.5-3 3.5-3.5 3.2 6.3z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">In-flight catering</span></a>
+<a class="nav on" href="Inventory.dc.html" title="Inventory" aria-current="page"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8l-9-5-9 5v8l9 5 9-5zM3.3 7.5L12 12l8.7-4.5M12 22V12'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Inventory</span></a>
+<a class="nav" href="Purchasing.dc.html" title="Purchasing"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100-2 1 1 0 000 2zM18 20a1 1 0 100-2 1 1 0 000 2z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Purchasing</span></a>
+<div class="grp">Finance</div>
+<a class="nav" href="AccountsHome.dc.html" title="Accounts"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16v16H4zM4 9h16M9 9v11'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Accounts</span></a>
+<a class="nav" href="Reports.dc.html" title="Reports"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20V10M10 20V4M16 20v-8M22 20H2'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Reports</span></a>
+<div class="grp">Admin</div>
+<a class="nav" href="ItemsPrices.dc.html" title="Settings"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3h0a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5h0a1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8v0a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Settings</span></a>
+</nav><div class="bot">
+<div class="who"><span class="av">BK</span><span class="wt"><b>Bola K.</b><small>Operations manager · All states</small></span></div>
+<a class="nav ghost" href="Main.dc.html" title="Open Cash Point"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5h18v10H3zM8 21h8M12 15v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Open Cash Point</span></a>
+<a class="nav" href="BackOfficeSignIn.dc.html" title="Sign out"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Sign out</span></a>
+</div></aside>
+<main class="pg" id="main">
+
+<div class="hd">
+<div class="hdt"><h1>Inventory</h1><span class="sub">Lagos production store: raw materials, finished goods and in-flight items. Abuja stock is kept separate.</span></div>
+<div class="hda"><button class="btnp" onClick="{{ openCount }}">Record a stock count</button></div>
+</div>
+<nav class="tabs" aria-label="Inventory sections"><a class="tab on" href="Inventory.dc.html" aria-current="page">Stock</a><a class="tab" href="ItemMovements.dc.html">Item movements</a><a class="tab" href="StockAlerts.dc.html">Stock alerts</a></nav>
+
+<sc-if value="{{ hasSaved }}" hint-placeholder-val="{{ false }}">
+<div role="status" class="ok toast"><span><strong>Stock count saved.</strong> {{ savedText }}</span><button type="button" class="lnkb" onClick="{{ dismiss }}">Dismiss</button></div>
+</sc-if>
+
+<div class="band" role="group" aria-label="Filter stock">
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+<button class="fc" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="border-color: {{c.border}}; background: {{c.bg}}; color: {{c.color}}">{{ c.label }}</button>
+</sc-for>
+<span class="vsep" aria-hidden="true"></span>
+<button class="fc" onClick="{{ toggleLow }}" aria-pressed="{{ lowOnly }}" style="border-color: {{lowBorder}}; background: {{lowBg}}; color: {{lowColor}}">{{ lowLabel }}</button>
+<input class="field srch" type="search" value="{{ q }}" onInput="{{ onQ }}" placeholder="Search items" aria-label="Search items">
+</div>
+
+<div class="card" style="display: flex; flex-direction: column; overflow: hidden">
+<div class="tbl stk">
+<div style="min-width: 880px; display: flex; flex-direction: column">
+<div class="th" style="grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.2fr) 230px">
+<button class="sort" onClick="{{ sortName }}">Item<span aria-hidden="true">{{ arrowName }}</span></button>
+<span>Group</span>
+<button class="sort num" onClick="{{ sortOn }}">On hand<span aria-hidden="true">{{ arrowOn }}</span></button>
+<span class="num">Reorder at</span>
+<button class="sort" onClick="{{ sortStatus }}">Status<span aria-hidden="true">{{ arrowStatus }}</span></button>
+<span></span>
+</div>
+<sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}"><div class="empty" role="status"><strong>{{ emptyTitle }}</strong><span>{{ emptyText }}</span><button class="btn sm" onClick="{{ clearAll }}">{{ clearLabel }}</button></div></sc-if>
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="10">
+<div class="tr" style="grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.2fr) 230px">
+<strong class="c1">{{ r.name }}</strong>
+<span data-l="Group" style="color: var(--text-muted)">{{ r.cat }}</span>
+<span class="num" data-l="On hand" style="font-weight: 600">{{ r.onHand }}</span>
+<span class="num" data-l="Reorder at">{{ r.reorder }}</span>
+<span data-l="Status"><sc-if value="{{ r.isLow }}" hint-placeholder-val="{{ false }}"><span class="pill" style="background: var(--danger-bg); color: var(--danger-fg)">Running low</span></sc-if><sc-if value="{{ r.isOk }}" hint-placeholder-val="{{ true }}"><span style="color: var(--text-muted)">In stock</span></sc-if></span>
+<span class="ca acts">
+<button class="lnkb" onClick="{{ r.count }}" aria-label="Count {{ r.name }}">Count</button>
+<sc-if value="{{ r.isLow }}" hint-placeholder-val="{{ false }}"><a class="btn sm" href="Purchasing.dc.html" aria-label="Request purchase of {{ r.name }}">Request purchase</a></sc-if>
+</span>
+</div>
+</sc-for>
+</div>
+</div>
+<div class="pager">
+<span>{{ rangeText }}</span>
+<div class="pn">
+<sc-if value="{{ hasPrev }}" hint-placeholder-val="{{ false }}"><button class="btn" onClick="{{ prev }}">Previous</button></sc-if>
+<sc-if value="{{ noPrev }}" hint-placeholder-val="{{ true }}"><button class="btn" disabled>Previous</button></sc-if>
+<span>Page {{ pageNo }} of {{ pageCount }}</span>
+<sc-if value="{{ hasNext }}" hint-placeholder-val="{{ false }}"><button class="btn" onClick="{{ next }}">Next</button></sc-if>
+<sc-if value="{{ noNext }}" hint-placeholder-val="{{ true }}"><button class="btn" disabled>Next</button></sc-if>
+</div>
+</div>
+</div>
+
+</main>
+</div>
+
+<sc-if value="{{ countOpen }}" hint-placeholder-val="{{ false }}">
+<div class="scrim" onClick="{{ closeCount }}"></div>
+<aside class="drawer dlg" role="dialog" aria-label="Record a stock count">
+<div class="dh"><h2>Record a stock count</h2><button class="btn" onClick="{{ closeCount }}">Close</button></div>
+<form class="db" novalidate onSubmit="{{ onSubmit }}" id="count-form">
+<sc-if value="{{ hasErrs }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert">{{ errSummary }}</p></sc-if>
+<datalist id="inv-items"><sc-for list="{{ itemList }}" as="i" hint-placeholder-count="22"><option value="{{ i.v }}"></option></sc-for></datalist>
+<sc-if value="{{ lockItem }}" hint-placeholder-val="{{ false }}"><div class="ctx"><strong>{{ aItem }}</strong><span class="note">{{ aInfo }}</span></div></sc-if>
+<sc-if value="{{ pickItem }}" hint-placeholder-val="{{ true }}">
+<div class="fld">
+<label class="lbl">Item<input class="field" id="f-item" type="text" list="inv-items" autocomplete="off" value="{{ aItem }}" onInput="{{ onAItem }}" placeholder="Start typing a name" aria-invalid="{{ itemInvalid }}" aria-describedby="e-item"></label>
+<sc-if value="{{ errItem }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-item">{{ errItem }}</p></sc-if>
+<p class="cnt-info" aria-live="polite">{{ aInfo }}</p>
+</div>
+</sc-if>
+<div class="fld">
+<label class="lbl">{{ qtyLabel }}<input class="field" id="f-qty" type="text" inputmode="decimal" autocomplete="off" value="{{ aQty }}" onInput="{{ onAQty }}" aria-invalid="{{ qtyInvalid }}" aria-describedby="e-qty d-qty"></label>
+<sc-if value="{{ errQty }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-qty">{{ errQty }}</p></sc-if>
+<sc-if value="{{ hasDiff }}" hint-placeholder-val="{{ false }}"><p class="cnt-info diff" id="d-qty" aria-live="polite">{{ diffText }}</p></sc-if>
+</div>
+<div class="fld">
+<div class="lbl" role="group" aria-label="Reason" id="f-reason" tabindex="-1" aria-invalid="{{ reasonInvalid }}" aria-describedby="e-reason">Reason
+<div class="seg"><sc-for list="{{ reasons }}" as="r" hint-placeholder-count="4"><button type="button" class="{{ r.cls }}" aria-pressed="{{ r.on }}" onClick="{{ r.pick }}">{{ r.label }}</button></sc-for></div>
+</div>
+<sc-if value="{{ errReason }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-reason">{{ errReason }}</p></sc-if>
+</div>
+</form>
+<div class="df"><button type="submit" form="count-form" class="btnp">Save count</button><button type="button" class="btn" onClick="{{ closeCount }}">Cancel</button></div>
+</aside>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const W = (typeof window !== 'undefined') ? window : {};
+const PAGE = 10;
+const items = [
+{ name: 'Flour', cat: 'Raw materials', n: 120, unit: 'kg', re: 150 },
+{ name: 'Sugar', cat: 'Raw materials', n: 85, unit: 'kg', re: 40 },
+{ name: 'Cooking oil', cat: 'Raw materials', n: 18, unit: 'litres', re: 30 },
+{ name: 'Butter', cat: 'Raw materials', n: 40, unit: 'kg', re: 25 },
+{ name: 'Chicken', cat: 'Raw materials', n: 55, unit: 'kg', re: 60 },
+{ name: 'Rice', cat: 'Raw materials', n: 200, unit: 'kg', re: 80 },
+{ name: 'Eggs', cat: 'Raw materials', n: 600, unit: 'units', re: 300 },
+{ name: 'Packaging boxes', cat: 'Raw materials', n: 220, unit: 'units', re: 500 },
+{ name: 'Meat pie', cat: 'Finished goods', n: 240, unit: 'units', re: 50 },
+{ name: 'Sausage roll', cat: 'Finished goods', n: 180, unit: 'units', re: 50 },
+{ name: 'Chicken pie', cat: 'Finished goods', n: 60, unit: 'units', re: 50 },
+{ name: 'Doughnut', cat: 'Finished goods', n: 150, unit: 'units', re: 60 },
+{ name: 'Jollof rice (portions)', cat: 'Finished goods', n: 90, unit: 'portions', re: 40 },
+{ name: 'Pepper soup (portions)', cat: 'Finished goods', n: 40, unit: 'portions', re: 40 },
+{ name: 'Moi moi', cat: 'Finished goods', n: 70, unit: 'units', re: 30 },
+{ name: 'Meal tray (chicken)', cat: 'In-flight items', n: 400, unit: 'units', re: 150 },
+{ name: 'Meal tray (vegetarian)', cat: 'In-flight items', n: 120, unit: 'units', re: 100 },
+{ name: 'Snack box', cat: 'In-flight items', n: 500, unit: 'units', re: 200 },
+{ name: 'Toiletry kit', cat: 'In-flight items', n: 350, unit: 'units', re: 400 },
+{ name: 'Bottled water', cat: 'In-flight items', n: 900, unit: 'units', re: 300 },
+{ name: 'Blanket', cat: 'In-flight items', n: 80, unit: 'units', re: 50 },
+{ name: 'Hot towel pack', cat: 'In-flight items', n: 600, unit: 'units', re: 200 }
+];
+// stock received in Receive stock is remembered, so it shows here (purchase names are plural for some items)
+const ALIAS = { 'Toiletry kits': 'Toiletry kit', 'Snack boxes': 'Snack box', 'Blankets': 'Blanket' };
+const recv = W.trLoad ? W.trLoad('recv', {}) : {};
+const addIn = {}; Object.keys(recv).forEach((k) => { const nm = ALIAS[recv[k].item] || recv[k].item; addIn[nm] = (addIn[nm] || 0) + recv[k].qty; });
+const adj = st.adj || {};
+const cat = st.cat || 'All';
+const q = st.q || '';
+const lowOnly = !!st.lowOnly;
+const sortKey = st.sortKey || 'name';
+const sortDir = st.sortDir || 1;
+const now = (it) => adj[it.name] !== undefined ? adj[it.name] : it.n + (addIn[it.name] || 0);
+const isLow = (it) => now(it) <= it.re;
+const matches = items.filter((it) => (cat === 'All' || it.cat === cat) && (!lowOnly || isLow(it)) && it.name.toLowerCase().indexOf(q.toLowerCase()) !== -1);
+const val = (it) => sortKey === 'on' ? now(it) : sortKey === 'status' ? (isLow(it) ? 0 : 1) : it.name.toLowerCase();
+matches.sort((a, b) => (val(a) < val(b) ? -1 : val(a) > val(b) ? 1 : a.name.localeCompare(b.name)) * sortDir);
+const pageCount = Math.max(1, Math.ceil(matches.length / PAGE));
+const page = Math.min(st.page || 0, pageCount - 1);
+const shown = matches.slice(page * PAGE, page * PAGE + PAGE);
+const arrow = (k) => sortKey === k ? (sortDir === 1 ? ' ▲' : ' ▼') : '';
+const sortBy = (k) => () => this.setState({ sortKey: k, sortDir: sortKey === k ? -sortDir : 1, page: 0 });
+const errs = st.errs || {};
+const aItem = st.aItem || '';
+const aQty = st.aQty || '';
+const aReason = st.aReason || '';
+const found = items.filter((it) => it.name === aItem)[0];
+const clr = (k) => Object.assign({}, errs, { [k]: '' });
+const openWith = (name, lock) => this.setState({ countOpen: true, lock: !!lock, aItem: name, aQty: '', aReason: '', errs: {}, saved: undefined });
+const nQty = parseFloat(String(aQty).replace(/,/g, ''));
+const qtyOk = String(aQty).trim() !== '' && /^\d+(\.\d+)?$/.test(String(aQty).trim().replace(/,/g, ''));
+const save = () => {
+const e = {};
+if (!found) e.item = 'Pick an item from the list.';
+if (!String(aQty).trim()) e.qty = 'Enter the number you counted.'; else if (!qtyOk) e.qty = 'The count must be a number, 0 or more.';
+if (!aReason) e.reason = 'Choose a reason for the change.';
+if (Object.keys(e).length) {
+this.setState({ errs: e });
+setTimeout(() => { const el = document.querySelector('.drawer [aria-invalid="true"]'); if (el && el.focus) el.focus(); }, 0);
+return;
+}
+const before = now(found);
+this.setState({ adj: Object.assign({}, adj, { [found.name]: nQty }), saved: found.name + ' changed from ' + before + ' to ' + nQty + ' ' + found.unit + '. Reason: ' + aReason.toLowerCase() + '. Recorded by Bola K., 21 Oct 2026, 14:40.', countOpen: false, aItem: '', aQty: '', aReason: '', errs: {} });
+};
+const lowCount = items.filter(isLow).length;
+const nErr = Object.keys(errs).filter((k) => errs[k]).length;
+const dflt = cat === 'All' && !q;
+const emptyLow = lowOnly && dflt;
+const diffN = (found && qtyOk) ? nQty - now(found) : null;
+return {
+openCount: () => openWith('', false),
+countOpen: !!st.countOpen, lockItem: !!st.lock && !!found, pickItem: !(st.lock && found),
+closeCount: () => this.setState({ countOpen: false, errs: {} }),
+hasSaved: !!st.saved, savedText: st.saved || '', dismiss: () => this.setState({ saved: undefined }),
+itemList: items.map((it) => ({ v: it.name })),
+aItem, aQty,
+aInfo: found ? 'The system holds ' + now(found) + ' ' + found.unit + ' now. Reorder at ' + found.re + '.' : 'Pick an item to see what the system holds now.',
+qtyLabel: 'Counted now' + (found ? ' (' + found.unit + ')' : ''),
+hasDiff: diffN !== null, diffText: diffN === 0 ? 'Matches the system. Nothing changes.' : diffN !== null ? Math.abs(diffN) + ' ' + found.unit + (diffN < 0 ? ' fewer' : ' more') + ' than the system holds.' : '',
+onAItem: (e) => this.setState({ aItem: e.target.value, errs: clr('item') }),
+onAQty: (e) => this.setState({ aQty: e.target.value, errs: clr('qty') }),
+errItem: errs.item || '', itemInvalid: errs.item ? 'true' : 'false', errQty: errs.qty || '', qtyInvalid: errs.qty ? 'true' : 'false', errReason: errs.reason || '', reasonInvalid: errs.reason ? 'true' : 'false',
+hasErrs: nErr > 0, errSummary: nErr === 1 ? 'One thing needs fixing before this can be saved.' : nErr + ' things need fixing before this can be saved.',
+reasons: ['Counting correction', 'Spoilage', 'Damaged', 'Other'].map((r) => ({ label: r, on: r === aReason, cls: r === aReason ? 'chip on' : 'chip', pick: () => this.setState({ aReason: r, errs: clr('reason') }) })),
+onSubmit: (e) => { if (e && e.preventDefault) e.preventDefault(); save(); },
+cats: ['All', 'Raw materials', 'Finished goods', 'In-flight items'].map((c) => ({ label: c, on: c === cat, pick: () => this.setState({ cat: c, page: 0 }), bg: c === cat ? 'var(--brand)' : 'var(--bg-surface)', color: c === cat ? 'var(--bg-surface)' : 'var(--text)', border: c === cat ? 'var(--brand)' : 'var(--border-strong)' })),
+lowOnly, toggleLow: () => this.setState({ lowOnly: !lowOnly, page: 0 }),
+lowLabel: 'Running low (' + lowCount + ')',
+lowBg: lowOnly ? 'var(--danger-fg)' : 'var(--bg-surface)', lowColor: lowOnly ? 'var(--bg-surface)' : 'var(--danger-fg)', lowBorder: lowOnly ? 'var(--danger-fg)' : 'var(--border-strong)',
+q, onQ: (e) => this.setState({ q: e.target.value, page: 0 }),
+sortName: sortBy('name'), sortOn: sortBy('on'), sortStatus: sortBy('status'),
+arrowName: arrow('name'), arrowOn: arrow('on'), arrowStatus: arrow('status'),
+rows: shown.map((it) => ({
+name: it.name, cat: it.cat, onHand: now(it) + ' ' + it.unit, reorder: it.re + ' ' + it.unit,
+isLow: isLow(it), isOk: !isLow(it),
+count: () => openWith(it.name, true)
+})),
+noRows: matches.length === 0,
+emptyTitle: emptyLow ? 'Nothing is running low' : 'No items match',
+emptyText: emptyLow ? 'Every item is above its reorder level.' : 'Clear the search or the filters to see every item.',
+clearLabel: emptyLow ? 'Show all stock' : 'Clear search and filters',
+clearAll: () => this.setState({ cat: 'All', q: '', lowOnly: false, page: 0 }),
+rangeText: matches.length === 0 ? 'No items' : 'Showing ' + (page * PAGE + 1) + ' to ' + (page * PAGE + shown.length) + ' of ' + matches.length + ' items',
+pageNo: page + 1, pageCount,
+prev: () => this.setState({ page: Math.max(0, page - 1) }),
+next: () => this.setState({ page: Math.min(pageCount - 1, page + 1) }),
+hasPrev: page > 0, noPrev: page === 0, hasNext: page < pageCount - 1, noNext: page >= pageCount - 1
+};
+}
+}
+</script>
+</body>
+</html>

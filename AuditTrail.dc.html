@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reports: audit trail</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+<script src="./list-engine.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./app.css">
+</helmet>
+<div class="shell">
+<aside class="side" aria-label="Main">
+<input type="checkbox" class="sbt" id="sbt" aria-label="Collapse or expand the menu">
+<div class="sbtop"><div class="brand"><span class="logo" aria-hidden="true">TR</span><span class="bt"><b>Things Remembered</b><small>Back office</small></span></div><a class="sbbell" href="Notifications.dc.html" title="Notifications" aria-label="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a><label for="sbt" class="sbtl" title="Collapse or expand the menu"><span class="chev" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E&quot;)"></span></label></div>
+<nav class="navs" aria-label="Sections">
+<div class="grp">Your work</div>
+<a class="nav" href="Notifications.dc.html" title="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Notifications</span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a>
+<a class="nav" href="Approvals.dc.html" title="Approvals"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Approvals</span><span class="bdg" data-badge="appr" data-word="waiting for you" aria-label="4 waiting for you">4</span></a>
+<div class="grp">Operations</div>
+<a class="nav" href="Production.dc.html" title="Production"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Production</span></a>
+<a class="nav" href="Distribution.dc.html" title="Distribution"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 7h13v9H1zM14 10h4l3 3v3h-7zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Distribution</span></a>
+<a class="nav" href="Inflight.dc.html" title="In-flight catering"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2 3.5 7.5l6.3 3.2-3.5 3.5-3-.5L2 15l4 2 2 4 1.3-1.3-.5-3 3.5-3.5 3.2 6.3z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">In-flight catering</span></a>
+<a class="nav" href="Inventory.dc.html" title="Inventory"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8l-9-5-9 5v8l9 5 9-5zM3.3 7.5L12 12l8.7-4.5M12 22V12'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Inventory</span></a>
+<a class="nav" href="Purchasing.dc.html" title="Purchasing"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100-2 1 1 0 000 2zM18 20a1 1 0 100-2 1 1 0 000 2z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Purchasing</span></a>
+<div class="grp">Finance</div>
+<a class="nav" href="AccountsHome.dc.html" title="Accounts"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16v16H4zM4 9h16M9 9v11'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Accounts</span></a>
+<a class="nav on" href="Reports.dc.html" title="Reports" aria-current="page"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20V10M10 20V4M16 20v-8M22 20H2'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Reports</span></a>
+<div class="grp">Admin</div>
+<a class="nav" href="ItemsPrices.dc.html" title="Settings"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3h0a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5h0a1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8v0a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Settings</span></a>
+</nav><div class="bot">
+<div class="who"><span class="av">BK</span><span class="wt"><b>Bola K.</b><small>Operations manager · All states</small></span></div>
+<a class="nav ghost" href="Main.dc.html" title="Open Cash Point"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5h18v10H3zM8 21h8M12 15v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Open Cash Point</span></a>
+<a class="nav" href="BackOfficeSignIn.dc.html" title="Sign out"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Sign out</span></a>
+</div></aside>
+
+<main class="pg" id="main">
+<div class="hd">
+<div class="hdt"><h1>{{ title }}</h1><span class="sub">{{ sub }}</span></div>
+<div class="hda">
+<sc-for list="{{ links }}" as="l" hint-placeholder-count="1"><a class="lnkb" href="{{ l.href }}">{{ l.label }}</a></sc-for>
+<sc-if value="{{ hasExp }}" hint-placeholder-val="{{ false }}"><details class="xm"><summary class="btn" role="button" aria-label="Export this report">Export</summary><div class="xmenu" role="menu"><sc-for list="{{ xopts }}" as="o" hint-placeholder-count="3"><button class="xi" role="menuitem" onClick="{{ o.pick }}">{{ o.label }}</button></sc-for></div></details></sc-if>
+<sc-if value="{{ hasAdd }}" hint-placeholder-val="{{ true }}"><button class="btnp" onClick="{{ openAdd }}">{{ addLabel }}</button></sc-if>
+</div>
+</div>
+<nav class="tabs" aria-label="Report sections"><a class="tab" href="Reports.dc.html">Sales</a><a class="tab" href="LocationView.dc.html">Location view</a><a class="tab" href="EndOfDay.dc.html">End of day</a><a class="tab" href="CounterApprovals.dc.html">Counter approvals</a><a class="tab" href="VatWht.dc.html">VAT and WHT</a><a class="tab on" href="AuditTrail.dc.html" aria-current="page">Audit trail</a></nav>
+<sc-if value="{{ xHas }}" hint-placeholder-val="{{ false }}"><div role="status" class="ok"><strong>{{ xText }}</strong><span>Sample only. Nothing is downloaded in this design. The file would carry the filters and period you have set.</span></div></sc-if>
+<sc-if value="{{ hasDone }}" hint-placeholder-val="{{ false }}"><div role="status" class="ok toast"><span><strong>Done.</strong> {{ doneText }}</span><button class="lnkb" onClick="{{ dismissDone }}">Dismiss</button></div></sc-if>
+<sc-if value="{{ hasStats }}" hint-placeholder-val="{{ true }}">
+<div class="statrow">
+<sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
+<div class="stat"><span style="font-size: 12px; font-weight: 600; color: var(--text-muted)">{{ s.l }}</span><span style="font-size: 22px; font-weight: 700; color: {{ s.c }}">{{ s.v }}</span><sc-if value="{{ s.hasSub }}" hint-placeholder-val="{{ false }}"><span class="note">{{ s.sub }}</span></sc-if><sc-if value="{{ s.hasHref }}" hint-placeholder-val="{{ false }}"><a href="{{ s.href }}" style="font-size: 13px; font-weight: 600; color: var(--brand-strong)">{{ s.hrefLabel }}</a></sc-if></div>
+</sc-for>
+</div>
+</sc-if>
+<div class="band"><sc-if value="{{ hasChips }}" hint-placeholder-val="{{ true }}"><sc-if value="{{ labelChips }}" hint-placeholder-val="{{ false }}"><span class="gl">{{ chipLabel }}</span></sc-if><sc-for list="{{ chips }}" as="f" hint-placeholder-count="4"><button class="fc" onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" style="border-color: {{f.border}}; background: {{f.bg}}; color: {{f.color}}">{{ f.label }}</button></sc-for></sc-if><sc-if value="{{ hasChips2 }}" hint-placeholder-val="{{ false }}"><span class="vsep" aria-hidden="true"></span><span class="gl">{{ chip2Label }}</span><sc-for list="{{ chips2 }}" as="f" hint-placeholder-count="4"><button class="fc" onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" style="border-color: {{f.border}}; background: {{f.bg}}; color: {{f.color}}">{{ f.label }}</button></sc-for></sc-if></div>
+<div class="card tbl cards">
+<div style="min-width: {{ minW }}; display: flex; flex-direction: column">
+<div class="th" style="grid-template-columns: {{ gridCols }}"><sc-for list="{{ heads }}" as="h" hint-placeholder-count="5"><span class="{{ h.cls }}">{{ h.l }}</span></sc-for></div>
+<sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}"><div class="empty" role="status"><strong>{{ emptyTitle }}</strong><sc-if value="{{ hasEmptyText }}" hint-placeholder-val="{{ false }}"><span>{{ emptyText }}</span></sc-if><sc-if value="{{ canClear }}" hint-placeholder-val="{{ false }}"><button class="btn sm" onClick="{{ clearFilters }}">Show everything</button></sc-if></div></sc-if>
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="5">
+<div class="tr" style="grid-template-columns: {{ gridCols }}; padding-top: 10px; padding-bottom: 10px">
+<sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="5">
+<span class="{{ c.cls }}" data-l="{{ c.l }}" style="display: flex; flex-direction: column; gap: 2px; min-width: 0; align-items: {{ c.align }}">
+<sc-if value="{{ c.isPill }}" hint-placeholder-val="{{ false }}"><span class="pill" style="background: {{c.bg}}; color: {{c.color}}">{{ c.main }}</span></sc-if>
+<sc-if value="{{ c.isText }}" hint-placeholder-val="{{ true }}"><span style="font-weight: {{ c.w }}">{{ c.main }}</span></sc-if>
+<sc-if value="{{ c.hasSub }}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; line-height: 1.4; color: var(--text-muted)">{{ c.sub }}</span></sc-if>
+</span>
+</sc-for>
+<sc-if value="{{ hasActs }}" hint-placeholder-val="{{ true }}"><span class="acts">
+<sc-for list="{{ r.acts }}" as="a" hint-placeholder-count="2">
+<sc-if value="{{ a.isLink }}" hint-placeholder-val="{{ false }}"><a class="lnkb" href="{{ a.href }}" aria-label="{{ a.aria }}">{{ a.label }} ›</a></sc-if>
+<sc-if value="{{ a.isBtn }}" hint-placeholder-val="{{ true }}"><button class="{{ a.cls }}" onClick="{{ a.run }}" aria-label="{{ a.aria }}">{{ a.label }}</button></sc-if>
+</sc-for>
+</span></sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+<p class="note">{{ note }}</p>
+</main>
+</div>
+<sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+<div class="scrim" onClick="{{ closeDrawer }}"></div>
+<aside class="drawer {{ dClass }}" role="dialog" aria-label="{{ dTitle }}">
+<div class="dh"><h2>{{ dTitle }}</h2><button class="btn" onClick="{{ closeDrawer }}">Close</button></div>
+<div class="db">
+<sc-if value="{{ hasDSub }}" hint-placeholder-val="{{ false }}"><div class="ctx"><strong>{{ dSub }}</strong><span class="note">{{ dSub2 }}</span></div></sc-if>
+<sc-if value="{{ hasErrs }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert">{{ errSummary }}</p></sc-if>
+<sc-for list="{{ dFields }}" as="f" hint-placeholder-count="3">
+<div class="fld">
+<sc-if value="{{ f.isText }}" hint-placeholder-val="{{ true }}"><label class="lbl">{{ f.l }}{{ f.opt }}<input class="field" id="{{ f.id }}" type="{{ f.type }}" inputmode="{{ f.inputmode }}" list="{{ f.listId }}" value="{{ f.val }}" onInput="{{ f.on }}" placeholder="{{ f.ph }}" aria-invalid="{{ f.invalid }}" aria-describedby="{{ f.errId }}" autocomplete="off"></label></sc-if>
+<sc-if value="{{ f.isArea }}" hint-placeholder-val="{{ false }}"><label class="lbl">{{ f.l }}{{ f.opt }}<textarea class="field" id="{{ f.id }}" rows="3" value="{{ f.val }}" onInput="{{ f.on }}" placeholder="{{ f.ph }}" aria-invalid="{{ f.invalid }}" aria-describedby="{{ f.errId }}"></textarea></label></sc-if>
+<sc-if value="{{ f.isChoice }}" hint-placeholder-val="{{ false }}"><div class="lbl" role="group" aria-label="{{ f.l }}">{{ f.l }}{{ f.opt }}<div class="seg"><sc-for list="{{ f.opts }}" as="o" hint-placeholder-count="3"><button type="button" class="{{ o.cls }}" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}">{{ o.t }}</button></sc-for></div></div></sc-if>
+<sc-if value="{{ f.isMulti }}" hint-placeholder-val="{{ false }}"><div class="lbl" role="group" aria-label="{{ f.l }}">{{ f.l }}{{ f.opt }}<div class="seg"><sc-for list="{{ f.opts }}" as="o" hint-placeholder-count="3"><button type="button" class="{{ o.cls }}" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}">{{ o.t }}</button></sc-for></div></div></sc-if>
+<sc-if value="{{ f.hasList }}" hint-placeholder-val="{{ false }}"><datalist id="{{ f.listId }}"><sc-for list="{{ f.list }}" as="o" hint-placeholder-count="3"><option value="{{ o.v }}"></option></sc-for></datalist></sc-if>
+<sc-if value="{{ f.hasHint }}" hint-placeholder-val="{{ false }}"><p class="note">{{ f.hint }}</p></sc-if>
+<sc-if value="{{ f.hasErr }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="{{ f.errId }}">{{ f.err }}</p></sc-if>
+</div>
+</sc-for>
+<sc-for list="{{ dLines }}" as="x" hint-placeholder-count="3">
+<div class="kv"><span>{{ x.s }}</span><span>{{ x.t }}</span></div>
+</sc-for>
+<sc-if value="{{ hasDNote }}" hint-placeholder-val="{{ false }}"><p class="note">{{ dNote }}</p></sc-if>
+<sc-if value="{{ hasMsg }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert">{{ msg }}</p></sc-if>
+</div>
+<div class="df"><sc-if value="{{ hasSave }}" hint-placeholder-val="{{ true }}"><button class="btnp" onClick="{{ save }}">{{ saveLabel }}</button></sc-if><button class="btn" onClick="{{ closeDrawer }}">{{ closeLabel }}</button></div>
+</aside>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+/* This screen is a list screen: its content is the CFG below. The behaviour is in list-engine.js, the layout in sync.py. */
+const CFG = {
+  "export": "Audit trail",
+  "title": "Audit trail",
+  "sub": "Who recorded, changed or voided what, and when. Records are never deleted. 21 Oct 2026.",
+  "noAdd": 1,
+  "cols": [
+    {
+      "k": "time",
+      "l": "Time",
+      "t": "text",
+      "w": "0.7fr"
+    },
+    {
+      "k": "who",
+      "l": "Person",
+      "t": "strong",
+      "w": "1fr"
+    },
+    {
+      "k": "what",
+      "l": "Action",
+      "t": "pill",
+      "w": "1fr"
+    },
+    {
+      "k": "rec",
+      "l": "Record",
+      "t": "two",
+      "w": "2.4fr"
+    }
+  ],
+  "pills": {
+    "Recorded": [
+      "var(--brand-bg)",
+      "var(--brand-strong)"
+    ],
+    "Changed": [
+      "var(--warning-bg)",
+      "var(--warning-fg)"
+    ],
+    "Voided": [
+      "var(--danger-bg)",
+      "var(--danger-fg)"
+    ],
+    "Approved": [
+      "var(--brand-bg)",
+      "var(--brand-strong)"
+    ]
+  },
+  "chips": {
+    "field": "what",
+    "values": [
+      "All",
+      "Recorded",
+      "Changed",
+      "Voided",
+      "Approved"
+    ],
+    "label": "What"
+  },
+  "acts": [
+    {
+      "kind": "detail",
+      "label": "Details"
+    }
+  ],
+  "detailTitle": "What happened",
+  "subTitle": "{name}",
+  "subLine": "{who} at {time}",
+  "rows": [
+    {
+      "id": "a0",
+      "time": "12:40",
+      "who": "Amaka O.",
+      "what": "Approved",
+      "rec": "Discount on sale MM2-0409|15% off, ₦1,500, loyal customer",
+      "name": "Discount on sale MM2-0409",
+      "detail": [
+        [
+          "Action",
+          "Approved"
+        ],
+        [
+          "Record",
+          "Discount on sale MM2-0409"
+        ],
+        [
+          "Done by",
+          "Amaka O. at 12:40"
+        ],
+        [
+          "What",
+          "15% off, ₦1,500, loyal customer"
+        ],
+        [
+          "More",
+          "Supervisor PIN entered by Bola K."
+        ]
+      ]
+    },
+    {
+      "id": "a1",
+      "time": "10:20",
+      "who": "Amaka O.",
+      "what": "Recorded",
+      "rec": "Cash out, petty cash|₦2,000 for cleaning supplies, MM2 outlet",
+      "name": "Cash out, petty cash",
+      "detail": [
+        [
+          "Action",
+          "Recorded"
+        ],
+        [
+          "Record",
+          "Cash out, petty cash"
+        ],
+        [
+          "Done by",
+          "Amaka O. at 10:20"
+        ],
+        [
+          "What",
+          "₦2,000 for cleaning supplies, MM2 outlet"
+        ],
+        [
+          "More",
+          "Within the ₦5,000 limit, no PIN needed"
+        ]
+      ]
+    },
+    {
+      "id": "a2",
+      "time": "09:35",
+      "who": "Tobi A.",
+      "what": "Approved",
+      "rec": "Cash out, change float|₦6,000 more ₦100 notes, Lekki outlet",
+      "name": "Cash out, change float",
+      "detail": [
+        [
+          "Action",
+          "Approved"
+        ],
+        [
+          "Record",
+          "Cash out, change float"
+        ],
+        [
+          "Done by",
+          "Tobi A. at 09:35"
+        ],
+        [
+          "What",
+          "₦6,000 more ₦100 notes, Lekki outlet"
+        ],
+        [
+          "More",
+          "Over the ₦5,000 limit. Supervisor PIN entered by Ngozi A."
+        ]
+      ]
+    },
+    {
+      "id": "a3",
+      "time": "14:52",
+      "who": "Bola K.",
+      "what": "Approved",
+      "rec": "Distribution D-0092|Sent from MM2 production to Lekki outlet",
+      "name": "Distribution D-0092",
+      "detail": [
+        [
+          "Action",
+          "Approved"
+        ],
+        [
+          "Record",
+          "Distribution D-0092"
+        ],
+        [
+          "Done by",
+          "Bola K. at 14:52"
+        ],
+        [
+          "What",
+          "Sent from MM2 production to Lekki outlet"
+        ],
+        [
+          "More",
+          "Kelechi M. prepared it"
+        ]
+      ]
+    },
+    {
+      "id": "a4",
+      "time": "14:31",
+      "who": "Amaka O.",
+      "what": "Recorded",
+      "rec": "Sale S-4418|MM2 outlet, 6 items, cash",
+      "name": "Sale S-4418",
+      "detail": [
+        [
+          "Action",
+          "Recorded"
+        ],
+        [
+          "Record",
+          "Sale S-4418"
+        ],
+        [
+          "Done by",
+          "Amaka O. at 14:31"
+        ],
+        [
+          "What",
+          "MM2 outlet, 6 items, cash"
+        ],
+        [
+          "More",
+          "Receipt printed"
+        ]
+      ]
+    },
+    {
+      "id": "a5",
+      "time": "13:58",
+      "who": "Ngozi A.",
+      "what": "Changed",
+      "rec": "Journal J-0421|Accrual for October rent",
+      "name": "Journal J-0421",
+      "detail": [
+        [
+          "Action",
+          "Changed"
+        ],
+        [
+          "Record",
+          "Journal J-0421"
+        ],
+        [
+          "Done by",
+          "Ngozi A. at 13:58"
+        ],
+        [
+          "What",
+          "Accrual for October rent"
+        ],
+        [
+          "More",
+          "Posted, amount changed from 450,000 to 480,000"
+        ]
+      ]
+    },
+    {
+      "id": "a6",
+      "time": "13:20",
+      "who": "Emeka N.",
+      "what": "Voided",
+      "rec": "Sale S-4391|Surulere outlet",
+      "name": "Sale S-4391",
+      "detail": [
+        [
+          "Action",
+          "Voided"
+        ],
+        [
+          "Record",
+          "Sale S-4391"
+        ],
+        [
+          "Done by",
+          "Emeka N. at 13:20"
+        ],
+        [
+          "What",
+          "Surulere outlet"
+        ],
+        [
+          "More",
+          "Reason: customer left without paying. Approved by supervisor"
+        ]
+      ]
+    },
+    {
+      "id": "a7",
+      "time": "12:44",
+      "who": "Ibrahim S.",
+      "what": "Recorded",
+      "rec": "Purchase P-0312|Flour 200 kg from Sunrise Mills",
+      "name": "Purchase P-0312",
+      "detail": [
+        [
+          "Action",
+          "Recorded"
+        ],
+        [
+          "Record",
+          "Purchase P-0312"
+        ],
+        [
+          "Done by",
+          "Ibrahim S. at 12:44"
+        ],
+        [
+          "What",
+          "Flour 200 kg from Sunrise Mills"
+        ],
+        [
+          "More",
+          "Waiting for approval"
+        ]
+      ]
+    },
+    {
+      "id": "a8",
+      "time": "11:05",
+      "who": "Bola K.",
+      "what": "Changed",
+      "rec": "Price: Meat pie|From 1,400 to 1,500",
+      "name": "Price: Meat pie",
+      "detail": [
+        [
+          "Action",
+          "Changed"
+        ],
+        [
+          "Record",
+          "Price: Meat pie"
+        ],
+        [
+          "Done by",
+          "Bola K. at 11:05"
+        ],
+        [
+          "What",
+          "From 1,400 to 1,500"
+        ],
+        [
+          "More",
+          "Starts 1 Nov 2026"
+        ]
+      ]
+    },
+    {
+      "id": "a9",
+      "time": "10:12",
+      "who": "Chioma E.",
+      "what": "Recorded",
+      "rec": "Cash shortage|Ikeja outlet, 500 short",
+      "name": "Cash shortage",
+      "detail": [
+        [
+          "Action",
+          "Recorded"
+        ],
+        [
+          "Record",
+          "Cash shortage"
+        ],
+        [
+          "Done by",
+          "Chioma E. at 10:12"
+        ],
+        [
+          "What",
+          "Ikeja outlet, 500 short"
+        ],
+        [
+          "More",
+          "Reported at close of shift"
+        ]
+      ]
+    }
+  ],
+  "note": "Every change keeps the earlier value, the person and the time.",
+  "minW": 900,
+  "links": []
+};
+
+class Component extends ListPage { constructor() { super(CFG, typeof HOOK === 'function' ? HOOK : null); } }
+</script>
+</body>
+</html>

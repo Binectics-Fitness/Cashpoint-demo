@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: report a stock difference</title>
+<script src="./support.js"></script>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos">
+<header class="bar">
+<div class="bar-id"><span class="bar-title">Things Remembered</span><span class="bar-sub">MM2 outlet · Cash Point</span></div>
+<div class="who"><span class="av" aria-hidden="true">AO</span><div class="who-t" style="align-items:flex-start;text-align:left"><span class="who-n">Amaka O.</span><span class="who-s">Signed in</span></div></div>
+</header>
+<main class="page col" style="padding-top:32px">
+<div class="wrap w-lg" style="gap:6px"><h1 class="page-h">Report a stock difference</h1><p class="lead">Enter what you actually counted. Your supervisor is told about any difference, and you can still start your shift.</p></div>
+<section class="card flush wrap w-lg" style="gap:0" aria-label="Stock count">
+<div class="scroll"><div role="table" class="dt stack"><div role="rowgroup" class="thead"><div role="row" class="tr"><div role="columnheader" class="th">Item</div><div role="columnheader" class="th">System says</div><div role="columnheader" class="th">I counted</div><div role="columnheader" class="th">Difference</div></div></div><div role="rowgroup" class="tbody">
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+<div role="row" class="tr {{r.rowCls}}"><div role="cell" class="td b">{{ r.item }}</div><div role="cell" data-l="System says" class="td">{{ r.sys }}</div><div role="cell" data-l="I counted" class="td"><input class="cell-in" type="text" inputmode="numeric" aria-label="{{r.item}} counted" value="{{ r.counted }}" onInput="{{ r.onCounted }}" aria-invalid="{{ r.bad }}"></div><div role="cell" data-l="Difference" class="td {{r.diffCls}}">{{ r.diff }}</div></div>
+</sc-for>
+</div></div></div>
+<div class="wrap" style="padding:16px 24px 24px;border-top:1px solid var(--line);gap:14px">
+<label class="lbl">Note for your supervisor<textarea class="field" rows="3" placeholder="For example: two chicken pies were missing from the tray when I arrived" onInput="{{ onNote }}">{{ note }}</textarea></label>
+<sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}"><p role="alert" class="fe">{{ err }}</p></sc-if>
+<div class="actions"><a class="btn lg" href="OpeningStock.dc.html">Back</a><button class="btn primary lg grow" onClick="{{ send }}">Send report and start shift</button></div>
+</div>
+</section>
+</main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const base = [['Meat pie', 24, 24], ['Sausage roll', 31, 31], ['Chicken pie', 18, 16], ['Jollof rice', 15, 15], ['Pepper soup', 7, 7], ['Zobo', 40, 40]];
+const counted = st.counted || {};
+const val = (b) => counted[b[0]] !== undefined ? counted[b[0]] : String(b[2]);
+const rows = base.map((b) => {
+const raw = String(val(b)).trim();
+const ok = /^\d+$/.test(raw);
+const d = ok ? parseInt(raw, 10) - b[1] : null;
+return { item: b[0], sys: b[1], counted: val(b), bad: !ok,
+rowCls: d ? 'warnrow' : '',
+diff: !ok ? 'Enter a number' : d === 0 ? '0' : d < 0 ? '\u2212' + (-d) + ' short' : '+' + d + ' over',
+diffCls: !ok ? 'derr' : d === 0 ? 'dpos' : 'dneg',
+onCounted: (e) => this.setState({ counted: Object.assign({}, counted, { [b[0]]: e.target.value }), err: '' }) };
+});
+const send = () => {
+const bad = rows.filter((r) => r.bad).map((r) => r.item);
+if (bad.length) { this.setState({ err: 'I counted: enter a whole number for ' + bad.join(', ') + '.' }); return; }
+window.location.href = 'NewSale.dc.html';
+};
+return { rows, note: st.note || '', onNote: (e) => this.setState({ note: e.target.value }), hasErr: !!st.err, err: st.err || '', send };
+}
+}
+</script>
+</body>
+</html>

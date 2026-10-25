@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: close shift</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos">
+<header class="bar">
+<a class="btn back" href="NewSale.dc.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Back to sale</a>
+<div class="bar-id"><h1 class="bar-title">Close shift · final count (Z-count)</h1><span class="bar-sub">MM2 outlet · Amaka O. · 08:00 to 16:00</span></div>
+
+</header>
+<main class="page col" style="align-items:center">
+<div class="wrap w-lg steps">
+
+<section class="card" aria-label="Sales this shift">
+<h2 class="card-h">Sales this shift</h2>
+<div class="tags"><span>38 sales<b>₦186,500</b></span><span>POS<b>₦98,000</b></span><span>Transfer<b>₦81,500</b></span><span>Cash<b>₦7,000</b></span><span>Discounts given ({{ discN }})<b>{{ discText }}</b></span></div>
+</section>
+
+<section class="card" aria-labelledby="h-cash">
+<div class="stephd {{ cashHd }}"><h2 id="h-cash">Count the cash</h2><sc-if value="{{ cashDiffOn }}" hint-placeholder-val="{{ false }}"><span class="pill warn">{{ diffText }}</span></sc-if></div>
+<div class="kv"><span>Cash sales</span><b>₦7,000</b></div>
+<div class="kv"><span>Cash taken out ({{ outCount }})</span><b>{{ outText }}</b></div>
+<div class="kv"><span>Cash the system expects</span><b>{{ expText }}</b></div>
+<label class="lbl">Cash you counted (₦)<input class="field big" type="text" inputmode="numeric" value="{{ counted }}" onInput="{{ onCounted }}" aria-invalid="{{ cashBad }}"></label>
+<sc-if value="{{ cashBad }}" hint-placeholder-val="{{ false }}"><p role="alert" class="fe">Cash you counted: enter the amount in the drawer.</p></sc-if>
+<div class="change" role="status" style="background: {{ diffBg }}"><span style="color: {{ diffFg }}; font-weight: 600">Difference</span><b style="color: {{ diffFg }}">{{ diffText }}</b></div>
+</section>
+
+<section class="card flush" aria-labelledby="h-stock">
+<div style="padding:20px 24px 4px"><div class="stephd {{ stockHd }}"><h2 id="h-stock">Count the stock left</h2><sc-if value="{{ stockDiffOn }}" hint-placeholder-val="{{ false }}"><span class="pill warn">{{ stockDiffText }}</span></sc-if></div>
+<p class="note" style="padding:8px 0 12px">Count what is left and enter it. The system shows the difference against what you sold.</p></div>
+<div class="scroll"><div role="table" class="dt stack"><div role="rowgroup" class="thead"><div role="row" class="tr"><div role="columnheader" class="th">Item</div><div role="columnheader" class="th">Opening</div><div role="columnheader" class="th">Sold</div><div role="columnheader" class="th">Expected</div><div role="columnheader" class="th">Counted</div><div role="columnheader" class="th">Difference</div></div></div><div role="rowgroup" class="tbody">
+<sc-for list="{{ stock }}" as="r" hint-placeholder-count="6">
+<div role="row" class="tr {{r.rowCls}}"><div role="cell" class="td b">{{ r.item }}</div><div role="cell" data-l="Opening" class="td">{{ r.open }}</div><div role="cell" data-l="Sold" class="td">{{ r.sold }}</div><div role="cell" data-l="Expected" class="td">{{ r.exp }}</div><div role="cell" data-l="Counted" class="td"><input class="cell-in" type="text" inputmode="numeric" aria-label="{{r.item}} counted" value="{{ r.counted }}" onInput="{{ r.onCounted }}" aria-invalid="{{ r.bad }}"></div><div role="cell" data-l="Difference" class="td {{r.diffCls}}">{{ r.diff }}</div></div>
+</sc-for>
+</div></div></div>
+<sc-if value="{{ stockBad }}" hint-placeholder-val="{{ false }}"><p role="alert" class="fe" style="padding:12px 24px">Counted: enter a whole number for {{ stockBadNames }}.</p></sc-if>
+</section>
+
+<section class="card" aria-labelledby="h-held" id="held">
+<div class="stephd {{ heldHd }}"><h2 id="h-held">Held sales</h2><sc-if value="{{ hasHeld }}" hint-placeholder-val="{{ false }}"><span class="pill warn">{{ heldShort }}</span></sc-if><sc-if value="{{ noHeld }}" hint-placeholder-val="{{ true }}"><span class="pill">None waiting</span></sc-if></div>
+<sc-if value="{{ hasHeld }}" hint-placeholder-val="{{ false }}">
+<p>{{ heldText }} Recall them and finish the sale, or discard them. Discarding needs a supervisor PIN and is listed on this count and in Reports, Counter approvals. Stock is not affected.</p>
+<div class="fgrid" style="align-items:flex-end">
+<label class="lbl" style="flex:0 1 200px">Supervisor PIN<input class="field" type="password" inputmode="numeric" maxlength="6" placeholder="Supervisor PIN" value="{{ pin }}" onInput="{{ onPin }}" aria-invalid="{{ hasErr }}"></label>
+<button class="btn solid-danger md" style="flex:0 0 auto" onClick="{{ discard }}">Discard held sales</button>
+<a class="btn md" style="flex:0 0 auto" href="HeldSales.dc.html">Open held sales</a>
+</div>
+<span class="small">Demo PIN: 1234</span>
+<sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}"><p role="alert" class="fe">{{ err }}</p></sc-if>
+</sc-if>
+<sc-if value="{{ hasDone }}" hint-placeholder-val="{{ false }}"><p role="status" class="alert ok">{{ done }}</p></sc-if>
+<sc-if value="{{ noHeldQuiet }}" hint-placeholder-val="{{ false }}"><p class="muted">Nothing is waiting to be recalled or discarded.</p></sc-if>
+</section>
+
+<section class="card" aria-labelledby="h-close">
+<div class="stephd {{ closeHd }}"><h2 id="h-close">Close the shift</h2></div>
+<p>{{ closeSummary }}</p>
+<ul class="checklist" aria-label="Before you can close">
+<sc-for list="{{ checks }}" as="c" hint-placeholder-count="3"><li class="{{c.cls}}">{{ c.text }}</li></sc-for>
+</ul>
+<sc-if value="{{ canClose }}" hint-placeholder-val="{{ true }}"><a class="btn primary lg" href="SignIn.dc.html">Close shift and sign out</a></sc-if>
+<sc-if value="{{ cannotClose }}" hint-placeholder-val="{{ false }}"><button class="btn primary lg" aria-disabled="true">Close shift and sign out</button><p role="status" class="fe" style="color:#6B4A00">Not yet: {{ blockText }}.</p></sc-if>
+</section>
+</div>
+</main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const fmt = (n) => '\u20a6' + String(Math.abs(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const ld = (k, d) => { try { return window.trLoad ? window.trLoad(k, d) : d; } catch (e) { return d; } };
+const outs = ld('cashouts', []);
+const sv = (k, v) => { try { if (window.trSave) { window.trSave(k, v); } } catch (e) {} };
+const logEv = (ev) => { const cur = ld('ctrNew', []); sv('ctrNew', [Object.assign({ id: 'n' + Date.now() + Math.floor(Math.random() * 1000), outlet: 'MM2 outlet', who: 'Amaka O.', status: 'To review', when: 'Today ' + new Date().toTimeString().slice(0, 5) }, ev)].concat(cur)); };
+const held = st.held !== undefined ? st.held : ld('held', [{ id: 'H-0001', customer: 'Mrs Okoye', total: 5900 }, { id: 'H-0002', customer: '', total: 4500 }]);
+const dEv = ld('ctrNew', []).filter((e) => e.type === 'Discount');
+const dTot = 1800 + dEv.reduce((a, e) => a + (e.amt || 0), 0);
+const discard = () => {
+if (String(st.pin || '') !== '1234') { this.setState({ err: 'Supervisor PIN: that PIN is not right. Ask the supervisor to try again.' }); return; }
+held.forEach((h) => { logEv({ type: 'Held sale discarded', what: h.id + ' \u00b7 ' + (h.customer || 'walk-in customer') + '|Discarded at close of shift', amount: fmt(h.total || 0), amt: h.total || 0, how: 'Supervisor PIN: Bola K.', pin: 'Yes' }); });
+sv('held', []);
+this.setState({ held: [], pin: '', err: '', done: held.length + (held.length === 1 ? ' held sale is' : ' held sales are') + ' discarded and listed in Reports, Counter approvals. Stock was not affected. You can close the shift.' });
+};
+const out = outs.reduce((s, x) => s + x.amount, 0);
+const exp = 7000 - out;
+const raw = st.counted !== undefined ? st.counted : String(exp);
+const cashBad = !/\d/.test(String(raw));
+const cnt = parseInt(String(raw).replace(/[^0-9]/g, ''), 10) || 0;
+const diff = cnt - exp;
+const base = [['Meat pie', 24, 18, 6, 6], ['Sausage roll', 31, 22, 9, 9], ['Chicken pie', 18, 11, 7, 6], ['Jollof rice', 15, 15, 0, 0], ['Pepper soup', 7, 6, 1, 1], ['Zobo', 40, 27, 13, 13]];
+const sc = st.sc || {};
+let shortN = 0, overN = 0; const badNames = [];
+const stock = base.map((b) => {
+const v = sc[b[0]] !== undefined ? sc[b[0]] : String(b[4]);
+const ok = /^\d+$/.test(String(v).trim());
+const d = ok ? parseInt(v, 10) - b[3] : 0;
+if (!ok) { badNames.push(b[0]); } else if (d < 0) { shortN++; } else if (d > 0) { overN++; }
+return { item: b[0], open: b[1], sold: b[2], exp: b[3], counted: v, bad: !ok, rowCls: d ? 'warnrow' : '',
+diff: !ok ? 'Enter a number' : d === 0 ? '0' : d < 0 ? '\u2212' + (-d) + ' short' : '+' + d + ' over',
+diffCls: !ok ? 'derr' : d === 0 ? 'dpos' : 'dneg',
+onCounted: (e) => this.setState({ sc: Object.assign({}, sc, { [b[0]]: e.target.value }) }) };
+});
+const nDiff = shortN + overN;
+const blocks = [];
+if (cashBad) { blocks.push('enter the cash you counted'); }
+if (badNames.length) { blocks.push('enter the stock count for ' + badNames.join(', ')); }
+if (held.length) { blocks.push('clear ' + held.length + ' held ' + (held.length === 1 ? 'sale' : 'sales')); }
+const cashTxt = diff === 0 ? '\u20a60 \u00b7 matches' : fmt(diff) + (diff < 0 ? ' short' : ' over');
+const stockTxt = nDiff === 1 ? '1 item differs' : nDiff + ' items differ';
+const notes = [];
+if (!cashBad && diff !== 0) { notes.push('the cash is ' + fmt(diff) + (diff < 0 ? ' short' : ' over')); }
+if (nDiff) { notes.push(nDiff + (nDiff === 1 ? ' item differs' : ' items differ') + ' from the stock count'); }
+return {
+outCount: outs.length,
+outText: out ? '\u2212' + fmt(out) : '\u20a60',
+expText: fmt(exp),
+counted: st.counted !== undefined ? st.counted : fmt(exp),
+onCounted: (e) => this.setState({ counted: e.target.value }),
+cashBad, cashHd: cashBad ? 'todo' : 'done', cashDiffOn: !cashBad && diff !== 0,
+diffBg: cashBad || diff === 0 ? '#E4F1EA' : '#FFF8E6',
+diffFg: cashBad || diff === 0 ? '#14513A' : '#6B4A00',
+diffText: cashBad ? 'Enter the cash you counted' : cashTxt,
+stock, stockBad: badNames.length > 0, stockBadNames: badNames.join(', '), stockHd: badNames.length ? 'todo' : 'done',
+stockDiffOn: nDiff > 0, stockDiffText: stockTxt,
+heldText: held.length + ' held ' + (held.length === 1 ? 'sale is' : 'sales are') + ' still waiting.',
+heldShort: held.length + ' waiting',
+hasHeld: held.length > 0, noHeld: held.length === 0, noHeldQuiet: held.length === 0 && !st.done, heldHd: held.length ? 'todo' : 'done',
+pin: st.pin || '', onPin: (e) => this.setState({ pin: e.target.value, err: '' }), discard,
+hasErr: !!st.err, err: st.err || '', hasDone: !!st.done, done: st.done || '',
+canClose: blocks.length === 0, cannotClose: blocks.length > 0, blockText: blocks.join('; '),
+closeHd: blocks.length ? 'todo' : 'done',
+closeSummary: notes.length ? 'Ready to close once the steps above are done. Note that ' + notes.join(' and ') + '. Differences are saved with your shift and shown to management.' : 'Everything matches. Close the shift to sign out.',
+checks: [
+{ text: 'Cash counted', cls: cashBad ? '' : 'ok' },
+{ text: 'Stock counted', cls: badNames.length ? '' : 'ok' },
+{ text: held.length ? 'Held sales cleared (' + held.length + ' left)' : 'Held sales cleared', cls: held.length ? '' : 'ok' }
+],
+discN: 2 + dEv.length, discText: '\u2212' + fmt(dTot)
+};
+}
+}
+</script>
+</body>
+</html>

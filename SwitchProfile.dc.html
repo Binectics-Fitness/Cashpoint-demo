@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: switch profile</title>
+<script src="./support.js"></script>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos">
+<header class="bar">
+<div class="bar-id"><span class="bar-title">Things Remembered</span><span class="bar-sub">MM2 outlet · Cash Point</span></div>
+<span class="status">Online</span>
+</header>
+<main class="page col" style="justify-content:center">
+<form class="card w-sm wrap" style="padding:32px;gap:22px" onSubmit="{{ submit }}" novalidate>
+<div class="wrap" style="gap:6px"><h1 class="page-h">Switch profile</h1><p class="lead" style="font-size:16px">The next sales representative signs in with their own username and password.</p></div>
+<div class="alert plain"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg><span>Amaka O. is signed in. Signing in as someone else ends her session. Her sales stay saved under her name.</span></div>
+<label class="lbl">Username<input class="field big" style="font-size:16px" type="text" autocomplete="username" placeholder="Your username"></label>
+<label class="lbl">Password<input class="field big" style="font-size:16px" type="password" autocomplete="current-password" placeholder="Your password"></label>
+
+<div class="actions"><a class="btn lg" href="NewSale.dc.html">Cancel</a><button class="btn primary lg grow" type="submit">Sign in</button></div>
+
+</form>
+</main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+return { submit: (e) => { if (e && e.preventDefault) { e.preventDefault(); } window.location.href = 'OpeningStock.dc.html'; } };
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: void sale</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos">
+<header class="bar">
+<div class="bar-id"><span class="bar-title">Things Remembered</span><span class="bar-sub">MM2 outlet · Cash Point</span></div>
+<div class="who-t"><span class="who-n">Amaka O.</span><span class="who-s">Shift started 08:00</span></div>
+</header>
+<main class="page col mid" style="justify-content:center">
+<form class="card w-md wrap" style="max-width:520px;padding:32px;gap:22px" onSubmit="{{ confirm }}" novalidate>
+<div class="wrap" style="gap:6px"><h1 class="page-h">Void this sale?</h1><p class="lead" style="font-size:16px">{{ infoText }} A voided sale is saved with the reason and who voided it.</p></div>
+<fieldset class="wrap" style="gap:8px"><legend>Reason</legend>
+<sc-for list="{{ reasons }}" as="r" hint-placeholder-count="4">
+<label class="opt"><sc-if value="{{ r.on }}" hint-placeholder-val="{{ false }}"><input type="radio" name="reason" checked onChange="{{ r.pick }}"></sc-if><sc-if value="{{ r.off }}" hint-placeholder-val="{{ true }}"><input type="radio" name="reason" onChange="{{ r.pick }}"></sc-if>{{ r.label }}</label>
+</sc-for>
+</fieldset>
+<label class="lbl">{{ noteLabel }}<textarea class="field" rows="2" onInput="{{ onNote }}" aria-invalid="{{ noteBad }}">{{ note }}</textarea></label>
+<sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}"><p role="alert" class="fe">{{ err }}</p></sc-if>
+<div class="actions"><a class="btn lg grow" href="{{ keepHref }}">Keep sale</a><button class="btn solid-danger lg grow" type="submit">Void sale</button></div>
+</form>
+</main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const fmt = (n) => '\u20a6' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+let qs = null; try { qs = new URLSearchParams(location.search); } catch (e) {}
+const from = (qs && qs.get('from')) || 'sale';
+const ld = (k, d) => { try { return window.trLoad ? window.trLoad(k, d) : d; } catch (e) { return d; } };
+const sv = (k, v) => { try { if (window.trSave) { window.trSave(k, v); } } catch (e) {} };
+const back = { sale: 'NewSale.dc.html', main: 'Main.dc.html', offline: 'OfflineSale.dc.html', today: 'TodaysSales.dc.html' }[from] || 'NewSale.dc.html';
+let info = 'Receipt no. MM2-0412 \u00b7 4 items \u00b7 \u20a611,000.';
+if (from === 'today' && qs) { const it = parseInt(qs.get('items'), 10) || 0; info = 'Receipt no. ' + (qs.get('no') || '') + ' \u00b7 ' + it + (it === 1 ? ' item' : ' items') + ' \u00b7 ' + fmt(parseInt(qs.get('total'), 10) || 0) + '.'; }
+else if (from === 'sale') { const vi = ld('voidInfo', null); if (vi) { info = 'Receipt no. ' + vi.ref + ' \u00b7 ' + vi.items + (vi.items === 1 ? ' item' : ' items') + ' \u00b7 ' + fmt(vi.total) + '.'; } }
+const names = ['Customer changed their mind', 'Wrong item entered', 'Payment problem', 'Other'];
+const reason = st.reason || names[0];
+const other = reason === 'Other';
+const note = st.note || '';
+const reasons = names.map((n) => ({ label: n, on: n === reason, off: n !== reason, pick: () => this.setState({ reason: n, err: '' }) }));
+return {
+infoText: info, reasons, note, onNote: (e) => this.setState({ note: e.target.value, err: '' }),
+noteLabel: other ? 'Note (required for Other)' : 'Note (optional)',
+noteBad: other && !!st.err,
+hasErr: !!st.err, err: st.err || '',
+keepHref: back,
+confirm: (e) => {
+if (e && e.preventDefault) { e.preventDefault(); }
+if (other && !note.trim()) { this.setState({ err: 'Note: say why the sale is being voided when the reason is Other.' }); return; }
+sv('recall', null); sv('voidInfo', null);
+window.location.href = back;
+}
+};
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Back office: receive stock</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./app.css">
+<style>
+textarea.field:focus-visible,.lbl[tabindex="-1"]:focus-visible,.sh[tabindex="-1"]:focus-visible{outline:var(--ring);outline-offset:2px}
+.rcard{max-width:640px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px;padding:24px}
+.diff{margin:0;padding:12px 14px;border-radius:12px;font-size:14px;font-weight:600}
+.diff.good{background:var(--brand-bg);color:var(--brand-strong)}
+.diff.warn{background:var(--warning-bg);color:var(--warning-fg)}
+.diff.bad{background:var(--danger-bg);color:var(--danger-fg)}
+.rwrap{max-width:640px;display:flex;flex-direction:column;gap:16px}
+.ractions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+textarea.field{padding:10px 12px;min-height:72px;line-height:1.45;resize:vertical}
+.ufield{display:flex;align-items:center;gap:10px}
+.ufield .field{max-width:220px}
+.ufield .u{font-size:14px;color:var(--text-muted)}
+@media (max-width:640px){.rcard{padding:16px}}
+</style>
+</helmet>
+<div class="shell">
+
+<aside class="side" aria-label="Main">
+<input type="checkbox" class="sbt" id="sbt" aria-label="Collapse or expand the menu">
+<div class="sbtop"><div class="brand"><span class="logo" aria-hidden="true">TR</span><span class="bt"><b>Things Remembered</b><small>Back office</small></span></div><a class="sbbell" href="Notifications.dc.html" title="Notifications" aria-label="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a><label for="sbt" class="sbtl" title="Collapse or expand the menu"><span class="chev" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E&quot;)"></span></label></div>
+<nav class="navs" aria-label="Sections">
+<div class="grp">Your work</div>
+<a class="nav" href="Notifications.dc.html" title="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Notifications</span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a>
+<a class="nav" href="Approvals.dc.html" title="Approvals"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Approvals</span><span class="bdg" data-badge="appr" data-word="waiting for you" aria-label="4 waiting for you">4</span></a>
+<div class="grp">Operations</div>
+<a class="nav" href="Production.dc.html" title="Production"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Production</span></a>
+<a class="nav" href="Distribution.dc.html" title="Distribution"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 7h13v9H1zM14 10h4l3 3v3h-7zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Distribution</span></a>
+<a class="nav" href="Inflight.dc.html" title="In-flight catering"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2 3.5 7.5l6.3 3.2-3.5 3.5-3-.5L2 15l4 2 2 4 1.3-1.3-.5-3 3.5-3.5 3.2 6.3z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">In-flight catering</span></a>
+<a class="nav" href="Inventory.dc.html" title="Inventory"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8l-9-5-9 5v8l9 5 9-5zM3.3 7.5L12 12l8.7-4.5M12 22V12'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Inventory</span></a>
+<a class="nav on" href="Purchasing.dc.html" title="Purchasing" aria-current="page"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100-2 1 1 0 000 2zM18 20a1 1 0 100-2 1 1 0 000 2z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Purchasing</span></a>
+<div class="grp">Finance</div>
+<a class="nav" href="AccountsHome.dc.html" title="Accounts"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16v16H4zM4 9h16M9 9v11'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Accounts</span></a>
+<a class="nav" href="Reports.dc.html" title="Reports"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20V10M10 20V4M16 20v-8M22 20H2'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Reports</span></a>
+<div class="grp">Admin</div>
+<a class="nav" href="ItemsPrices.dc.html" title="Settings"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3h0a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5h0a1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8v0a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Settings</span></a>
+</nav><div class="bot">
+<div class="who"><span class="av">BK</span><span class="wt"><b>Bola K.</b><small>Operations manager · All states</small></span></div>
+<a class="nav ghost" href="Main.dc.html" title="Open Cash Point"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5h18v10H3zM8 21h8M12 15v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Open Cash Point</span></a>
+<a class="nav" href="BackOfficeSignIn.dc.html" title="Sign out"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Sign out</span></a>
+</div></aside>
+
+<main class="pg" id="main">
+
+<div class="hd">
+<div class="hdt"><a class="crumb" href="Purchasing.dc.html">‹ Back to purchasing</a><h1>Receive stock</h1><span class="sub">{{ subtitle }}</span></div>
+</div>
+
+<sc-if value="{{ unknown }}" hint-placeholder-val="{{ false }}">
+<div class="card"><div class="empty" style="border-top: 0" role="status"><strong>This request is not ready to receive</strong><span>Only approved purchase requests can be received. Check its status in Purchasing.</span><a class="btn sm" href="Purchasing.dc.html">Back to purchasing</a></div></div>
+</sc-if>
+
+<sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+<div class="rwrap">
+<div role="status" class="ok"><strong>Stock received.</strong><span>{{ doneText }}</span></div>
+<sc-if value="{{ hasDiff }}" hint-placeholder-val="{{ false }}">
+<div role="status" class="banner warn"><span><strong>{{ diffText }}</strong>The difference is recorded and the purchasing manager has been told.<sc-if value="{{ hasNote }}" hint-placeholder-val="{{ false }}"> Your note: {{ note }}</sc-if></span></div>
+</sc-if>
+<div class="ractions"><a class="btnp" href="Inventory.dc.html">See stock</a><a class="btn" href="Purchasing.dc.html">Back to purchasing</a></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ notDone }}" hint-placeholder-val="{{ true }}">
+<form class="card rcard" novalidate onSubmit="{{ onSubmit }}" aria-label="Receive stock for {{ id }}">
+<div class="ctx"><strong>{{ item }}</strong><span class="note">Ordered: {{ orderedText }} from {{ supplier }}</span></div>
+<div class="fld">
+<label class="lbl">How many {{ unit }} arrived<span class="ufield"><input class="field" id="f-recvd" type="text" inputmode="decimal" autocomplete="off" value="{{ recvd }}" onInput="{{ onRecvd }}" aria-invalid="{{ recvdInvalid }}" aria-describedby="e-recvd d-recvd"><span class="u">{{ unit }}</span></span></label>
+<sc-if value="{{ errRecvd }}" hint-placeholder-val="{{ false }}"><p class="ferr" id="e-recvd">{{ errRecvd }}</p></sc-if>
+</div>
+<p class="diff {{ diffCls }}" id="d-recvd" role="status" aria-live="polite">{{ diffLine }}</p>
+<div class="fld">
+<label class="lbl">Note for the purchasing manager (optional)<textarea class="field" id="f-note" rows="2" value="{{ note }}" onInput="{{ onNote }}" placeholder="For example: two containers were leaking"></textarea></label>
+</div>
+<sc-if value="{{ hasErrs }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert">One thing needs fixing before this can be saved.</p></sc-if>
+<div class="ractions"><button type="submit" class="btnp">Confirm and add to stock</button><a class="btn" href="Purchasing.dc.html">Cancel</a></div>
+</form>
+</sc-if>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const W = (typeof window !== 'undefined') ? window : {};
+const ld = (k, d) => (W.trLoad ? W.trLoad(k, d) : d);
+const sv = (k, v) => { if (W.trSave) W.trSave(k, v); };
+const id = (new URLSearchParams(location.search).get('r') || 'R-0213').toUpperCase();
+const KNOWN = {
+'R-0213': { item: 'Cooking oil', qty: 60, unit: 'litres', supplier: 'Lagos Oil Traders', by: 'Approved by Ngozi A. on 19 Oct', ready: true },
+'R-0216': { item: 'Toiletry kits', qty: 400, unit: 'units', supplier: 'Fresh Farms Co.', by: 'Approved by you on 22 Oct' },
+'R-0214': { item: 'Flour', qty: 200, unit: 'kg', supplier: 'Agro Mills Ltd', by: 'Approved by you on 22 Oct' }
+};
+const req = KNOWN[id];
+const decided = ld('appr', {});
+const ok = !!req && (req.ready || (decided[id] && decided[id].kind === 'approved'));
+const recv = ld('recv', {});
+const got = recv[id];
+const ordered = req ? req.qty : 0, unit = req ? req.unit : '';
+const raw = ['Flour', 'Sugar', 'Cooking oil', 'Butter', 'Chicken', 'Rice', 'Eggs', 'Packaging boxes'];
+const where = req && raw.indexOf(req.item) >= 0 ? 'Lagos raw material stock' : 'Lagos in-flight stock';
+const recvd = st.recvd !== undefined ? st.recvd : String(ordered);
+const clean = String(recvd).trim().replace(/,/g, '');
+const valid = clean !== '' && /^\d+(\.\d+)?$/.test(clean);
+const n = valid ? parseFloat(clean) : NaN;
+const diff = valid ? n - ordered : 0;
+const word = (k) => (k === 1 && unit === 'litres') ? 'litre' : unit;
+const diffOf = (d) => d < 0 ? 'Short by ' + Math.abs(d) + ' ' + word(Math.abs(d)) + '.' : d > 0 ? 'Over by ' + d + ' ' + word(d) + '.' : '';
+const shownQty = got ? got.qty : n;
+const gotDiff = got ? got.qty - ordered : 0;
+const note = st.note !== undefined ? st.note : (got ? got.note || '' : '');
+return {
+id, unknown: !ok, done: ok && !!got, notDone: ok && !got,
+subtitle: req ? 'Request ' + id + ' · ' + req.by + ' · ' + req.supplier : 'Request ' + id,
+item: req ? req.item : '', supplier: req ? req.supplier : '', unit, orderedText: ordered + ' ' + unit,
+recvd, onRecvd: (e) => this.setState({ recvd: e.target.value, err: '' }), note, onNote: (e) => this.setState({ note: e.target.value }),
+errRecvd: st.err || '', recvdInvalid: st.err ? 'true' : 'false', hasErrs: !!st.err,
+diffCls: !valid ? 'warn' : diff === 0 ? 'good' : 'warn',
+diffLine: !valid ? 'Enter how many arrived.' : diff === 0 ? 'Matches the order. No difference.' : diffOf(diff) + ' This will be recorded as a difference.',
+hasDiff: gotDiff !== 0, diffText: diffOf(gotDiff) + ' ', hasNote: !!(got && got.note),
+doneText: got ? got.qty + ' ' + unit + ' of ' + (req.item || '').toLowerCase() + ' added to ' + where + '. Request ' + id + ' is closed.' : '',
+onSubmit: (e) => {
+if (e && e.preventDefault) e.preventDefault();
+if (!valid) { this.setState({ err: clean === '' ? 'Enter how many ' + unit + ' arrived.' : 'Quantity must be a number, 0 or more.' }); setTimeout(() => { const el = document.querySelector('[aria-invalid="true"]'); if (el && el.focus) el.focus(); }, 0); return; }
+sv('recv', Object.assign({}, recv, { [id]: { qty: n, note: String(note).trim(), item: req.item } }));
+this.setState({ err: '' });
+}
+};
+}
+}
+</script>
+</body>
+</html>

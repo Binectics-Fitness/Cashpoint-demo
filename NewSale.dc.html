@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: new sale</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos fit">
+<header class="bar">
+<div class="bar-id"><span class="bar-title">Things Remembered</span><span class="bar-sub">MM2 outlet · Cash Point</span></div>
+<a class="status" href="CashSync.dc.html">Online · all sales synced</a>
+<div class="who-t"><span class="who-n">Amaka O.</span><span class="who-s">Shift started 08:00</span></div>
+<nav class="tools" aria-label="Cash Point actions">
+<a class="btn" href="HeldSales.dc.html">{{ heldLabel }}</a>
+<a class="btn" href="CashOut.dc.html">Cash out</a>
+<a class="btn" href="TodaysSales.dc.html">Today's sales</a>
+<details class="xm"><summary class="btn">Shift and staff</summary>
+<div class="xmenu">
+<a class="xi" href="XCount.dc.html">X-count (interim report)</a>
+<a class="xi" href="SupervisorUsers.dc.html">Users</a>
+<a class="xi" href="SwitchProfile.dc.html">Switch profile</a>
+<a class="xi sep" href="CloseShift.dc.html">Close shift</a>
+</div></details>
+</nav>
+</header>
+<sc-if value="{{ hasNote }}" hint-placeholder-val="{{ false }}"><div class="strip"><div role="status" class="alert ok">{{ note }} <a class="btn quiet" href="HeldSales.dc.html" style="margin-left:auto">Open held sales</a></div></div></sc-if>
+<main class="sale">
+<div class="items">
+
+<sc-if value="{{ scanOn }}" hint-placeholder-val="{{ false }}"><label class="scan">Scan barcode<input type="text" inputmode="numeric" placeholder="Scan or type the code, then Enter" value="{{ scanTxt }}" onInput="{{ onScanTxt }}" onKeyDown="{{ scan }}"></label></sc-if>
+<div class="filters">
+<div class="chips" role="group" aria-label="Item category">
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+<button class="chip {{c.on}}" aria-pressed="{{c.pressed}}" onClick="{{ c.pick }}">{{ c.label }}</button>
+</sc-for>
+</div>
+<label class="search">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5C675F" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+<span class="sr">Search items</span>
+<input type="text" placeholder="Search items" value="{{ q }}" onInput="{{ onQ }}">
+</label>
+</div>
+<sc-if value="{{ hasWarn }}" hint-placeholder-val="{{ false }}">
+<div role="alert" class="alert"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg><span>{{ warn }}</span></div>
+</sc-if>
+<sc-if value="{{ noTiles }}" hint-placeholder-val="{{ false }}">
+<p class="muted" style="padding: 24px 0">No items match. Try another category or search.</p>
+</sc-if>
+<div class="tiles">
+<sc-for list="{{ tiles }}" as="t" hint-placeholder-count="10">
+<button class="tile {{t.cls}}" onClick="{{ t.add }}">
+<span class="tn">{{ t.name }}</span>
+<span class="tp">{{ t.priceText }}</span>
+<span class="tf"><span class="tl">{{ t.footLeft }}</span><span class="tr2 {{t.lowCls}}">{{ t.footRight }}</span></span>
+</button>
+</sc-for>
+</div>
+</div>
+
+<section class="bill" id="sale" aria-label="Current sale">
+<div class="bill-h">
+<div><h1>Current sale</h1><span class="bar-sub">{{ receiptLine }}</span></div>
+<sc-if value="{{ hasItems }}" hint-placeholder-val="{{ true }}"><a class="btn quiet danger" href="VoidSale.dc.html?from=sale" onClick="{{ voidGo }}">Void sale</a></sc-if>
+</div>
+<sc-if value="{{ showDisc }}" hint-placeholder-val="{{ false }}">
+<div class="sheet" role="group" aria-label="Give a discount">
+<h2>Give a discount</h2>
+<div class="chips" role="group" aria-label="Discount amount"><sc-for list="{{ pcts }}" as="p" hint-placeholder-count="4"><button class="chip {{p.on}}" aria-pressed="{{p.pressed}}" onClick="{{ p.pick }}">{{ p.label }}</button></sc-for></div>
+<div class="chips" role="group" aria-label="Discount reason"><sc-for list="{{ reasons }}" as="r" hint-placeholder-count="4"><button class="chip {{r.on}}" aria-pressed="{{r.pressed}}" onClick="{{ r.pick }}">{{ r.label }}</button></sc-for></div>
+<sc-if value="{{ needPin }}" hint-placeholder-val="{{ false }}"><div class="alert plain" style="flex-direction:column;gap:6px"><span>Over {{ discLimit }}% needs a supervisor. Bola K. enters the PIN.</span>
+<label class="lbl">Supervisor PIN<input class="field" style="max-width:200px" type="password" inputmode="numeric" maxlength="6" placeholder="Supervisor PIN" value="{{ pin }}" onInput="{{ onPin }}"></label><span class="small">Demo PIN: 1234</span></div></sc-if>
+<sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}"><p role="alert" class="fe">{{ err }}</p></sc-if>
+<div class="pair" style="display:flex;gap:8px"><button class="btn primary md grow" onClick="{{ applyDisc }}">Apply discount</button><button class="btn md" onClick="{{ closeDisc }}">Cancel</button></div>
+</div>
+</sc-if>
+<sc-if value="{{ hideDisc }}" hint-placeholder-val="{{ true }}"><div class="lines">
+<sc-if value="{{ noItems }}" hint-placeholder-val="{{ false }}">
+<div class="empty">
+<span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1B6B48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2.5l2 11h9.5l2-8H7"/><circle cx="9" cy="19" r="1.3"/><circle cx="16" cy="19" r="1.3"/></svg></span>
+<b>Ready for the next customer</b>
+<span>Tap an item on the left to start the sale.</span>
+</div>
+</sc-if>
+<sc-for list="{{ lines }}" as="l" hint-placeholder-count="3">
+<div class="line">
+<div class="line-n"><b>{{ l.name }}</b><span>{{ l.unitText }}</span></div>
+<div class="step">
+<button onClick="{{ l.dec }}" aria-label="Remove one {{l.name}}">−</button>
+<span aria-label="Quantity {{l.qty}}">{{ l.qty }}</span>
+<button onClick="{{ l.inc }}" aria-label="Add one {{l.name}}">+</button>
+</div>
+<span class="line-t">{{ l.lineText }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<div class="bill-f">
+<label class="cust">Customer<input class="field sm" type="text" placeholder="Name (optional)" value="{{ cust }}" onInput="{{ onCust }}"></label>
+<div class="pair">
+<button class="btn md" onClick="{{ holdSale }}">Hold sale</button>
+<button class="btn md" onClick="{{ openDisc }}">Discount</button>
+</div>
+<div class="totals">
+<sc-if value="{{ hasDisc }}" hint-placeholder-val="{{ false }}"><div class="kv"><span>Subtotal</span><b>{{ subText }}</b></div>
+<div class="kv"><span style="color:#14513A;font-weight:600">{{ discLabel }} <button class="btn quiet sm" style="min-height:44px" onClick="{{ removeDisc }}" aria-label="Remove discount">Remove</button></span><b style="color:#14513A">{{ discText }}</b></div></sc-if>
+<div class="big"><span>Total</span><b>{{ totalText }}</b></div>
+<span class="small muted">VAT not applied (restaurant sale)</span>
+</div>
+<sc-if value="{{ hasItems }}" hint-placeholder-val="{{ true }}">
+<a class="btn primary lg block" href="Payment.dc.html" onClick="{{ charge }}">{{ chargeLabel }}</a>
+</sc-if>
+<sc-if value="{{ noItems }}" hint-placeholder-val="{{ false }}">
+<button class="btn primary lg block" aria-disabled="true">Add items to charge</button>
+</sc-if>
+</div>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+getItems() {
+return [
+{ name: 'Meat pie', price: 1500, cat: 'Pastries', stock: 22 },
+{ name: 'Sausage roll', price: 1200, cat: 'Pastries', stock: 31 },
+{ name: 'Chicken pie', price: 1800, cat: 'Pastries', stock: 18 },
+{ name: 'Doughnut', price: 800, cat: 'Pastries', stock: 3 },
+{ name: 'Jollof rice', price: 3500, cat: 'Hot meals', stock: 14 },
+{ name: 'Fried rice', price: 3500, cat: 'Hot meals', stock: 9 },
+{ name: 'Moi moi', price: 1000, cat: 'Hot meals', stock: 26 },
+{ name: 'Pepper soup', price: 4500, cat: 'Hot meals', stock: 6 },
+{ name: 'Zobo', price: 700, cat: 'Drinks', stock: 40 },
+{ name: 'Puff puff', price: 600, cat: 'Pastries', stock: 0 },
+{ name: 'Scotch egg', price: 1000, cat: 'Pastries', stock: 17 },
+{ name: 'Buns', price: 500, cat: 'Pastries', stock: 45 },
+{ name: 'Cake slice', price: 2000, cat: 'Pastries', stock: 12 },
+{ name: 'Croissant', price: 1300, cat: 'Pastries', stock: 20 },
+{ name: 'Egg roll', price: 900, cat: 'Pastries', stock: 28 },
+{ name: 'Fried plantain', price: 1200, cat: 'Hot meals', stock: 19 },
+{ name: 'Beans and plantain', price: 2800, cat: 'Hot meals', stock: 11 },
+{ name: 'Egusi soup and swallow', price: 5000, cat: 'Hot meals', stock: 8 },
+{ name: 'Efo riro and swallow', price: 5000, cat: 'Hot meals', stock: 7 },
+{ name: 'Suya', price: 3000, cat: 'Hot meals', stock: 15 },
+{ name: 'Chapman', price: 1500, cat: 'Drinks', stock: 24 },
+{ name: 'Bottled water', price: 300, cat: 'Drinks', stock: 60 },
+{ name: 'Soft drink', price: 500, cat: 'Drinks', stock: 48 },
+{ name: 'Fruit juice', price: 1200, cat: 'Drinks', stock: 16 },
+{ name: 'Tea', price: 600, cat: 'Drinks', stock: 30 },
+{ name: 'Coffee', price: 900, cat: 'Drinks', stock: 30 },
+{ name: 'Bottled beer', price: 1500, cat: 'Drinks', stock: 36 }
+];
+}
+seedHeld() {
+return [
+{ id: 'H-0001', customer: 'Mrs Okoye', lines: [{ name: 'Meat pie', qty: 3 }, { name: 'Zobo', qty: 2 }], total: 5900, time: '11:42', by: 'Amaka O.' },
+{ id: 'H-0002', customer: '', lines: [{ name: 'Jollof rice', qty: 1 }, { name: 'Moi moi', qty: 1 }], total: 4500, time: '12:05', by: 'Amaka O.' }
+];
+}
+getRecall() {
+if (this._rq === undefined) {
+let r = null;
+try { if (window.trLoad) { r = window.trLoad('recall', null); if (r && window.trSave) { window.trSave('recall', null); } } } catch (e) {}
+this._rq = r;
+}
+return this._rq;
+}
+renderVals() {
+const st = this.state || {};
+const rq = this.getRecall();
+const ld = (k, d) => { try { return window.trLoad ? window.trLoad(k, d) : d; } catch (e) { return d; } };
+const sv = (k, v) => { try { if (window.trSave) { window.trSave(k, v); } } catch (e) {} };
+const fmt = (n) => '₦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const cat = st.cat || 'All';
+let rqty = {};
+const rqNotes = [];
+if (rq) { rq.lines.forEach((l) => { const it = this.getItems().filter((x) => x.name === l.name)[0]; const have = it ? it.stock : 0; if (have <= 0) { rqNotes.push(l.name + ' is out of stock now, so it was taken off the recalled sale.'); } else if (l.qty > have) { rqty[l.name] = have; rqNotes.push(l.name + ': only ' + have + ' left now, so the recalled sale has ' + have + ' instead of ' + l.qty + '.'); } else { rqty[l.name] = l.qty; } }); }
+const qty = st.qty || rqty;
+const cust = st.cust !== undefined ? st.cust : (rq ? rq.customer : '');
+const warn = st.warn || (st.qty ? '' : rqNotes.join(' '));
+const items = this.getItems();
+
+const setQty = (name, n) => {
+const next = Object.assign({}, qty);
+if (n <= 0) { delete next[name]; } else { next[name] = n; }
+this.setState({ qty: next, warn: '' });
+};
+const tryAdd = (i) => {
+const q = qty[i.name] || 0;
+if (i.stock === 0) { this.setState({ warn: i.name + ' has no stock and cannot be sold.' }); return; }
+if (q >= i.stock) { this.setState({ warn: 'Only ' + i.stock + ' ' + i.name + ' left in stock.' }); return; }
+setQty(i.name, q + 1);
+};
+
+const cats = ['All', 'Pastries', 'Hot meals', 'Drinks'].map((c) => ({
+label: c,
+pick: () => this.setState({ cat: c, warn: '' }),
+on: c === cat ? 'on' : '',
+pressed: c === cat
+}));
+
+const q = (st.q || '').trim().toLowerCase();
+const shown = items.filter((i) => (cat === 'All' || i.cat === cat) && i.name.toLowerCase().indexOf(q) !== -1);
+const tiles = shown.map((i) => {
+const inSale = qty[i.name] || 0;
+const out = i.stock === 0;
+return {
+name: i.name,
+priceText: fmt(i.price),
+footLeft: out ? 'No stock · cannot sell' : (inSale ? 'In sale ×' + inSale : ''),
+footRight: out ? '' : i.stock + ' left',
+cls: inSale ? 'in' : (out ? 'out' : ''),
+lowCls: (i.stock > 0 && i.stock <= 3) ? 'low' : '',
+add: () => tryAdd(i)
+};
+});
+
+let total = 0;
+let count = 0;
+const heldList = st.held || ld('held', this.seedHeld());
+const pct = st.disc || 0;
+const pctSel = st.pct || 0;
+const rows = ld('rows:SalesRules', null);
+const rule = (name, def) => { if (!rows) return def; const on = rows.filter((r) => r.name === name && r.status === 'Active'); const mine = on.filter((r) => /MM2/.test(r.applies))[0] || on.filter((r) => r.applies === 'All outlets')[0]; if (!mine) return def; const n = parseInt(String(mine.value).replace(/[^0-9]/g, ''), 10); return isNaN(n) ? def : n; };
+const discLimit = rule('Discount limit without a supervisor', 10);
+const scanOn = !rows ? false : rows.some((r) => r.name === 'Barcode scanning' && r.status === 'Active' && (/MM2/.test(r.applies) || r.applies === 'All outlets'));
+const CODES = { '6001234500012': 'Bottled water', '6001234500029': 'Soft drink', '6001234500036': 'Fruit juice', '6001234500043': 'Chapman' };
+const scan = (e) => { if (e.key !== 'Enter') { return; } const code = String(e.target.value || '').trim(); const nm = CODES[code]; const it = items.filter((i) => i.name === nm)[0]; if (!it) { this.setState({ scanTxt: '', warn: 'Barcode ' + code + ' is not on the item list. Search for the item instead.' }); return; } this.setState({ scanTxt: '' }); tryAdd(it); };
+const needPin = pctSel > discLimit;
+const pcts = [5, 10, 15, 20].map((p) => ({ label: p + '%', pick: () => this.setState({ pct: p, err: '' }), on: p === pctSel ? 'on' : '', pressed: p === pctSel }));
+const reasons = ['Staff meal', 'Damaged item', 'Loyal customer', 'Bulk order'].map((r) => ({ label: r, pick: () => this.setState({ reason: r, err: '' }), on: r === st.reason ? 'on' : '', pressed: r === st.reason }));
+const lines = items.filter((i) => qty[i.name]).map((i) => {
+const q = qty[i.name];
+total += q * i.price;
+count += q;
+return {
+name: i.name,
+unitText: fmt(i.price) + ' each',
+qty: q,
+lineText: fmt(q * i.price),
+dec: () => setQty(i.name, q - 1),
+inc: () => tryAdd(i)
+};
+});
+
+const discAmt = Math.round(total * pct / 100);
+const net = total - discAmt;
+const holdSale = () => {
+const nums = heldList.map((h) => parseInt(String(h.id).replace(/\D/g, ''), 10) || 0);
+const id = 'H-' + String(Math.max(0, ...nums) + 1).padStart(4, '0');
+const d = new Date();
+const time = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+const next = heldList.concat([{ id, customer: (cust || '').trim(), lines: lines.map((l) => ({ name: l.name, qty: l.qty })), total: net, time, by: 'Amaka O.' }]);
+sv('held', next);
+this.setState({ held: next, qty: {}, disc: 0, pct: 0, reason: '', pin: '', cust: '', showDisc: false, err: '', warn: '', note: id + ' is held (' + fmt(net) + '). Stock is not taken off until it is paid.' });
+};
+const applyDisc = () => {
+if (!pctSel) { this.setState({ err: 'Discount: choose how much to take off.' }); return; }
+if (!st.reason) { this.setState({ err: 'Discount reason: choose one. It is saved with the sale.' }); return; }
+if (needPin && st.pin !== '1234') { this.setState({ err: 'Supervisor PIN: that PIN is not right. Ask the supervisor to try again.' }); return; }
+this.setState({ disc: pctSel, discReason: st.reason, discSup: needPin, showDisc: false, err: '', pin: '', note: '' });
+};
+return {
+heldLabel: 'Held sales (' + heldList.length + ')',
+discLimit, scanOn, scan, scanTxt: st.scanTxt || '', onScanTxt: (e) => this.setState({ scanTxt: e.target.value }),
+hasNote: !!st.note, note: st.note || '',
+cust, onCust: (e) => this.setState({ cust: e.target.value }),
+showDisc: !!st.showDisc && lines.length > 0, hideDisc: !(st.showDisc && lines.length > 0),
+voidGo: () => { sv('voidInfo', { ref: 'MM2-0413', items: count, total: net }); sv('recall', { customer: (cust || '').trim(), lines: lines.map((l) => ({ name: l.name, qty: l.qty })) }); }, pcts, reasons, needPin, pin: st.pin || '',
+onPin: (e) => this.setState({ pin: e.target.value, err: '' }),
+hasErr: !!st.err, err: st.err || '',
+openDisc: () => this.setState({ showDisc: true, pct: st.disc || 0, reason: st.discReason || '', err: '', note: '' }),
+closeDisc: () => this.setState({ showDisc: false, err: '' }),
+applyDisc,
+removeDisc: () => this.setState({ disc: 0, discReason: '', discSup: false }),
+holdSale,
+charge: () => { sv('sale', { ref: 'MM2-0413', cust: (cust || '').trim(), lines: lines.map((l) => ({ name: l.name, qty: l.qty, line: l.lineText })), sub: total, pct, discAmt, reason: st.discReason || '', sup: !!st.discSup, limit: discLimit, total: net }); },
+hasDisc: pct > 0 && lines.length > 0,
+discLabel: 'Discount ' + pct + '% \u00b7 ' + (st.discReason || '') + (st.discSup ? ' \u00b7 approved by Bola K.' : ''),
+discText: '\u2212' + fmt(discAmt),
+subText: fmt(total),
+cats,
+tiles,
+lines,
+noTiles: tiles.length === 0,
+q: st.q || '',
+onQ: (e) => this.setState({ q: e.target.value }),
+receiptLine: 'MM2-0413 \u00b7 ' + count + (count === 1 ? ' item' : ' items'),
+hasItems: lines.length > 0,
+noItems: lines.length === 0,
+totalText: fmt(net),
+chargeLabel: 'Charge ' + fmt(net),
+hasWarn: warn !== '',
+warn
+};
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# Review screenshots stay local (they are large). The docs and tools are kept.
+ux-review/baseline/
+ux-review/after-all/
+ux-review/after-bo/
+ux-review/after-ops/
+ux-review/after-pos/
+ux-review/responsive/
+ux-review/interaction/
+.DS_Store

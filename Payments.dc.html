@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accounts: payments</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./app.css">
+<style>
+</style>
+</helmet>
+<div class="shell">
+<aside class="side" aria-label="Main">
+<input type="checkbox" class="sbt" id="sbt" aria-label="Collapse or expand the menu">
+<div class="sbtop"><div class="brand"><span class="logo" aria-hidden="true">TR</span><span class="bt"><b>Things Remembered</b><small>Back office</small></span></div><a class="sbbell" href="Notifications.dc.html" title="Notifications" aria-label="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a><label for="sbt" class="sbtl" title="Collapse or expand the menu"><span class="chev" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E&quot;)"></span></label></div>
+<nav class="navs" aria-label="Sections">
+<div class="grp">Your work</div>
+<a class="nav" href="Notifications.dc.html" title="Notifications"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Notifications</span><span class="bdg hot" data-badge="notif" data-word="unread" aria-label="5 unread">5</span></a>
+<a class="nav" href="Approvals.dc.html" title="Approvals"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Approvals</span><span class="bdg" data-badge="appr" data-word="waiting for you" aria-label="4 waiting for you">4</span></a>
+<div class="grp">Operations</div>
+<a class="nav" href="Production.dc.html" title="Production"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Production</span></a>
+<a class="nav" href="Distribution.dc.html" title="Distribution"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 7h13v9H1zM14 10h4l3 3v3h-7zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Distribution</span></a>
+<a class="nav" href="Inflight.dc.html" title="In-flight catering"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2 3.5 7.5l6.3 3.2-3.5 3.5-3-.5L2 15l4 2 2 4 1.3-1.3-.5-3 3.5-3.5 3.2 6.3z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">In-flight catering</span></a>
+<a class="nav" href="Inventory.dc.html" title="Inventory"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 8l-9-5-9 5v8l9 5 9-5zM3.3 7.5L12 12l8.7-4.5M12 22V12'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Inventory</span></a>
+<a class="nav" href="Purchasing.dc.html" title="Purchasing"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100-2 1 1 0 000 2zM18 20a1 1 0 100-2 1 1 0 000 2z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Purchasing</span></a>
+<div class="grp">Finance</div>
+<a class="nav on" href="AccountsHome.dc.html" title="Accounts" aria-current="page"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16v16H4zM4 9h16M9 9v11'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Accounts</span></a>
+<a class="nav" href="Reports.dc.html" title="Reports"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20V10M10 20V4M16 20v-8M22 20H2'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Reports</span></a>
+<div class="grp">Admin</div>
+<a class="nav" href="ItemsPrices.dc.html" title="Settings"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3h0a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5h0a1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8v0a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Settings</span></a>
+</nav><div class="bot">
+<div class="who"><span class="av">BK</span><span class="wt"><b>Bola K.</b><small>Operations manager · All states</small></span></div>
+<a class="nav ghost" href="Main.dc.html" title="Open Cash Point"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5h18v10H3zM8 21h8M12 15v6'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Open Cash Point</span></a>
+<a class="nav" href="BackOfficeSignIn.dc.html" title="Sign out"><span class="ic" aria-hidden="true" style="--m: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9'/%3E%3C/svg%3E&quot;)"></span><span class="nl">Sign out</span></a>
+</div></aside>
+<main class="pg">
+
+<div class="hd">
+<div class="hdt"><h1>Payments</h1><span class="sub">Transfers and card payments for 21 Oct 2026.</span></div>
+<div class="hda"><details class="xm"><summary class="btn" role="button" aria-label="Export this report">Export</summary><div class="xmenu" role="menu"><sc-for list="{{ xopts }}" as="o" hint-placeholder-count="3"><button class="xi" role="menuitem" onClick="{{ o.pick }}">{{ o.label }}</button></sc-for></div></details></div>
+</div>
+<nav class="tabs" aria-label="Accounts sections"><a class="tab" href="AccountsHome.dc.html">Overview</a><a class="tab" href="Journals.dc.html">Journals</a><a class="tab on" href="BankRec.dc.html">Banking</a><a class="tab" href="Ledger.dc.html">Books</a><a class="tab" href="Periods.dc.html">Month-end</a><a class="tab" href="ChartOfAccounts.dc.html">Setup</a></nav><nav class="subtabs" aria-label="Banking pages"><a href="BankRec.dc.html">Bank reconciliation</a><a href="Payments.dc.html" aria-current="page">Payments</a></nav>
+<sc-if value="{{ xHas }}" hint-placeholder-val="{{ false }}"><div role="status" class="ok"><strong>{{ xText }}</strong><span>Sample only. Nothing is downloaded in this design. The file would carry the filters and period you have set.</span></div></sc-if>
+<sc-if value="{{ hasDone }}" hint-placeholder-val="{{ false }}"><div role="status" class="ok"><strong>{{ doneHead }}</strong><span>{{ doneText }}</span></div></sc-if>
+<div class="banner {{ bannerCls }}" role="status"><span><strong>{{ bannerHead }}</strong>{{ bannerText }}</span><span class="fig">Received today {{ recvAmt }} ({{ recvN }} transfers)<br>Moniepoint clearing {{ clearBal }} · <a href="BankRec.dc.html">Bank reconciliation</a></span></div>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+<sc-for list="{{ statusChips }}" as="f" hint-placeholder-count="3"><button class="fc" onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" style="border-color: {{f.border}}; background: {{f.bg}}; color: {{f.color}}">{{ f.text }}</button></sc-for>
+<button class="lnkb" onClick="{{ toggleMore }}" aria-expanded="{{ moreOpen }}">{{ moreLabel }}</button>
+</div>
+<sc-if value="{{ moreOpen }}" hint-placeholder-val="{{ false }}">
+<div class="more">
+<div class="g"><span class="gl">Method</span><sc-for list="{{ methodChips }}" as="f" hint-placeholder-count="3"><button class="fc" onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" style="border-color: {{f.border}}; background: {{f.bg}}; color: {{f.color}}">{{ f.text }}</button></sc-for></div>
+<div class="g"><span class="gl">Outlet</span><sc-for list="{{ outletChips }}" as="f" hint-placeholder-count="7"><button class="fc" onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" style="border-color: {{f.border}}; background: {{f.bg}}; color: {{f.color}}">{{ f.text }}</button></sc-for></div>
+</div>
+</sc-if>
+</div>
+
+<div class="card tbl m-pay">
+<div style="min-width: 760px; display: flex; flex-direction: column">
+<div class="th" style="grid-template-columns: minmax(0, 0.55fr) minmax(0, 3fr) minmax(0, 1fr) minmax(0, 2.3fr) minmax(0, 1.9fr)"><span>Time</span><span>Payer and cash point</span><span class="num">Amount</span><span>Status</span><span></span></div>
+<sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 36px 22px; border-top: 1px solid var(--border); font-size: 14px; color: var(--text-muted); text-align: center">{{ emptyText }}</p></sc-if>
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+<div class="tr" style="grid-template-columns: minmax(0, 0.55fr) minmax(0, 3fr) minmax(0, 1fr) minmax(0, 2.3fr) minmax(0, 1.9fr); padding-top: 10px; padding-bottom: 10px">
+<span>{{ r.time }}</span>
+<span><strong>{{ r.who }}</strong><span class="sub2">{{ r.method }} · {{ r.ref }} · {{ r.cp }}</span></span>
+<span class="num" style="font-weight: 600">{{ r.amt }}</span>
+<span style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start"><span class="pill" style="background: {{r.chipBg}}; color: {{r.chipColor}}">{{ r.status }}</span><sc-if value="{{ r.hasHint }}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; line-height: 1.4; color: var(--text-muted)">{{ r.hint }}</span></sc-if></span>
+<span style="display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 4px">
+<sc-if value="{{ r.canLink }}" hint-placeholder-val="{{ false }}"><button class="btn sm" onClick="{{ r.link }}" aria-label="Link the transfer from {{ r.who }} to a sale">Link to sale</button><button class="lnkb" onClick="{{ r.notSale }}" aria-label="Mark the transfer from {{ r.who }} as not a sale">Not a sale</button></sc-if>
+<sc-if value="{{ r.canHand }}" hint-placeholder-val="{{ false }}"><button class="btn sm" onClick="{{ r.hand }}" aria-label="Confirm {{ r.ref }} by hand">Confirm by hand</button></sc-if>
+</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<details class="done"><summary>{{ settleLabel }}</summary>
+<div class="card tbl" style="margin-top: 10px">
+<div style="padding: 14px 22px 10px"><div class="note">Moniepoint pays out the next day. The fee figures are samples until Moniepoint confirms its pricing.</div></div>
+<div style="min-width: 760px; display: flex; flex-direction: column">
+<div class="th" style="grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.4fr) minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 2fr)"><span>Settlement</span><span>Transfers from</span><span class="num">Gross</span><span class="num">Fee</span><span class="num">Net to bank</span><span>In the books</span></div>
+<sc-for list="{{ settle }}" as="s" hint-placeholder-count="2">
+<div class="tr" style="grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.4fr) minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 2fr)"><span>{{ s.d }}</span><span>{{ s.from }}</span><span class="num">{{ s.gross }}</span><span class="num">{{ s.fee }}</span><span class="num" style="font-weight: 600">{{ s.net }}</span><span><span class="pill" style="background: {{s.bg}}; color: {{s.color}}">{{ s.status }}</span></span></div>
+</sc-for>
+</div>
+</div>
+</details>
+<p class="note">A transfer is counted as a sale only when the Cash Point shows it as paid. Money that arrives with no sale stays in Moniepoint clearing until it is linked to a sale or returned.</p>
+</main>
+</div>
+<sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+<div class="scrim" onClick="{{ closeDrawer }}"></div>
+<aside class="drawer dlg" role="dialog" aria-label="{{ dTitle }}">
+<div class="dh"><h2>{{ dTitle }}</h2><button class="btn" onClick="{{ closeDrawer }}">Close</button></div>
+<div class="db">
+<div class="ctx"><strong>{{ dWho }}</strong><span class="note">{{ dLine }}</span></div>
+<sc-if value="{{ isLink }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 600; color: var(--text-label)">Sales waiting at this cash point</span>
+<sc-if value="{{ noWaiting }}" hint-placeholder-val="{{ false }}"><p class="note">No sale is waiting at {{ dCp }}. Mark this transfer as not a sale, or wait until the sale is completed at the till.</p></sc-if>
+<sc-for list="{{ waiting }}" as="w" hint-placeholder-count="1">
+<button onClick="{{ w.pick }}" style="display: flex; justify-content: space-between; gap: 12px; align-items: center; min-height: 56px; padding: 0 16px; border: {{w.border}}; border-radius: 12px; background: {{w.bg}}; font: inherit; cursor: pointer; text-align: left"><span style="display: flex; flex-direction: column; gap: 2px"><strong>{{ w.no }}</strong><span style="font-size: 12px; color: var(--text-muted)">{{ w.age }}</span></span><strong>{{ w.amt }}</strong></button>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ isReason }}" hint-placeholder-val="{{ false }}">
+<datalist id="pay-reasons"><sc-for list="{{ reasonList }}" as="x" hint-placeholder-count="3"><option value="{{ x.v }}"></option></sc-for></datalist>
+<label class="lbl">{{ reasonLabel }}<input class="field" type="text" list="pay-reasons" value="{{ fReason }}" onInput="{{ onReason }}" aria-invalid="{{ hasMsg }}" placeholder="{{ reasonHint }}"></label>
+<p class="note">{{ reasonNote }}</p>
+</sc-if>
+<sc-if value="{{ hasMsg }}" hint-placeholder-val="{{ false }}"><p role="alert" class="ferr">{{ msg }}</p></sc-if>
+</div>
+<div class="df"><sc-if value="{{ isReason }}" hint-placeholder-val="{{ false }}"><button class="btnp" onClick="{{ saveReason }}">{{ saveLabel }}</button></sc-if><sc-if value="{{ isLink }}" hint-placeholder-val="{{ false }}"><button class="btnp" onClick="{{ saveLink }}">Link to this sale</button></sc-if><button class="btn" onClick="{{ closeDrawer }}">Cancel</button></div>
+</aside>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const COA = [{"c": "1000", "n": "Cash at outlets", "t": "Asset", "d": "D", "b": 703800}, {"c": "1020", "n": "Moniepoint clearing", "t": "Asset", "d": "D", "b": 1138500}, {"c": "1010", "n": "Bank, main account", "t": "Asset", "d": "D", "b": 14260500}, {"c": "1100", "n": "Trade receivables", "t": "Asset", "d": "D", "b": 5980000}, {"c": "1200", "n": "Stock, raw materials", "t": "Asset", "d": "D", "b": 3120400}, {"c": "1210", "n": "Stock, finished goods", "t": "Asset", "d": "D", "b": 1248000}, {"c": "1220", "n": "Stock, in-flight items", "t": "Asset", "d": "D", "b": 2410000}, {"c": "1300", "n": "Input VAT", "t": "Asset", "d": "D", "b": 184600}, {"c": "1400", "n": "Prepayments", "t": "Asset", "d": "D", "b": 0}, {"c": "1500", "n": "Equipment, at cost", "t": "Asset", "d": "D", "b": 9600000}, {"c": "1510", "n": "Accumulated depreciation", "t": "Asset", "d": "C", "b": 2400000}, {"c": "2000", "n": "Trade payables", "t": "Liability", "d": "C", "b": 4175200}, {"c": "2100", "n": "Output VAT payable", "t": "Liability", "d": "C", "b": 612300}, {"c": "2110", "n": "Withholding tax payable", "t": "Liability", "d": "C", "b": 96000}, {"c": "2200", "n": "Accruals", "t": "Liability", "d": "C", "b": 380000}, {"c": "3000", "n": "Share capital", "t": "Equity", "d": "C", "b": 5000000}, {"c": "3100", "n": "Retained earnings, opening", "t": "Equity", "d": "C", "b": 4822300}, {"c": "4000", "n": "Restaurant sales", "t": "Income", "d": "C", "b": 38420000}, {"c": "4100", "n": "Pastry and bakery sales", "t": "Income", "d": "C", "b": 24310000}, {"c": "4200", "n": "In-flight catering income", "t": "Income", "d": "C", "b": 19800000}, {"c": "4900", "n": "Discounts given", "t": "Income", "d": "D", "b": 0}, {"c": "5000", "n": "Ingredients used", "t": "Expense", "d": "D", "b": 31200000}, {"c": "5100", "n": "Packaging", "t": "Expense", "d": "D", "b": 2150000}, {"c": "6000", "n": "Salaries and wages", "t": "Expense", "d": "D", "b": 17400000}, {"c": "6100", "n": "Rent", "t": "Expense", "d": "D", "b": 4800000}, {"c": "6200", "n": "Utilities and fuel", "t": "Expense", "d": "D", "b": 3260000}, {"c": "6300", "n": "Depreciation", "t": "Expense", "d": "D", "b": 1920000}, {"c": "6400", "n": "Bank and card charges", "t": "Expense", "d": "D", "b": 640000}, {"c": "6500", "n": "Petty cash and supplies", "t": "Expense", "d": "D", "b": 0}];
+const JNL = [{"no": "J-0412", "date": "20 Oct", "nar": "Takings, MM2 outlet, 20 Oct", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1000", "dr": 120000, "cr": 0}, {"a": "1010", "dr": 66500, "cr": 0}, {"a": "4000", "dr": 0, "cr": 186500}], "rev": ""}, {"no": "J-0413", "date": "20 Oct", "nar": "Packaged goods sales, Ikeja outlet (VAT 7.5%)", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1000", "dr": 80625, "cr": 0}, {"a": "4100", "dr": 0, "cr": 75000}, {"a": "2100", "dr": 0, "cr": 5625}], "rev": ""}, {"no": "J-0414", "date": "21 Oct", "nar": "Flour, 200 kg, Agro Mills Ltd (R-0214)", "src": "Purchasing", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1200", "dr": 840000, "cr": 0}, {"a": "1300", "dr": 63000, "cr": 0}, {"a": "2000", "dr": 0, "cr": 903000}], "rev": ""}, {"no": "J-0416", "date": "20 Oct", "nar": "Meals delivered on flight SA 204, cost of stock", "src": "In-flight", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "5000", "dr": 540000, "cr": 0}, {"a": "1220", "dr": 0, "cr": 540000}], "rev": ""}, {"no": "J-0417", "date": "21 Oct", "nar": "Airline invoice INV-SA-0042, Savanna Air", "src": "In-flight", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1100", "dr": 2460000, "cr": 0}, {"a": "4200", "dr": 0, "cr": 2460000}], "rev": ""}, {"no": "J-0418", "date": "19 Oct", "nar": "Count difference, cooking oil, Lagos store", "src": "Inventory", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "5000", "dr": 18000, "cr": 0}, {"a": "1200", "dr": 0, "cr": 18000}], "rev": ""}, {"no": "J-0421", "date": "20 Oct", "nar": "Reversal of J-0398, posted to the wrong account", "src": "Manual", "by": "Ngozi A.", "ap": "Bola K.", "st": "Posted", "lines": [{"a": "4100", "dr": 40000, "cr": 0}, {"a": "4000", "dr": 0, "cr": 40000}], "rev": "J-0398"}, {"no": "J-0422", "date": "21 Oct", "nar": "Transfers confirmed by Moniepoint, 19 to 21 Oct, moved from outlet cash to clearing", "src": "Payments", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1020", "dr": 1138500, "cr": 0}, {"a": "1000", "dr": 0, "cr": 1138500}], "rev": ""}, {"no": "J-0423", "date": "21 Oct", "nar": "Card and transfer charges, week 42", "src": "Bank", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "6400", "dr": 18400, "cr": 0}, {"a": "1010", "dr": 0, "cr": 18400}], "rev": ""}, {"no": "J-0424", "date": "21 Oct", "nar": "Takings, MM2 outlet, 21 Oct to 14:00, gross sales with discounts shown separately", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "1000", "dr": 5500, "cr": 0}, {"a": "1010", "dr": 61800, "cr": 0}, {"a": "1020", "dr": 45000, "cr": 0}, {"a": "4900", "dr": 1800, "cr": 0}, {"a": "4000", "dr": 0, "cr": 114100}], "rev": ""}, {"no": "J-0425", "date": "21 Oct", "nar": "Cash out, petty cash and supplies, MM2 outlet (cleaning supplies, within limit)", "src": "Sales Point", "by": "System", "ap": "", "st": "Posted", "lines": [{"a": "6500", "dr": 2000, "cr": 0}, {"a": "1000", "dr": 0, "cr": 2000}], "rev": ""}, {"no": "J-0419", "date": "21 Oct", "nar": "Accrue October electricity, Lagos production", "src": "Manual", "by": "Bola K.", "ap": "", "st": "Awaiting approval", "lines": [{"a": "6200", "dr": 220000, "cr": 0}, {"a": "2200", "dr": 0, "cr": 220000}], "rev": ""}, {"no": "J-0420", "date": "21 Oct", "nar": "Prepay November rent, MM2 outlet", "src": "Manual", "by": "Ngozi A.", "ap": "", "st": "Awaiting approval", "lines": [{"a": "1400", "dr": 400000, "cr": 0}, {"a": "1010", "dr": 0, "cr": 400000}], "rev": ""}];
+const N = (n) => String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const M = (n) => (n < 0 ? '-' : '') + '\u20A6' + N(n);
+const acct = (c) => COA.filter((a) => a.c === c)[0];
+const signed = (a) => (a.d === 'D' ? a.b : -a.b);
+const total = (j) => j.lines.reduce((s, l) => s + l.dr, 0);
+const move = (c, js) => { let s = 0; js.forEach((j) => { if (j.st === 'Posted') j.lines.forEach((l) => { if (l.a === c) s += l.dr - l.cr; }); }); return s; };
+
+
+const WAIT = 15;
+const P = [
+{ id: 'p1', time: '14:32', cp: 'MM2 Cash Point 1', outlet: 'MM2', method: 'Transfer', who: 'Chidi Okafor', ref: 'MNP-20841', amt: 6000, kind: 'matched', sale: 'MM2-0411' },
+{ id: 'p2', time: '14:20', cp: 'MM2 Cash Point 2', outlet: 'MM2', method: 'Transfer', who: 'Adaeze Nwosu', ref: 'MNP-20839', amt: 12500, kind: 'matched', sale: 'MM2-0409' },
+{ id: 'p3', time: '13:55', cp: 'Ikeja Cash Point 1', outlet: 'Ikeja', method: 'Transfer', who: 'Tunde Bakare', ref: 'MNP-20836', amt: 4200, kind: 'unmatched', hint: 'No sale was waiting for this amount' },
+{ id: 'p10', time: '13:44', cp: 'Lekki Cash Point 1', outlet: 'Lekki', method: 'Transfer', who: 'Bisi Alabi', ref: 'MNP-20834', amt: 9800, kind: 'unmatched', hint: 'Two sales here wait for \u20A69,800. Pick the sale by the payer\u2019s name.' },
+{ id: 'p11', time: '13:41', cp: 'Lekki Cash Point 1', outlet: 'Lekki', method: 'Transfer', who: 'Waiting for a transfer', ref: 'Sale LEK-0221', amt: 9800, kind: 'waiting', age: 21 },
+{ id: 'p4', time: '13:40', cp: 'Lekki Cash Point 1', outlet: 'Lekki', method: 'Transfer', who: 'Waiting for a transfer', ref: 'Sale LEK-0220', amt: 9800, kind: 'waiting', age: 22 },
+{ id: 'p5', time: '13:12', cp: 'Yaba Cash Point 1', outlet: 'Yaba', method: 'POS card', who: 'Card payment', ref: 'POS-0407', amt: 7500, kind: 'pos' },
+{ id: 'p6', time: '12:48', cp: 'Surulere Cash Point 1', outlet: 'Surulere', method: 'Transfer', who: 'Ifeanyi Obi', ref: 'MNP-20828', amt: 15000, kind: 'unmatched', hint: 'Sale SUR-0178 is waiting for \u20A615,500, which is \u20A6500 more' },
+{ id: 'p7', time: '12:30', cp: 'Surulere Cash Point 1', outlet: 'Surulere', method: 'Transfer', who: 'Waiting for a transfer', ref: 'Sale SUR-0178', amt: 15500, kind: 'waiting', age: 38 },
+{ id: 'p8', time: '11:30', cp: 'Ajah Cash Point 1', outlet: 'Ajah', method: 'Transfer', who: 'Folake Adeyemi', ref: 'MNP-20811', amt: 3000, kind: 'manual', sale: 'AJ1-0090', by: 'Ngozi A.', why: 'Customer showed the bank alert' },
+{ id: 'p9', time: '10:15', cp: 'MM2 Cash Point 1', outlet: 'MM2', method: 'POS card', who: 'Card payment', ref: 'POS-0398', amt: 5400, kind: 'pos' }
+];
+const ov = st.ov || {};
+const get = (p) => ov[p.id] ? Object.assign({}, p, ov[p.id]) : p;
+const all = P.map(get);
+const fN = (n) => '\u20A6' + N(n);
+const flt = st.flt || 'Needs attention';
+const mth = st.mth || 'All methods';
+const out = st.out || 'All outlets';
+const attention = (p) => p.kind === 'unmatched' || p.kind === 'waiting';
+const filtered = all.filter((p) => (flt === 'All' || (flt === 'Needs attention' ? attention(p) : !attention(p))) && (mth === 'All methods' || p.method === mth) && (out === 'All outlets' || p.outlet === out));
+const statusOf = (p) => {
+if (p.kind === 'matched') return ['Matched to ' + p.sale, 'var(--brand-bg)', 'var(--brand-strong)'];
+if (p.kind === 'linked') return ['Linked to ' + p.sale, 'var(--brand-bg)', 'var(--brand-strong)'];
+if (p.kind === 'manual') return ['Confirmed by hand', 'var(--warning-bg)', 'var(--warning-fg)'];
+if (p.kind === 'unmatched') return ['No sale', 'var(--danger-bg)', 'var(--danger-fg)'];
+if (p.kind === 'notsale') return ['Not a sale', 'var(--border)', 'var(--neutral-fg)'];
+if (p.kind === 'waiting') return p.age > WAIT ? ['Waiting ' + p.age + ' min, overdue', 'var(--danger-bg)', 'var(--danger-fg)'] : ['Waiting ' + p.age + ' min', 'var(--warning-bg)', 'var(--warning-fg)'];
+return ['Awaiting settlement', 'var(--border)', 'var(--neutral-fg)'];
+};
+const hintOf = (p) => p.kind === 'manual' ? p.by + ': ' + p.why : (p.kind === 'notsale' ? p.why : (p.kind === 'unmatched' ? p.hint : (p.kind === 'linked' ? p.hint || '' : '')));
+const cur = all.filter((p) => p.id === st.sel)[0];
+const mode = st.mode || '';
+const rows = filtered.map((p) => { const s = statusOf(p); const h = hintOf(p) || ''; return {
+time: p.time, cp: p.cp, method: p.method, who: p.who, ref: p.ref, amt: N(p.amt),
+status: s[0], chipBg: s[1], chipColor: s[2], hasHint: !!h, hint: h,
+canLink: p.kind === 'unmatched', canHand: p.kind === 'waiting',
+link: () => this.setState({ sel: p.id, mode: 'link', pickSale: '', fReason: '', msg: '', done: '' }),
+notSale: () => this.setState({ sel: p.id, mode: 'notsale', fReason: '', msg: '', done: '' }),
+hand: () => this.setState({ sel: p.id, mode: 'hand', fReason: '', msg: '', done: '' })
+}; });
+const transfersIn = all.filter((p) => p.method === 'Transfer' && p.kind !== 'waiting');
+const waitingAll = all.filter((p) => p.kind === 'waiting');
+const nUn = all.filter((p) => p.kind === 'unmatched').length;
+const waitList = cur ? waitingAll.filter((w) => w.cp === cur.cp) : [];
+const closeD = () => this.setState({ mode: '', sel: '', msg: '' });
+const chip = (label, cur2, key, text) => ({ label, text: text || label, on: label === cur2, pick: () => this.setState({ [key]: label }), bg: label === cur2 ? 'var(--brand)' : 'var(--bg-surface)', color: label === cur2 ? 'var(--bg-surface)' : 'var(--text)', border: label === cur2 ? 'var(--brand)' : 'var(--border-strong)' });
+const setOv = (id, v, done) => this.setState({ ov: Object.assign({}, ov, { [id]: v }), mode: '', sel: '', pickSale: '', fReason: '', msg: '', done });
+const fReason = st.fReason || '';
+return {
+...(() => { const xs = this.state || {}; return { xopts: [['PDF', 'pdf'], ['Excel (.xlsx)', 'xlsx'], ['CSV', 'csv']].map((o) => ({ label: o[0], pick: () => this.setState({ xd: 'Prepared ' + 'payments' + '.' + o[1] }) })), xHas: !!xs.xd, xText: xs.xd || '' }; })(),
+hasDone: !!st.done, doneHead: 'Done.', doneText: st.done || '',
+recvAmt: fN(transfersIn.reduce((s, p) => s + p.amt, 0)), recvN: transfersIn.length,
+nWait: waitingAll.length, waitColor: waitingAll.some((p) => p.age > WAIT) ? 'var(--danger-fg)' : 'var(--text)',
+nUn, unColor: nUn ? 'var(--danger-fg)' : 'var(--brand-strong)',
+clearBal: M(acct('1020').b),
+statusChips: [['Needs attention', all.filter(attention).length], ['Matched', all.filter((p) => !attention(p)).length], ['All', all.length]].map((x) => chip(x[0], flt, 'flt', x[0] + ' ' + x[1])),
+methodChips: ['All methods', 'Transfer', 'POS card'].map((l) => chip(l, mth, 'mth')),
+outletChips: ['All outlets', 'MM2', 'Ikeja', 'Lekki', 'Yaba', 'Surulere', 'Ajah'].map((l) => chip(l, out, 'out')),
+moreOpen: !!st.more, toggleMore: () => this.setState({ more: !st.more }),
+moreLabel: (st.more ? 'Hide filters' : 'More filters') + ((mth !== 'All methods' ? 1 : 0) + (out !== 'All outlets' ? 1 : 0) ? ' (' + ((mth !== 'All methods' ? 1 : 0) + (out !== 'All outlets' ? 1 : 0)) + ' on)' : ''),
+bannerCls: nUn + waitingAll.length === 0 ? 'good' : 'warn',
+bannerHead: nUn + waitingAll.length === 0 ? 'Everything is matched' : [nUn ? nUn + (nUn === 1 ? ' transfer has no sale' : ' transfers have no sale') : '', waitingAll.length ? waitingAll.length + (waitingAll.length === 1 ? ' sale is' : ' sales are') + ' waiting for a transfer' : ''].filter(Boolean).join(' and '),
+bannerText: nUn + waitingAll.length === 0 ? 'Every transfer has a sale and every sale has its payment.' : (waitingAll.filter((p) => p.age > WAIT).length ? waitingAll.filter((p) => p.age > WAIT).length + ' ' + (waitingAll.filter((p) => p.age > WAIT).length === 1 ? 'is' : 'are') + ' overdue. ' : '') + 'Link each transfer to its sale, or confirm by hand if you have seen the money.',
+emptyText: flt === 'Needs attention' && mth === 'All methods' && out === 'All outlets' ? 'Nothing needs attention.' : 'Nothing matches these filters.',
+settleLabel: 'Moniepoint settlements (2, 1 not yet in the books)',
+rows, noRows: rows.length === 0,
+settle: [
+{ d: '20 Oct', from: '19 Oct', gross: fN(415800), fee: fN(3500), net: fN(412300), status: 'Not yet in the books', bg: 'var(--danger-bg)', color: 'var(--danger-fg)' },
+{ d: '19 Oct', from: '18 Oct', gross: fN(301000), fee: fN(2600), net: fN(298400), status: 'Matched in the books', bg: 'var(--brand-bg)', color: 'var(--brand-strong)' }
+],
+drawerOpen: !!mode && !!cur, closeDrawer: closeD,
+isLink: mode === 'link', isReason: mode === 'notsale' || mode === 'hand', noWaiting: waitList.length === 0, dCp: cur ? cur.cp : '',
+dTitle: mode === 'link' ? 'Link to a sale' : (mode === 'notsale' ? 'Mark as not a sale' : 'Confirm by hand'),
+dWho: cur ? (mode === 'hand' ? 'Sale ' + cur.ref.replace('Sale ', '') + ' at ' + cur.cp : cur.who + ' · ' + cur.ref) : '',
+dLine: cur ? fN(cur.amt) + (mode === 'hand' ? ' still waiting for a transfer' : ' received at ' + cur.cp + ' at ' + cur.time) : '',
+waiting: waitList.map((w) => ({ no: w.ref.replace('Sale ', ''), amt: fN(w.amt), age: 'Waiting ' + w.age + ' minutes', bg: st.pickSale === w.id ? '#F2F8F4' : 'var(--bg-surface)', border: st.pickSale === w.id ? '2px solid var(--brand)' : '1px solid var(--border-strong)', pick: () => this.setState({ pickSale: w.id, msg: '' }) })),
+saveLink: () => {
+const w = waitingAll.filter((x) => x.id === st.pickSale)[0];
+if (!w) { this.setState({ msg: 'Pick the sale this transfer pays for.' }); return; }
+if (w.amt !== cur.amt) { this.setState({ msg: 'The amounts differ: the transfer is ' + fN(cur.amt) + ' and the sale is ' + fN(w.amt) + '. Ask the customer to send the ' + (w.amt > cur.amt ? fN(w.amt - cur.amt) + ' still owing' : fN(cur.amt - w.amt) + ' difference back or mark the extra as not a sale') + '. The transfer stays unmatched until the amounts agree.' }); return; }
+const sale = w.ref.replace('Sale ', '');
+this.setState({ ov: Object.assign({}, ov, { [cur.id]: { kind: 'linked', sale }, [w.id]: { kind: 'linked', sale: sale, who: cur.who, ref: cur.ref, hint: 'Linked to a transfer from ' + cur.who } }), mode: '', sel: '', pickSale: '', msg: '', done: 'The transfer from ' + cur.who + ' is linked to sale ' + sale + '. The sale is now paid.' });
+},
+reasonList: mode === 'hand' ? [{ v: 'Customer showed the bank alert' }, { v: 'Moniepoint is slow, transfer seen in our bank app' }] : [{ v: 'Sent to the wrong cash point' }, { v: 'Customer paid twice' }, { v: 'Deposit for a later order' }],
+reasonLabel: mode === 'hand' ? 'Why are you confirming this without a transfer from Moniepoint?' : 'Why is this not a sale?',
+reasonHint: mode === 'hand' ? 'For example: customer showed the bank alert' : 'For example: customer paid twice',
+reasonNote: mode === 'hand' ? 'The sale is marked paid and flagged as confirmed by hand. Your name and the reason are saved and shown to the accountant.' : 'The money stays in Moniepoint clearing until it is returned or applied. Your name and the reason are saved.',
+fReason, onReason: (e) => this.setState({ fReason: e.target.value, msg: '' }),
+saveLabel: mode === 'hand' ? 'Confirm payment' : 'Mark as not a sale',
+hasMsg: !!st.msg, msg: st.msg || '',
+saveReason: () => {
+if (!fReason.trim()) { this.setState({ msg: 'Give a reason so the accountant can see why.' }); return; }
+if (mode === 'hand') setOv(cur.id, { kind: 'manual', by: 'Bola K.', why: fReason.trim(), sale: cur.ref.replace('Sale ', '') }, 'Sale ' + cur.ref.replace('Sale ', '') + ' is marked paid and flagged as confirmed by hand.');
+else setOv(cur.id, { kind: 'notsale', why: fReason.trim() }, 'The transfer from ' + cur.who + ' is marked as not a sale. The reason is saved.');
+}
+};
+
+}
+}
+</script>
+</body>
+</html>

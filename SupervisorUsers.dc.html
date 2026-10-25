@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Point: users and password reset</title>
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./pos.css">
+</helmet>
+<div class="pos shell">
+<header class="bar">
+<a class="btn back" href="NewSale.dc.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Back to sale</a>
+<div class="bar-id"><h1 class="bar-title">Users</h1><span class="bar-sub">MM2 outlet</span></div>
+<div class="who"><span class="av" aria-hidden="true">NA</span><div class="who-t" style="align-items:flex-start;text-align:left"><span class="who-n">Ngozi A.</span><span class="who-s">Supervisor</span></div></div>
+</header>
+<main class="page col" style="align-items:stretch">
+<sc-if value="{{ hasDone }}" hint-placeholder-val="{{ false }}"><div role="status" class="alert ok plain" style="flex-direction:column;gap:4px"><strong>Password reset for {{ doneName }}.</strong><span>Recorded: reset by Ngozi A., 21 Oct 2026, 14:05. {{ doneName }} can now sign in with the new password.</span></div></sc-if>
+<section class="card flush" aria-labelledby="h-people">
+<div style="padding:16px 24px 12px"><h2 class="card-h" id="h-people" style="font-size:20px">People at this outlet</h2><p class="note">Reset a password if someone forgot theirs. Everyone signs in with their own username and password. Select a person to reset their password.</p></div>
+<div class="scroll"><div role="table" class="dt stack"><div role="rowgroup" class="thead"><div role="row" class="tr"><div role="columnheader" class="th">Name</div><div role="columnheader" class="th">Role</div><div role="columnheader" class="th">Username</div><div role="columnheader" class="th">Last signed in</div><div role="columnheader" class="th">Status</div><div role="columnheader" class="th"><span class="sr">Action</span></div></div></div><div role="rowgroup" class="tbody">
+<sc-for list="{{ users }}" as="u" hint-placeholder-count="5">
+<div role="row" class="tr hot"><div role="cell" class="td"><span style="display:flex;align-items:center;gap:12px"><span class="av grey" aria-hidden="true">{{ u.initials }}</span><b>{{ u.name }}</b></span></div><div role="cell" data-l="Role" class="td">{{ u.role }}</div><div role="cell" data-l="Username" class="td muted">{{ u.username }}</div><div role="cell" data-l="Last signed in" class="td muted">{{ u.last }}</div><div role="cell" data-l="Status" class="td"><span class="pill">Active</span></div><div role="cell" data-l="" class="td num"><button class="btn quiet chev go" onClick="{{ u.pick }}" aria-label="Reset password for {{u.name}}">Reset password</button></div></div>
+</sc-for>
+</div></div></div>
+</section>
+</main>
+</div>
+<sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+<div class="scrim" onClick="{{ close }}"></div>
+<aside class="drawer" role="dialog" aria-modal="true" aria-label="Reset password">
+<div class="dh"><div style="display:flex;flex-direction:column;gap:2px"><h2>Reset password</h2><span class="bar-sub">{{ selName }} · {{ selRole }}</span></div><button class="btn" onClick="{{ close }}">Close</button></div>
+<div class="db">
+<label class="lbl">New password<input class="field" type="password" autocomplete="new-password" value="{{ pw1 }}" onInput="{{ onPw1 }}" aria-invalid="{{ bad1 }}"></label>
+<label class="lbl">Type it again<input class="field" type="password" autocomplete="new-password" value="{{ pw2 }}" onInput="{{ onPw2 }}" aria-invalid="{{ bad2 }}"></label>
+<sc-if value="{{ hasMsg }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert err">{{ msg }}</p></sc-if>
+<p class="note">Every reset is recorded with who did it and when. The password rules are still to be confirmed.</p>
+</div>
+<div class="df"><button class="btn primary lg grow" onClick="{{ reset }}">Reset password for {{ selName }}</button><button class="btn lg" onClick="{{ close }}">Cancel</button></div>
+</aside>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const st = this.state || {};
+const people = [
+{ name: 'Amaka O.', role: 'Sales representative', initials: 'AO', username: 'amaka.o', last: 'Today, 08:00' },
+{ name: 'Tunde B.', role: 'Sales representative', initials: 'TB', username: 'tunde.b', last: 'Yesterday, 15:58' },
+{ name: 'Chioma E.', role: 'Sales representative', initials: 'CE', username: 'chioma.e', last: 'Yesterday, 08:02' },
+{ name: 'Kelechi M.', role: 'Production staff', initials: 'KM', username: 'kelechi.m', last: 'Today, 07:31' },
+{ name: 'Ibrahim S.', role: 'Distribution officer', initials: 'IS', username: 'ibrahim.s', last: 'Today, 07:44' }
+];
+const sel = st.sel === undefined ? -1 : st.sel;
+const pw1 = st.pw1 || '';
+const pw2 = st.pw2 || '';
+const users = people.map((p, i) => ({
+name: p.name, role: p.role, initials: p.initials, username: p.username, last: p.last,
+pick: () => this.setState({ sel: i, pw1: '', pw2: '', msg: '', doneName: undefined })
+}));
+const reset = () => {
+if (!pw1) { this.setState({ msg: 'New password: enter a new password.', msgF: 1 }); return; }
+if (pw1 !== pw2) { this.setState({ msg: 'Type it again: the two passwords do not match.', msgF: 2 }); return; }
+this.setState({ doneName: people[sel].name, sel: -1, msg: '', pw1: '', pw2: '' });
+};
+return {
+users,
+drawerOpen: sel >= 0,
+selName: sel >= 0 ? people[sel].name : '',
+selRole: sel >= 0 ? people[sel].role : '',
+pw1, pw2,
+onPw1: (e) => this.setState({ pw1: e.target.value, msg: '' }),
+onPw2: (e) => this.setState({ pw2: e.target.value, msg: '' }),
+hasMsg: !!st.msg, msg: st.msg || '', bad1: !!st.msg && st.msgF === 1, bad2: !!st.msg && st.msgF === 2,
+hasDone: !!st.doneName, doneName: st.doneName || '',
+close: () => this.setState({ sel: -1, msg: '', pw1: '', pw2: '' }),
+reset
+};
+}
+}
+</script>
+</body>
+</html>
