@@ -26,6 +26,14 @@ The start page has three entries: **Cash Point**, **Back office**, and a **flow 
 
 Every figure, name, TIN, address and bank account is made up.
 
+## Deploy (Netlify)
+
+It is a static site, so any static host works. `netlify.toml` is included: connect the repo and deploy with the defaults. The build copies only the demo files (about 1.5 MB, 81 files) into `site/` and publishes that. The `ux-review/` folder is not deployed.
+
+* It sends `X-Robots-Tag: noindex` and `robots.txt` disallows everything, so search engines skip it. The URL itself is public unless you add Netlify password protection (a paid feature).
+* Leave **Pretty URLs** off in Netlify's post-processing settings. The screens link to each other as `Name.dc.html`, and some use query strings.
+* Checked: every link and font path resolves with exact case (Netlify serves from Linux, where case matters), nothing loads from another domain, and the test suites pass when served over HTTP.
+
 ## Screen sizes
 
 | App | Supported |

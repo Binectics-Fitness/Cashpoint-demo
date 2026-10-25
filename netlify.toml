@@ -1,0 +1,19 @@
+# Netlify: publish only the demo files. The ux-review folder (docs, tests, tools) stays in the repo but is not deployed.
+[build]
+  command = "rm -rf site && mkdir site && cp *.html *.js *.css robots.txt site/ && cp -r fonts site/fonts"
+  publish = "site"
+
+# Internal demo with sample data: keep it out of search engines.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer"
+    X-Frame-Options = "SAMEORIGIN"
+
+# Static assets that never change name: cache them for a week. Pages are always revalidated so edits show straight away.
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

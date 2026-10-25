@@ -3,7 +3,7 @@
 // Flow files export default { 'flow name': async (c) => {...} } and use the helpers on c (go, click, type, has, check ...).
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
-const BASE = 'file:///Users/daniel/Documents/Personal/ThingsRemembered-demo/';
+const BASE = process.env.BASE || 'file:///Users/daniel/Documents/Personal/ThingsRemembered-demo/';
 const OUT = process.env.SHOTS || '';
 const port = 9400 + Math.floor(Math.random() * 400);
 const chrome = spawn('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', ['--headless=new', `--remote-debugging-port=${port}`, '--no-first-run', '--disable-gpu', `--user-data-dir=/tmp/e2e-${port}`, 'about:blank'], { stdio: 'ignore' });
