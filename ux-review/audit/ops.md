@@ -33,7 +33,6 @@ Evidence: baseline screenshots in `ux-review/baseline/<Page>/`, after screenshot
 * Production does not change Inventory (made goods and raw materials used are only shown on its own page). In-flight deliveries and stock counts are not remembered between screens.
 * Receive stock opens only for requests the demo knows (R-0213, and R-0216 or R-0214 once approved).
 * No new notifications are created when you raise something.
-* `READ-ME.txt` still lists the older set of remembered items (outside this scope).
 * Tables on Production (Made today), Inflight invoices fit on a phone; the other lists stack with page-local CSS (`.stk`). The same pattern should live in `app.css`.
 
 ## Shared changes wanted (not made, outside scope)
